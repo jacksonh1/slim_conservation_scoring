@@ -1,0 +1,23 @@
+regex: "[FL]PPPP"
+flank: 5
+scripts_to_run:
+  - s01
+  - s02
+  - s03
+  - s04
+  - s05
+meta_file: "./ortholog_analysis_meta.json"
+hits_file: "./hit_sequences_example_table_v2_merged.csv"
+odb_main_folder: "/home/jch/Documents/SLiM_bioinformatics_workspace/data/orthoDB_ortholog_group_runs/2023-07-19-whole_proteome/orthoDB_analysis_multiprocessed_minfrac-0.75/msa_by_organism"
+og_analysis_output_folder: "../ortholog_analysis"
+hit_params:
+  target_hit_length: 36
+score_params:
+  matrix_name: "EDSSMat50_max_off_diagonal_norm"
+  gap_frac_cutoff: 0.2
+required_usable_fraction: 0.75
+sequence_file_key:
+  - "fasta alignment - OG LDO cdhit"
+levels_to_copy: "Vertebrata"
+level_to_use_for_scores: "Vertebrata"
+score_key_for_table: "asym_valday_score_json"

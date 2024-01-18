@@ -21,3 +21,11 @@ IUPRED_DIR = Path(os.environ['IUPRED2A_LIB_DIR'])
 MATRIX_DIR = ROOT / Path(os.environ['SUBSTITUTION_MATRIX_DIR'])
 DATABASE_DIR = ROOT / os.environ['ORTHOGROUP_DATA_DIR']
 
+phylogeny_lvl_ordering_file = ROOT / os.environ['PHYLOGENY_LVL_ORDERING']
+
+with open(phylogeny_lvl_ordering_file, 'r') as f:
+    PHYLOGENY_LVL_ORDERING = [l.strip() for l in f.readlines()]
+
+COLOR_MAP_FILES = {
+    'clustal': ROOT / 'data' / 'color_maps' / 'clustal_hex_map.json',
+}

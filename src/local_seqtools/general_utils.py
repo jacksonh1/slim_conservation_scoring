@@ -11,10 +11,11 @@ import pandas as pd
 import requests
 from Bio import Align, AlignIO, Seq, SeqIO
 
+import local_env_variables.env_variables as env
+
 sys.path.append("/Users/jackson/tools/iupred2a")
 sys.path.append("/home/jackson/tools/iupred2a")
 sys.path.append("/home/jch/tools/iupred2a")
-import iupred2a_lib as iup
 
 # from sklearn import metrics
 
@@ -201,6 +202,22 @@ class FastaImporter:
             return SeqIO.to_dict(SeqIO.parse(handle, 'fasta'))
 
 
+def strip_dashes_from_str(seq_str):
+    """remove `-` characters from a sequence string
+
+    Parameters
+    ----------
+    seq_str : str
+        sequence string
+
+    Returns
+    -------
+    str
+        sequence string with `-` characters removed
+    """    
+    return seq_str.replace('-', '')
+    
+
 def strip_dashes_from_sequences(sequences):
     """remove `-` characters from sequences in a list of SeqRecord objects
 
@@ -216,7 +233,7 @@ def strip_dashes_from_sequences(sequences):
     """    
     sequences = copy.deepcopy(sequences)
     for s in sequences:
-        s.seq = Seq.Seq(str(s.seq).replace('-', ''))
+        s.seq = Seq.Seq(strip_dashes_from_str(str(s.seq)))
     return sequences
 
 
@@ -324,45 +341,6 @@ def find_subseq_in_aligned_seq_str(unaligned_subseq_str, aligned_seq_str):
     al_start = alignment_index_key[unal_start]
     al_end = alignment_index_key[unal_end]
     return al_start, al_end, aligned_seq_str[al_start:al_end+1]
-
-
-
-# ==============================================================================
-# // iupred
-# ==============================================================================
-
-def iupred_scores_from_seqrecord(seqrecord):
-    return iup.iupred(str(seqrecord.seq))[0]
-
-
-def iupred_scores_from_seqstring(seqstring):
-    return iup.iupred(seqstring)[0]
-
-
-def get_idr_indexes_untouched_indexing(score_list, cutoff):
-    idr_indexes = []
-    in_idr = False
-    st, end = 0,0
-    for c,i in enumerate(score_list):
-        # print(c,i)
-        if i>cutoff:
-            if in_idr:
-                end = c
-            else:
-                st = c
-                end = c
-                in_idr = True
-        else:
-            if in_idr:
-                if st != end:
-                    idr_indexes.append([st,end])
-                in_idr = False
-            else:
-                # print(f'{c}-pass')
-                pass
-    if in_idr:
-        idr_indexes.append([st,end])
-    return idr_indexes
 
 
 # ==============================================================================

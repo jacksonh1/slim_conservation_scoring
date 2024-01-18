@@ -15,4 +15,4 @@ align_params:
   align: true
   n_align_threads: 8
 
-main_output_folder: "../../../data/example_orthogroup_database/human_odb_groups"
+main_output_folder: "../../../data/example_orthogroup_database_merged_version/human_odb_groups"

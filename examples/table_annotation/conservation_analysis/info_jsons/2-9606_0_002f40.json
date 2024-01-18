@@ -1,0 +1,102 @@
+{
+    "reference_index": 2,
+    "query_gene_id": "9606_0:002f40",
+    "query_uniprot_id": "Q8TC90",
+    "orthogroups": {
+        "Metazoa": {
+            "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
+            "aln_conservation_scores": {
+                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json"
+            },
+            "hit_aln_start": 684,
+            "hit_aln_end": 754,
+            "idr_aln_start": 347,
+            "idr_aln_end": 1202,
+            "query_aln_sequence": "----------------------------------------------------MTQ-------TL-----------------DTREDPLNL-------GGGGGG-------------------------------------------------------GCGCG--------W--------------AHSASLSSWSSCH------------------RRR----PGAPAYNRPH---RYSP-----KTEYGPPRK-QPK--QQH-GPGF-WFQ-PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R-------------W------------GR-------------RGRGLR------H-HP------RHSY------------PR------SPP--------ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQ--------------------EALR-AQKA------TVSGEASPARS-SGN-------------------------DA-P-----------PGG--------------------SK-ETW-G---------------------------LQETLYGFVQNPS---LA----------FS---PN-------P----------------------------------------EENQSL-----------------------------------A-----PLLV-----EEE----------EEKK------------------NDD-E-E-E---YDQ-------EVC--------------DAK-E----A---SE----------------------EEEEVE---D-----------EEE---EVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NP----EQIIPKVPQESLFMA-QDFNC-----------------",
+            "hit_aln_sequence": "A----------FS---PN-------P----------------------------------------EENQS",
+            "num_clustered_ldos": 143
+        },
+        "Tetrapoda": {
+            "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.fasta",
+            "aln_conservation_scores": {
+                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json"
+            },
+            "hit_aln_start": 500,
+            "hit_aln_end": 561,
+            "idr_aln_start": 249,
+            "idr_aln_end": 960,
+            "query_aln_sequence": "MTQTL-----------------DTREDPLNL-------GGGGGGGCGCG--------------------------------------------------W-----------AHSASLSSWSSCH---RRR----PGAPAYNRPH-RYSPKTEYGPPRKQPK--QQHGPGF-WFQ--PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R------------W------------GR-------------RGRGLRH-HP-RHSY-PRSPP---ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALR-AQKA------TVSGEASPARS--SGN---------------DA-P--PGG--------------------SKETWG-------------LQETLYGFVQNPS-----LAFS----PN-------P----------------------------------------EENQSLA-----PLLV--------EEE----------EEKK------------------NDD-E-EE---YDQ----------EVC--------------DAK-E----A---SE----------------------EEEEVE-D-EEEEVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NPEQIIPKVPQESLFMA-QDFNC-----------------",
+            "hit_aln_sequence": "AFS----PN-------P----------------------------------------EENQS",
+            "num_clustered_ldos": 86
+        },
+        "Vertebrata": {
+            "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
+            "aln_conservation_scores": {
+                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json"
+            },
+            "hit_aln_start": 684,
+            "hit_aln_end": 754,
+            "idr_aln_start": 347,
+            "idr_aln_end": 1202,
+            "query_aln_sequence": "----------------------------------------------------MTQ-------TL-----------------DTREDPLNL-------GGGGGG-------------------------------------------------------GCGCG--------W--------------AHSASLSSWSSCH------------------RRR----PGAPAYNRPH---RYSP-----KTEYGPPRK-QPK--QQH-GPGF-WFQ-PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R-------------W------------GR-------------RGRGLR------H-HP------RHSY------------PR------SPP--------ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQ--------------------EALR-AQKA------TVSGEASPARS-SGN-------------------------DA-P-----------PGG--------------------SK-ETW-G---------------------------LQETLYGFVQNPS---LA----------FS---PN-------P----------------------------------------EENQSL-----------------------------------A-----PLLV-----EEE----------EEKK------------------NDD-E-E-E---YDQ-------EVC--------------DAK-E----A---SE----------------------EEEEVE---D-----------EEE---EVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NP----EQIIPKVPQESLFMA-QDFNC-----------------",
+            "hit_aln_sequence": "A----------FS---PN-------P----------------------------------------EENQS",
+            "num_clustered_ldos": 143
+        },
+        "Mammalia": {
+            "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.fasta",
+            "aln_conservation_scores": {
+                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.json"
+            },
+            "hit_aln_start": 385,
+            "hit_aln_end": 443,
+            "idr_aln_start": 167,
+            "idr_aln_end": 834,
+            "query_aln_sequence": "MTQTL-DTREDPLNL----GGGGGGGCGCG---W--AHSASLSSWSSCH-RRRPGAPAYNRPH-RYSPKTEYGPPRKQPK--QQHGPGF-WFQ-PPV--------CSNWG---CW--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK------R------------W------------GRRGRGLRH-HP-RHSY-PRSPP---ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALR-AQKA------TVSGEASPARS-SGN---------------DA-P--PGG--------------------SKETWG---LQETLYGFVQNPS-LAFS---PN-------P--------------------------------------EENQSLA-----PLLV-----EEE----------EEKK------------------NDD-E-EEYDQ-------EVC-----DAK-E----A---SE------------------------------EEEEVE-D-EEEEVE-----------DEEE----EEVEEAEY---------------------VEEGEEEL-----------EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NPEQIIPKVPQESLFMA-QDFNC-----------------",
+            "hit_aln_sequence": "AFS---PN-------P--------------------------------------EENQS",
+            "num_clustered_ldos": 79
+        },
+        "Eukaryota": {
+            "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln.fasta",
+            "aln_conservation_scores": {
+                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln.json"
+            },
+            "hit_aln_start": 684,
+            "hit_aln_end": 754,
+            "idr_aln_start": 347,
+            "idr_aln_end": 1202,
+            "query_aln_sequence": "----------------------------------------------------MTQ-------TL-----------------DTREDPLNL-------GGGGGG-------------------------------------------------------GCGCG--------W--------------AHSASLSSWSSCH------------------RRR----PGAPAYNRPH---RYSP-----KTEYGPPRK-QPK--QQH-GPGF-WFQ-PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R-------------W------------GR-------------RGRGLR------H-HP------RHSY------------PR------SPP--------ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQ--------------------EALR-AQKA------TVSGEASPARS-SGN-------------------------DA-P-----------PGG--------------------SK-ETW-G---------------------------LQETLYGFVQNPS---LA----------FS---PN-------P----------------------------------------EENQSL-----------------------------------A-----PLLV-----EEE----------EEKK------------------NDD-E-E-E---YDQ-------EVC--------------DAK-E----A---SE----------------------EEEEVE---D-----------EEE---EVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NP----EQIIPKVPQESLFMA-QDFNC-----------------",
+            "hit_aln_sequence": "A----------FS---PN-------P----------------------------------------EENQS",
+            "num_clustered_ldos": 143
+        }
+    },
+    "query_sequence": "MTQTLDTREDPLNLGGGGGGGCGCGWAHSASLSSWSSCHRRRPGAPAYNRPHRYSPKTEYGPPRKQPKQQHGPGFWFQPPVCSNWGCWGGPWRPPPPGFWKFPCPVQVFRVYGLHPLCFCCCSCWSGSWNPGWVKPPGRKKRWGRRGRGLRHHPRHSYPRSPPADVSTLPRPVKLYEWREPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALRAQKATVSGEASPARSSGNDAPPGGSKETWGLQETLYGFVQNPSLAFSPNPEENQSLAPLLVEEEEEKKNDDEEEYDQEVCDAKEASEEEEEVEDEEEEVEDEEEEEVEEAEYVEEGEEELEEEELEEEEEVLEENEQRGEEFHLPLEMPLSIFVEAEEKRENFISCTFLNPEQIIPKVPQESLFMAQDFNC",
+    "hit_sequence": "AFSPNPEENQS",
+    "idr_regions": [
+        [
+            0,
+            12
+        ],
+        [
+            48,
+            73
+        ],
+        [
+            134,
+            405
+        ]
+    ],
+    "hit_start_position": 259,
+    "hit_end_position": 269,
+    "hit_in_idr": true,
+    "idr_start": 134,
+    "idr_end": 405,
+    "levels_passing_filters": [
+        "Eukaryota",
+        "Metazoa",
+        "Vertebrata",
+        "Tetrapoda",
+        "Mammalia"
+    ],
+    "multilevel_plot_file-gapless-property_entropy": "conservation_analysis/plots/2-9606_0:002f40-property_entropy-stripped_og_level_score_screen.png",
+    "multilevel_plot_file-property_entropy": "conservation_analysis/plots/2-9606_0:002f40-property_entropy_og_level_score_screen.png"
+}

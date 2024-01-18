@@ -1,0 +1,5 @@
+{
+    "gap_frac_cutoff": 0.2,
+    "overwrite": true,
+    "json_directory": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/info_jsons"
+}

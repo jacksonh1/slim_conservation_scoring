@@ -1,0 +1,5 @@
+reference_index,Uniprotid,hit_sequence,gene id,fail_reason,json_file
+0,A6ND36,FPGPPRY,,,conservation_analysis/0-nan/0-nan.json
+1,C9J302,FPTPPNY,,,conservation_analysis/1-nan/1-nan.json
+2,Q8TC90,AFSPNPEENQS,9606_0:002f40,,conservation_analysis/2-9606_0_002f40/2-9606_0_002f40.json
+3,A0A1U9X8D2,FRHLLEY,9606_0:001c7b,,conservation_analysis/3-9606_0_001c7b/3-9606_0_001c7b.json

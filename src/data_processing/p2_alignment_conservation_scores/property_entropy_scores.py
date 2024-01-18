@@ -1,28 +1,17 @@
-import local_scripts.PE_score_fl_alns as pe
-import multiprocessing
-import local_env_variables.env_variables as env
-from pathlib import Path
 import json
+import multiprocessing
 from functools import partial
+from pathlib import Path
+
+import local_conservation_scores.PE_score_fl_alns as pe
+import local_env_variables.env_variables as env
 
 GAP_FRAC_CUTOFF = 0.2
 OVERWRITE = True
-database_dir = env.ROOT / 'data/example_orthogroup_database/human_odb_groups'
+database_dir = env.ROOT / 'data/example_orthogroup_database_merged_version/human_odb_groups'
 JSON_DIR = database_dir / 'info_jsons'
 OUTPUT_DIR = database_dir / 'alignment_conservation_scores' / 'property_entropy'
 N_CORES = multiprocessing.cpu_count()
-
-
-def get_alnfile_2_refid_map(file_map_json):
-    with open(file_map_json) as f:
-        file_map = json.load(f)
-    aln_file_map = {}
-    for k, v in file_map.items():
-        ref_id = k
-        for level in v.keys():
-            aln_file = v[level]['alignment_file']
-            aln_file_map[aln_file] = ref_id
-    return aln_file_map
 
 
 def run_pe(json_file: str|Path, output_dir, gap_frac_cutoff=GAP_FRAC_CUTOFF, overwrite=OVERWRITE):
