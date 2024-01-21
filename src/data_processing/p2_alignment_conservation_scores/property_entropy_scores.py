@@ -3,7 +3,7 @@ import multiprocessing
 from functools import partial
 from pathlib import Path
 
-import local_conservation_scores.PE_score_fl_alns as pe
+import local_conservation_scores.aln_property_entropy as pe
 import local_env_variables.env_variables as env
 
 GAP_FRAC_CUTOFF = 0.2
@@ -29,9 +29,9 @@ def run_pe(json_file: str|Path, output_dir, gap_frac_cutoff=GAP_FRAC_CUTOFF, ove
         overwrite=overwrite,
         reference_id=odb_gene_id
     )
-    if 'aln_conservation_scores' not in data:
-        data['aln_conservation_scores'] = {}
-    data['aln_conservation_scores']['property_entropy'] = str(output_file)
+    if 'conservation_scores' not in data:
+        data['conservation_scores'] = {}
+    data['conservation_scores']['property_entropy'] = str(output_file)
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 

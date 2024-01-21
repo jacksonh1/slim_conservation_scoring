@@ -2846,7 +2846,7 @@
         "103695_0:0048c4",
         "216574_0:003c68"
     ],
-    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpqbc5nlce -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpqbc5nlce-cdhit.fa -M 0 -d 0 ",
+    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpnyib4fpu -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpnyib4fpu-cdhit.fa -M 0 -d 0 ",
     "species_map": {
         "54969_0:00071d": "Polypedilum nubifer",
         "9606_0:00194d": "Homo sapiens",
@@ -3215,8 +3215,8 @@
         "write_files": true
     },
     "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_00194d_Eukaryota_5471876at2759_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpnv14e5y3\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpnv14e5y3-mafft.fa\"",
-    "aln_conservation_scores": {
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp4c94ls_f\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp4c94ls_f-mafft.fa\"",
+    "conservation_scores": {
         "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_00194d_Eukaryota_5471876at2759_clustered_ldos_aln.json"
     }
 }

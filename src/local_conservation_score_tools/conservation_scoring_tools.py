@@ -192,7 +192,7 @@ def calculate_z_score_bg_region(
     return {"z_scores": list(z_scores), "bg_scores": list(bg_scores)}
 
 
-def conservation_string(scores, seq, z_score_cutoff=1):
+def conservation_string(scores, seq, z_score_cutoff: float = 1.0):
     assert len(scores) == len(seq)
     cons_str = ''
     for score, aa in zip(scores, seq):

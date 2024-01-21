@@ -11,14 +11,6 @@ import pandas as pd
 import requests
 from Bio import Align, AlignIO, Seq, SeqIO
 
-import local_env_variables.env_variables as env
-
-sys.path.append("/Users/jackson/tools/iupred2a")
-sys.path.append("/home/jackson/tools/iupred2a")
-sys.path.append("/home/jch/tools/iupred2a")
-
-# from sklearn import metrics
-
 
 def parse_filename(filename, regex = r'(?P<species_id>\d+_\d+)_(?P<odbid>[\w\d]+)_(?P<level>\w+)_(?P<og_id>\d+at\d+)'):
     p = re.compile(regex)
@@ -200,6 +192,17 @@ class FastaImporter:
         """        
         with open(self.fasta_path) as handle:
             return SeqIO.to_dict(SeqIO.parse(handle, 'fasta'))
+        
+    def import_as_alignment(self) -> Align.MultipleSeqAlignment:
+        """return multiple sequence alignment object
+
+        Returns
+        -------
+        Align.MultipleSeqAlignment
+            multiple sequence alignment object
+        """        
+        with open(self.fasta_path) as handle:
+            return AlignIO.read(handle, 'fasta')
 
 
 def strip_dashes_from_str(seq_str):

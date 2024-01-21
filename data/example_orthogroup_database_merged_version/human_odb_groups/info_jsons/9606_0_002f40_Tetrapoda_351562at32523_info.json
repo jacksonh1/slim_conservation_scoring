@@ -670,7 +670,7 @@
         "8364_0:001fa8",
         "9031_0:0028a9"
     ],
-    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpkdz72tll -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpkdz72tll-cdhit.fa -M 0 -d 0 ",
+    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpdtfvwjao -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpdtfvwjao-cdhit.fa -M 0 -d 0 ",
     "species_map": {
         "38626_0:002d6b": "Phascolarctos cinereus",
         "9337_0:0036f4": "Trichosurus vulpecula",
@@ -786,8 +786,8 @@
         "write_files": true
     },
     "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignments/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpaqpl831g\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpaqpl831g-mafft.fa\"",
-    "aln_conservation_scores": {
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp4d72mn4y\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp4d72mn4y-mafft.fa\"",
+    "conservation_scores": {
         "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_merged_version/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json"
     }
 }

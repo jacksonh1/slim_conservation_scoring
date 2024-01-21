@@ -35,13 +35,13 @@ def find_query_hit_sequence(subsequence: str, sequence: str):
     occurences = find_all_substring_occurences(subsequence, sequence)
     if len(occurences) == 0:
         raise ValueError(
-            f"subsequence {subsequence} not found in query sequence {sequence}"
+            f"subsequence {subsequence} not found in query sequence"
         )
     elif len(occurences) == 1:
         return occurences[0]
     else:
         raise ValueError(
-            f"subsequence {subsequence} found in query sequence {sequence} more than once"
+            f"subsequence {subsequence} found in query sequence more than once"
         )
 
 
@@ -89,7 +89,7 @@ def main(
     if hit_sequence not in query_sequence:
         info_dict[
             "critical_error"
-        ] = f"hit sequence {hit_sequence} not found in query sequence {query_sequence}"
+        ] = f"hit sequence {hit_sequence} not found in query sequence"
         save_out_json(info_dict, json_file)
         return 'fail'
     try:

@@ -14,9 +14,20 @@ precalculated_aln_conservation_score_keys:
   - "property_entropy"
 filter_params:
   min_num_orthos: 20
+new_score_methods:
+  aln_asym_sum_of_pairs:
+    matrix_name: "BLOSUM62_max_off_diagonal_norm"
+    gap_frac_cutoff: 0.2
+    overwrite: true
 table_annotation_params:
   score_key_for_table: "property_entropy"
   motif_regex: "P.P.E"
+  levels:
+    # - "Eukaryota"
+    # - "Metazoa"
+    - "Vertebrata"
+    # - "Tetrapoda"
+    # - "Mammalia"
 clean_analysis_files: false
 # new_score_methods:
 #   property_entropy:

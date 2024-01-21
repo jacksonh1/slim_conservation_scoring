@@ -66,6 +66,7 @@ class TableAnnotationConf:
     """
     score_key_for_table: str = field(default="property_entropy")
     motif_regex: str|None = field(default=None)
+    levels: list[str] = field(factory=list)
 
 @define
 class AlnSliceConf:

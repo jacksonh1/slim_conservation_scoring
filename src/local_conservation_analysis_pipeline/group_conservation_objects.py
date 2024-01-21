@@ -18,6 +18,9 @@ class ConserGene:
         with open(self.json_filepath, "r") as f:
             self.info_dict = json.load(f)
 
+        if "critical_error" in self.info_dict:
+            self.critical_error = self.info_dict["critical_error"]
+            return
         self.reference_index = self.info_dict["reference_index"]
         self.query_gene_id = self.info_dict["query_gene_id"]
         self.hit_sequence = self.info_dict["hit_sequence"]
@@ -35,7 +38,7 @@ class ConserGene:
     def load_levels(self):
         self.level_objects = {}
         for level in self.levels_passing_filters:
-            self.level_objects[level] = ConserLevel.from_dict(
+            self.level_objects[level] = ConserLevel(
                 self.info_dict["orthogroups"][level]
             )
     
@@ -72,25 +75,18 @@ class ConserGene:
 class ConserLevel:
     def __init__(
         self,
-        alignment_clustered_ldos_file,
-        hit_aln_start,
-        hit_aln_end,
-        idr_aln_start,
-        idr_aln_end,
-        query_aln_sequence,
-        hit_aln_sequence,
-        num_clustered_ldos,
-        aln_conservation_scores,
+        lvl_dict,
     ):
-        self.alignment_clustered_ldos_file = Path(alignment_clustered_ldos_file)
-        self.hit_aln_start = hit_aln_start
-        self.hit_aln_end = hit_aln_end
-        self.idr_aln_start = idr_aln_start
-        self.idr_aln_end = idr_aln_end
-        self.query_aln_sequence = query_aln_sequence
-        self.hit_aln_sequence = hit_aln_sequence
-        self.num_clustered_ldos = num_clustered_ldos
-        self.aln_conservation_scores = aln_conservation_scores
+        self.info_dict = lvl_dict
+        self.alignment_clustered_ldos_file = Path(lvl_dict['alignment_clustered_ldos_file'])
+        self.hit_aln_start = lvl_dict['hit_aln_start']
+        self.hit_aln_end = lvl_dict['hit_aln_end']
+        self.idr_aln_start = lvl_dict['idr_aln_start']
+        self.idr_aln_end = lvl_dict['idr_aln_end']
+        self.query_aln_sequence = lvl_dict['query_aln_sequence']
+        self.hit_aln_sequence = lvl_dict['hit_aln_sequence']
+        self.num_clustered_ldos = lvl_dict['num_clustered_ldos']
+        self.conservation_scores = lvl_dict['conservation_scores']
         with open(self.alignment_clustered_ldos_file, "r") as f:
             self.aln = AlignIO.read(f, "fasta")
         self.scores = None
@@ -100,12 +96,8 @@ class ConserLevel:
         self.bg_scores = None
         self.z_score_failure = None
 
-    @classmethod
-    def from_dict(cls, dict):
-        return cls(**dict)
-
     def load_scores(self, score_key):
-        with open(self.aln_conservation_scores[score_key], "r") as f:
+        with open(self.conservation_scores[score_key], "r") as f:
             score_dict = json.load(f)
         self.scores = score_dict["scores"]
         self.score_mask = score_dict["score_mask"]
@@ -140,7 +132,7 @@ class ConserLevel:
 #         self.score_key = score_key
     
 #     def load_scores(self, score_key):
-#         with open(self.aln_conservation_scores[score_key], "r") as f:
+#         with open(self.conservation_scores[score_key], "r") as f:
 #             self.score_dict = json.load(f)
 #         self.scores = self.score_dict["scores"]
 #         self.score_mask = self.score_dict["score_mask"]

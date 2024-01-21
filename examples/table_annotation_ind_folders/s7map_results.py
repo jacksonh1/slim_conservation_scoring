@@ -11,7 +11,7 @@ def get_failure_map(json_files):
         with open(json_file, "r") as f:
             json_dict = json.load(f)
         if "critical_error" in json_dict:
-            failure_map[json_file] = json_dict["critical_error"]
+            failure_map[json_dict['reference_index']] = json_dict["critical_error"]
     return failure_map
 
 
@@ -39,8 +39,9 @@ def get_image_map(json_files):
         with open(json_file, "r") as f:
             json_dict = json.load(f)
         if "multilevel_plot_file-property_entropy" in json_dict:
-            file = Path(json_dict["multilevel_plot_file-property_entropy"]).resolve().relative_to(Path.cwd())
-            image_map[json_dict["reference_index"]] = f'HYPERLINK("{file}")'
+            # file = Path(json_dict["multilevel_plot_file-property_entropy"]).resolve().relative_to(Path.cwd())
+            file = Path(json_dict["multilevel_plot_file-property_entropy"])
+            image_map[json_dict["reference_index"]] = rf'=HYPERLINK("{file}", "image")'
     return image_map
 
 
@@ -53,9 +54,9 @@ def main(search_dir, table_file):
     json_map = get_json_map(checked_jsons)
     table_df["fail_reason"] = table_df["reference_index"].map(failure_map)
     table_df["json_file"] = table_df["reference_index"].map(json_map)
+    image_map = get_image_map(checked_jsons)
+    table_df["image_file"] = table_df["reference_index"].map(image_map)
     table_df.to_csv(table_file, index=False)
-    # image_map = get_image_map(checked_jsons)
-    # table_df["image_file"] = table_df["reference_index"].map(image_map)
     # table_df.to_excel(table_file.replace(".csv", ".xlsx"), index=False)
     # workbook = Workbook()
     # sheet = workbook.active

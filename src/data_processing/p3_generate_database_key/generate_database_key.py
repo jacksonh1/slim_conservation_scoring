@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
-import local_env_variables.env_variables as env
 
+import local_env_variables.env_variables as env
 
 database_dir = env.ROOT / 'data/example_orthogroup_database_merged_version/human_odb_groups'
 JSON_DIR = database_dir / 'info_jsons'
@@ -25,7 +25,7 @@ def main(json_dir, output_file):
         database_key[odb_gene_id][level] = {}
         lvl_dict = database_key[odb_gene_id][level]
         lvl_dict['alignment_clustered_ldos_file'] = json_dict['alignment_clustered_ldos_file']
-        lvl_dict['aln_conservation_scores'] = json_dict['aln_conservation_scores']
+        lvl_dict['conservation_scores'] = json_dict['conservation_scores']
     with open(output_file, 'w') as f:
         json.dump(database_key, f, indent=4)
 

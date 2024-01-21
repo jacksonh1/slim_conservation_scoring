@@ -1,21 +1,25 @@
 
+import os
+from pathlib import Path
+
+import dotenv
 import pandas as pd
-import local_env_variables.env_variables as env
 
-matrices = env.MATRIX_DIR
-
+dotenv.load_dotenv()
+ROOT = Path(dotenv.find_dotenv()).parent
+MATRIX_DIR = ROOT / Path(os.environ['SUBSTITUTION_MATRIX_DIR'])
 
 MATRIX_DF_DICT = {
-    'BLOSUM62': matrices / "BLOSUM62.csv",
-    'BLOSUM62_norm': matrices / "BLOSUM62_norm.csv",
-    'BLOSUM62_max_off_diagonal': matrices / "BLOSUM62_max_off_diagonal.csv",
-    'BLOSUM62_max_off_diagonal_norm': matrices / "BLOSUM62_max_off_diagonal_norm.csv",
-    'EDSSMat50': matrices / "EDSSMat50.csv",
-    'EDSSMat50_norm': matrices / "EDSSMat50_norm.csv",
-    'EDSSMat50_row_norm': matrices / "EDSSMat50_row_norm.csv",
-    'EDSSMat50_max_off_diagonal': matrices / "EDSSMat50_max_off_diagonal.csv",
-    'EDSSMat50_max_off_diagonal_norm': matrices / "EDSSMat50_max_off_diagonal_norm.csv",
-    'grantham_similarity_norm': matrices / "grantham_similarity_norm.csv",
+    'BLOSUM62': MATRIX_DIR / "BLOSUM62.csv",
+    'BLOSUM62_norm': MATRIX_DIR / "BLOSUM62_norm.csv",
+    'BLOSUM62_max_off_diagonal': MATRIX_DIR / "BLOSUM62_max_off_diagonal.csv",
+    'BLOSUM62_max_off_diagonal_norm': MATRIX_DIR / "BLOSUM62_max_off_diagonal_norm.csv",
+    'EDSSMat50': MATRIX_DIR / "EDSSMat50.csv",
+    'EDSSMat50_norm': MATRIX_DIR / "EDSSMat50_norm.csv",
+    'EDSSMat50_row_norm': MATRIX_DIR / "EDSSMat50_row_norm.csv",
+    'EDSSMat50_max_off_diagonal': MATRIX_DIR / "EDSSMat50_max_off_diagonal.csv",
+    'EDSSMat50_max_off_diagonal_norm': MATRIX_DIR / "EDSSMat50_max_off_diagonal_norm.csv",
+    'grantham_similarity_norm': MATRIX_DIR / "grantham_similarity_norm.csv",
 }
 
 def load_precomputed_matrix_df(matrix_name=None):
@@ -36,6 +40,7 @@ def load_precomputed_matrix_df(matrix_name=None):
         print("Available matrices:")
         for k in MATRIX_DF_DICT.keys():
             print(k)
+        return
     mat_df = pd.read_csv(MATRIX_DF_DICT[matrix_name], index_col=0)
     return mat_df
 
