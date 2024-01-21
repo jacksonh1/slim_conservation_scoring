@@ -12,6 +12,7 @@ plan.md
 *.sqlite
 temp.py
 src/archive/
+archive/
 
 *.pyc
 
