@@ -1,0 +1,21 @@
+name: slim_conservation
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - pandas
+  - numpy
+  - biopython
+  - python-dotenv
+  - tabulate
+  - pyprojroot
+  - jupyter
+  - matplotlib
+  - seaborn
+  - ca-certificates
+  - openssl
+  - snakemake
+  - certifi
+  - alv
+  - openpyxl
+prefix: /Users/jackson/mambaforge/envs/slim_conservation

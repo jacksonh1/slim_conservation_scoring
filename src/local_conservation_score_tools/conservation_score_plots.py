@@ -52,10 +52,10 @@ def strip_gaps_from_slice(alignment_slice, query_seq_in_alignment_str):
 
 def plot_alignment_slice_conservation2query(
     query_seq_in_alignment_str: str,
-    alignment: AlignIO.MultipleSeqAlignment,
-    score_list: list,
-    score_mask: list = None,
-    slice_coordinates: list = None,
+    alignment: Align.MultipleSeqAlignment,
+    score_list: list|np.ndarray,
+    score_mask: list|None = None,
+    slice_coordinates: list|None = None,
     strip_gaps: bool = True,
     bar_ylim=[0, 1],
     axes = None,
@@ -74,12 +74,13 @@ def plot_alignment_slice_conservation2query(
         score_list[[not i for i in score_mask]] = 0
         score_list = list(score_list)
     if slice_coordinates is not None:
-        alignment = alignment[:, slice_coordinates[0] : slice_coordinates[1]+1]
+        alignment = alignment[:, slice_coordinates[0] : slice_coordinates[1]+1] # type: ignore
         query_seq_in_alignment_str = query_seq_in_alignment_str[
             slice_coordinates[0] : slice_coordinates[1]+1
         ]
         score_list = score_list[slice_coordinates[0] : slice_coordinates[1]+1]
-        score_mask = score_mask[slice_coordinates[0] : slice_coordinates[1]+1]
+        if score_mask is not None:
+            score_mask = score_mask[slice_coordinates[0] : slice_coordinates[1]+1]
     if strip_gaps:
         (
             alignment_str_list,
@@ -118,13 +119,13 @@ def bg_score_distro_plot(score_list: list, ax):
     ax.axvline(np.mean(score_list), color="k", linewidth=1)
     # add a vertical line at one standard deviation above and below the mean
     ax.axvline(
-        np.mean(score_list) + np.std(score_list),
+        np.mean(score_list) + np.std(score_list), # type: ignore
         color="k",
         linestyle="dashed",
         linewidth=1,
     )
     ax.axvline(
-        np.mean(score_list) - np.std(score_list),
+        np.mean(score_list) - np.std(score_list), # type: ignore
         color="k",
         linestyle="dashed",
         linewidth=1,
@@ -144,12 +145,12 @@ def build_og_level_screen_mosaic_z_score(levels):
 
 
 def add_z_score_plots_to_mosaic(
-    axd, level, lvl_o: group_tools.ConserLevel, bar_ylim=[-2.5, 2.5], highlight_positions=None, **plot_kwargs
+    axd, level, lvl_o: group_tools.LevelAlnScore, bar_ylim=[-2.5, 2.5], highlight_positions=None, **plot_kwargs
 ):
     ax1, ax2, counts = plot_alignment_slice_conservation2query(
         query_seq_in_alignment_str=lvl_o.query_aln_sequence,
         alignment=lvl_o.aln,
-        score_list=lvl_o.z_scores,
+        score_list=lvl_o.z_scores, # type: ignore
         score_mask=lvl_o.score_mask,
         slice_coordinates=[
             lvl_o.hit_aln_start,
@@ -191,8 +192,8 @@ def big_z_score_plot(og: group_tools.ConserGene, **kwargs):
             )
             # axd[f'scores-{level}'].set_title(, fontsize=11)
             continue
-        if og.level_objects[level].z_score_failure is not None:
-            message = f"{og.query_gene_id} - {og.level_objects[level].z_score_failure}: not enough background scores for z-score"
+        if og.aln_score_objects[level].z_score_failure is not None:
+            message = f"{og.query_gene_id} - {og.aln_score_objects[level].z_score_failure}: not enough background scores for z-score"
             axd[f"scores-{level}"].text(
                 0.5,
                 0.5,
@@ -203,12 +204,12 @@ def big_z_score_plot(og: group_tools.ConserGene, **kwargs):
                 fontsize=11,
             )
             continue            
-        lvl_o = og.level_objects[level]
+        lvl_o = og.aln_score_objects[level]
         add_z_score_plots_to_mosaic(axd, level, lvl_o, **kwargs)
         bg_score_distro_plot(
-            lvl_o.bg_scores, axd[f"bg_dist-{level}"]
+            lvl_o.bg_scores, axd[f"bg_dist-{level}"] # type: ignore
         )
-        plot_title = f"{og.query_gene_id} - {level} - {len(lvl_o.aln)} sequences - z-score (IDR bg using {len(lvl_o.bg_scores)} residues)"
+        plot_title = f"{og.query_gene_id} - {level} - {len(lvl_o.aln)} sequences - z-score (IDR bg using {len(lvl_o.bg_scores)} residues)" # type: ignore
         axd[f"scores-{level}"].set_title(plot_title, fontsize=11)
         axd[f"bg_dist-{level}"].set_title(f"{level} - {og.query_gene_id}")
     return fig, axd
@@ -275,7 +276,7 @@ def big_score_plot(og: group_tools.ConserGene, **kwargs):
             )
             # axd[f'scores-{level}'].set_title(, fontsize=11)
             continue
-        lvl_o = og.level_objects[level]
+        lvl_o = og.aln_score_objects[level]
         add_score_plots_to_mosaic(axd, level, lvl_o, **kwargs)
         plot_title = f"{og.query_gene_id} - {level} - {len(lvl_o.aln)} sequences - NOT Z-SCORES. Hit not in IDR."
         axd[f"scores-{level}"].set_title(plot_title, fontsize=11)
