@@ -1,3 +1,29 @@
+todo:
+- idr mapping file
+- clear analysis files
+- motif regex conservation scores
+- change pipeline to access __init__ for scores and not env
+- references
+  - disorder matrix
+  - iupred
+  - capra/singh
+
+# Table of Contents
+- [Table of Contents](#table-of-contents)
+- [motif conservation in disordered regions](#motif-conservation-in-disordered-regions)
+- [setup TL;DR:](#setup-tldr)
+- [database setup](#database-setup)
+- [Using the pipeline](#using-the-pipeline)
+  - [pipeline overview](#pipeline-overview)
+  - [pipeline parameters](#pipeline-parameters)
+    - [explanation of parameters](#explanation-of-parameters)
+- [conservation scores](#conservation-scores)
+  - [currently implemented scores:](#currently-implemented-scores)
+    - [property entropy](#property-entropy)
+    - [asymmetric sum-of-pairs score](#asymmetric-sum-of-pairs-score)
+
+
+
 # motif conservation in disordered regions
 
 A series of tools to quantify the conservation of potential short linear motifs in disordered regions.<br>
@@ -141,10 +167,118 @@ table_annotation_params:
 clean_analysis_files: false
 ```
 
+### explanation of parameters
+- `clear_files`: Whether or not to erase the `output_folder` (if it already exists) prior to running the pipeline
+- `output_folder`: The folder where the analysis files will be saved. The pipeline creates a folder for each row in the input table, and saves the analysis files for that row in the folder.
+- `database_filekey`: The file path to the json file that contains the database key. See [database setup](#database-setup) for more details.
+- `table_file`: input table file, in csv format. The table needs to contain the following columns:
+  - *gene_id* - the id of the full length protein. This is used to look up the database files in the `database_filekey`. It should correspond to the keys in the database key.
+  - *hit_sequence* - the sequence of the candidate motif
+  - *optional* - *hit start position*: the start position of the hit sequence in the full length protein. This is necessary when `hit_sequence_search_method` is set to `hit_sequence_positions`
+  - *optional - hit end position*: the end position of the hit sequence in the full length protein
+- `hit_sequence_params`:
+  - `hit_sequence_search_method`: "search" or "given_positions" (default "search")
+    - "search" - search for the hit sequence in the full length protein
+    - "given_positions" - use the given start and end positions of the hit sequence in the full length protein
+  - `longest_common_subsequence`: true or false (default true). If true, the longest common subsequence (lcs) of the hit sequence and the full length protein is used. If false, the hit sequence is used as is. Only used if `hit_sequence_search_method` is "search"
+  - `lcs_min_length`: the minimum length of the longest common subsequence (default 20). If the lcs is shorter than this, the row is skipped. Only used if `longest_common_subsequence` is true and `hit_sequence_search_method` is "search"
+  - `target_hit_length`: If the hit sequence is shorter than this, the pipeline will attempt to pad the hit sequence with flanking residues from the full length protein to achieve the `target_hit_length`. Only used if `hit_sequence_search_method` is "search" 
+- `idr_params`:
+  - `find_idrs`: true or false (default true). If true, the pipeline will use iupred to find the idrs in the full length protein. If false, the pipeline will use an external idr mapping file (`idr_map_file`).
+  - `idr_map_file`: (not yet implemented). The file path to a json file that contains idr mappings. The file should have the gene_ids of the full length proteins as the keys, and the values should be a lists of lists, where each sublist contains the start and end positions of an idr. Required if `find_idrs` is false.
+  - `iupred_cutoff`: the iupred cutoff to use when finding idrs (default 0.4). Scores above this are considered disordered.
+  - `gap_merge_threshold`: if the distance between two idrs is less than or equal to this, the two idrs are merged into one (default 10)
+  - `idr_min_length`: the minimum length of an idr (default 8). If an idr is shorter than this, it is discarded.
+- `precalculated_aln_conservation_score_keys`: a list of conservation scores that are already calculated for the alignments in the database. The pipeline will look for these scores in the database key and use them instead of calculating them again. The scores should be in the database key under the key `conservation_scores`. See [database setup](#database-setup) for more details.
+- `filter_params`:
+  - `min_num_orthos`: minimum number of orthologs required for the group to be used in the analysis (default 20). For each phylogenetic level, if the corresponding alignment file has less than this number of orthologs, that level is skipped.
+- `new_score_methods`:
+  - Any new scores that are to be calculated are included here. The key is the score key corresponding to the conservation scoring method to use, and the value is a dictionary of parameters for the score. The parameters are specific to each score (See [scores](#conservation-scores)) but each score will have an input file, output file, and reference id which do **not** need to be provided here.
+- `multilevel_plot_params`: parameters for the multilevel plots of the hit sequence conservation
+  - `score_key`: the score key to use for the multilevel plot (default "aln_property_entropy")
+  - `num_bg_scores_cutoff`: The minimum number or background scores required to calculate the zscores (default 20). If there are less than this number of background scores, the zscores are not calculated.
+  - `score_type`: "score" or "zscore" (default "zscore"). If "score", the raw score is used. If "zscore", the zscore is used.
+- `aln_slice_params`
+  - `n_flanking_cols`: the number of columns in the alignment to include on either side of the hit sequence in the output alignment slice file (default 20).
+- `table_annotation_params`: parameters for adding conservation scores back to the input table
+  - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy")
+  - `motif_regex`: (not yet implemented). The regex to search for in the hit sequence (default None). If a regex is provided, an additional column is added to the table that that is the average conservation scoresof the residues in the hit sequence matching the regex. For example if the hit sequence is "PPPEQAPAPAEPGSA" and the regex is "P.P.E", the average conservation score of the residues "PAPAE" (xxxxxxPAPAExxxx) are calculated and added to the table.
+  - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, set of conservation scores is added to the table
+- `clean_analysis_files`: true or false (default false). If true, the analysis files are deleted after the pipeline is run (not yet implemented)
 
+# conservation scores
+The conservation score functions are located in `./src/local_conservation_scores/`. The main function for each score is in a separate file, and the functions are imported into a class in `./src/local_conservation_scores/__init__.py`. I am planning to add more scores in the future, and the plan is to add them to the class in `./src/local_conservation_scores/__init__.py` and create a new file for each score. I will include the docstring for each score below which will tell you what parameters are required. The docstrings are also available in the code of course.
+<br>
 
+## currently implemented scores:
 
-citations:
-- disorder matrix
-- iupred
-- capra/singh
+### property entropy
+- score from [capra and singh](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2689944/)
+
+docstring from `main` in `./src/local_conservation_scores/aln_property_entropy.py`:
+```
+calculate the property entropy score for each column in an alignment
+
+Parameters
+----------
+input_alignment_file : str|Path
+    input alignment file (fasta format)
+output_file : str|Path
+    output file (json). The output file will contain the following:
+    "gap_mask" : list[bool]
+        a list of bools indicating whether a column is masked by the gap mask
+    "score_mask" : list[bool]
+        a list of bools indicating whether a column is masked by the score mask. The score mask is the gap mask with additional columns masked if they are gaps in the reference sequence
+    "scores" : list[float]
+        a list of scores for each column in the alignment
+reference_id : str
+    the id of the sequence to use as the reference for the score mask (gaps in this sequence will be masked).
+gap_frac_cutoff : float
+    A number between 0 and 1. he fraction of gaps allowed in a column. If column has >gap_frac_cutoff gaps, it is masked in the gap mask
+overwrite : bool, optional
+    if True, overwrites the `output_file` if it already exists, by default False
+```
+
+### asymmetric sum-of-pairs score
+
+- calculated using a substitution matrix. 
+- It is asymmetric because only the "reference" sequence is compared to each ortholog (as opposed to an all-against-all comparison). The reference sequence is intended to be the protein (full length) that contains the hit sequence. The asymmetry makes it so that the conservation is specific to the reference sequence. For example, the `F` in this alignment is unique to the reference sequence, even though the position is generally conserved in the orthologs:
+  ```
+  reference   -------F--------
+  ortholog 1  -------P--------
+  ortholog 2  -------P--------
+  ortholog 3  -------P--------
+  ortholog 4  -------P--------
+  ```
+  The asymmetric score would give this position a low conservation score, whereas a symmetric score would give it a high conservation score. For this application we are interested in the conservation of the hit sequence in the reference sequence, so the asymmetric score is likely more appropriate.
+
+docstring from `main` in `./src/local_conservation_scores/aln_asym_sum_of_pairs.py`:
+```
+calculate the asymmetric sum-of-pairs score for each column in an alignment
+
+Parameters
+----------
+input_alignment_file : str|Path
+    input alignment file (fasta format)
+output_file : str|Path
+    output file (json). The output file will contain the following:
+    "gap_mask" : list[bool]
+        a list of bools indicating whether a column is masked by the gap mask
+    "score_mask" : list[bool]
+        a list of bools indicating whether a column is masked by the score mask. The score mask is the gap mask with additional columns masked if they are gaps in the reference sequence
+    "scores" : list[float]
+        a list of scores for each column in the alignment
+reference_id : str
+    the id of the sequence to use as the reference for the score mask (gaps in this sequence will be masked).
+matrix_name : str
+    the name of the matrix to use for scoring.
+    Available matrices:
+        BLOSUM62_row_norm
+        BLOSUM62_max_off_diagonal_norm
+        EDSSMat50_row_norm
+        EDSSMat50_max_off_diagonal_norm
+gap_frac_cutoff : float
+    A number between 0 and 1. he fraction of gaps allowed in a column. If column has >gap_frac_cutoff gaps, it is masked in the gap mask
+overwrite : bool, optional
+    if True, overwrites the `output_file` if it already exists, by default False
+```

@@ -570,7 +570,7 @@
         "9361_0:000d26",
         "9708_0:00440b"
     ],
-    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpxq6br34x -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpxq6br34x-cdhit.fa -M 0 -d 0 ",
+    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp7wdhai0a -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmp7wdhai0a-cdhit.fa -M 0 -d 0 ",
     "species_map": {
         "9606_0:00194d": "Homo sapiens",
         "9796_0:004018": "Equus caballus",
@@ -633,8 +633,8 @@
         "write_files": true
     },
     "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_00194d_Mammalia_4349at40674_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmptuid_i4_\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmptuid_i4_-mafft.fa\"",
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpb1ho9ate\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpb1ho9ate-mafft.fa\"",
     "conservation_scores": {
-        "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_00194d_Mammalia_4349at40674_clustered_ldos_aln.json"
+        "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_00194d_Mammalia_4349at40674_clustered_ldos_aln.json"
     }
 }

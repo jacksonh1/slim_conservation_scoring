@@ -1278,5 +1278,5 @@
         "main_output_folder": "../../../data/example_orthogroup_database_snakemake/human_odb_groups",
         "write_files": true
     },
-    "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_snakemake/human_odb_groups/clustered_ldo_fastas/9606_0_002f40_Metazoa_1771281at33208_info_clustered_ldos_aln.fasta"
+    "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database_snakemake/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_info_clustered_ldos_aln.fasta"
 }

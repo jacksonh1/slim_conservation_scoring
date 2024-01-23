@@ -11,7 +11,8 @@ def main(input_file, output_file):
         data = json.load(f)
     id_list = data['sequences_clustered_ldos']
     seqrecords = [env.ODB_DATABASE.data_all_seqrecords_dict[id] for id in id_list]
-    aln_file = Path(output_file.replace('.fasta', '_clustered_ldos_aln.fasta'))
+    aln_file_name = Path(output_file.replace('.fasta', '_clustered_ldos_aln.fasta')).name
+    aln_file = Path(output_file).parent.parent / 'alignments' / aln_file_name
     data['alignment_clustered_ldos_file'] = str(aln_file.resolve())
     with open(input_file, 'w') as f:
         json.dump(data, f, indent=4)

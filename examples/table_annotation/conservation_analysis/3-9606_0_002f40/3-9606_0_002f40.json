@@ -6,7 +6,7 @@
         "Metazoa": {
             "alignment_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
             "conservation_scores": {
-                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json",
+                "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json",
                 "aln_asym_sum_of_pairs_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln-aln_asym_sum_of_pairs.json"
             },
             "hit_aln_start": 917,
@@ -21,7 +21,7 @@
         "Tetrapoda": {
             "alignment_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.fasta",
             "conservation_scores": {
-                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json",
+                "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json",
                 "aln_asym_sum_of_pairs_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln-aln_asym_sum_of_pairs.json"
             },
             "hit_aln_start": 694,
@@ -36,7 +36,7 @@
         "Vertebrata": {
             "alignment_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
             "conservation_scores": {
-                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json",
+                "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json",
                 "aln_asym_sum_of_pairs_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln-aln_asym_sum_of_pairs.json"
             },
             "hit_aln_start": 917,
@@ -51,7 +51,7 @@
         "Mammalia": {
             "alignment_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.fasta",
             "conservation_scores": {
-                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.json",
+                "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.json",
                 "aln_asym_sum_of_pairs_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln-aln_asym_sum_of_pairs.json"
             },
             "hit_aln_start": 566,
@@ -66,7 +66,7 @@
         "Eukaryota": {
             "alignment_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln.fasta",
             "conservation_scores": {
-                "property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/property_entropy/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln.json",
+                "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln.json",
                 "aln_asym_sum_of_pairs_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/9606_0_002f40_Eukaryota_4642869at2759_clustered_ldos_aln-aln_asym_sum_of_pairs.json"
             },
             "hit_aln_start": 917,
@@ -108,5 +108,5 @@
         "Tetrapoda",
         "Mammalia"
     ],
-    "multilevel_plot_file-property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-property_entropy_og_level_score_screen.png"
+    "multilevel_plot_file-aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-aln_property_entropy_og_level_score_screen.png"
 }

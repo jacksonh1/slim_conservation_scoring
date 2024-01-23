@@ -41,7 +41,7 @@ def ortholog_analysis_setup(
     database_key: dict,
 ):
     output_dict = {}
-    query_gene_id = table_row["gene id"]
+    query_gene_id = table_row["gene_id"]
     ref_ind = int(table_row["reference_index"])
     output_dict["reference_index"] = ref_ind
     output_dict["query_gene_id"] = query_gene_id

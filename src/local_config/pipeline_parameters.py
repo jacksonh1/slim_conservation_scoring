@@ -14,8 +14,8 @@ from attrs import asdict, define, field, validators
 class HitSequenceConf:
     hit_sequence_search_method: Literal["search", "given_positions"] = field(
         default="search",
-        validator=validators.in_(["search", "given_positions"]),
-    )
+        validator=validators.in_(["search", "given_positions"]), # type: ignore
+    ) # type: ignore
     longest_common_subsequence: bool = field(default=False, converter=bool)
     lcs_min_length: int = field(default=20, converter=int)
     target_hit_length: int = field(default=0, converter=int)
@@ -42,9 +42,12 @@ class IdrConf:
 
 @define
 class MultiLevelPlotConf:
-    score_key: str = field(default="property_entropy")
-    output_folder: str | Path = field(default="plots")
-    num_bg_scores_cutoff: int = field(default=20, converter=int) 
+    score_key: str = field(default="aln_property_entropy")
+    num_bg_scores_cutoff: int = field(default=20, converter=int)
+    score_type: Literal["score", "zscore"] = field(
+        default="zscore",
+        validator=validators.in_(["score", "zscore"]), # type: ignore
+    ) # type: ignore
 
 
 @define
@@ -57,14 +60,14 @@ class ScoreMethod:
     """
     TODO: Enum
     """
-    score_key: str = field(default="property_entropy")
+    score_key: str = field(default="aln_property_entropy")
     score_kwargs: dict[str, Any] = field(factory=dict)
 
 @define
 class TableAnnotationConf:
     """
     """
-    score_key_for_table: str = field(default="property_entropy")
+    score_key_for_table: str = field(default="aln_property_entropy")
     motif_regex: str|None = field(default=None)
     levels: list[str] = field(factory=list)
 
@@ -127,36 +130,54 @@ class PipelineParameters:
 
 # print(test["new_score_methods"])
 
+# test = {
+#     "table_file": "../../examples/table_annotation/table.csv",
+#     "database_filekey": "../../data/example_orthogroup_database/human_odb_groups/database_key.json",
+# }
 
-test = {
-    "output_folder": "./ortholog_analysis",
-    "database_filekey": "../../data/example_orthogroup_database_merged_version/human_odb_groups/database_key.json",
-    "table_file": "../../examples/table_annotation/table.csv",
-    # "hit_sequence_params": {
-        # "hit_sequence_search_method": "search"
-    # },
-    "idr_params": {
-        "find_idrs": True,
-        # idr_map_file: "./idr_map.json"
-        "iupred_cutoff": 0.4,
-        "gap_merge_threshold": 10,
-        "idr_min_length": 8,
-    },
-    "filter_params": {
-        "min_num_orthos": 20
-    },
+# config = PipelineParameters.from_dict(test)
+# for k, v in asdict(config).items():
+#     if isinstance(v, dict):
+#         print(k)
+#         for k2, v2 in v.items():
+#             print("    ", k2, v2)
+#         continue
+#     if isinstance(v, list):
+#         print(k)
+#         for v2 in v:
+#             print("    ", v2)
+#         continue
+#     print(k, v)
 
-    "precalculated_aln_conservation_score_keys": [
-        "property_entropy",
-    ],
-    "new_score_methods": {
-        "property_entropy":{
-            "matrix_name": "EDSSMat50_max_off_diagonal_norm",
-            "gap_frac_cutoff": 0.2
-        },
-    },
-    "clear_files": False
-}
+# test = {
+#     "output_folder": "./ortholog_analysis",
+#     "database_filekey": "../../data/example_orthogroup_database_merged_version/human_odb_groups/database_key.json",
+#     "table_file": "../../examples/table_annotation/table.csv",
+#     # "hit_sequence_params": {
+#         # "hit_sequence_search_method": "search"
+#     # },
+#     "idr_params": {
+#         "find_idrs": True,
+#         # idr_map_file: "./idr_map.json"
+#         "iupred_cutoff": 0.4,
+#         "gap_merge_threshold": 10,
+#         "idr_min_length": 8,
+#     },
+#     "filter_params": {
+#         "min_num_orthos": 20
+#     },
+
+#     "precalculated_aln_conservation_score_keys": [
+#         "aln_property_entropy",
+#     ],
+#     "new_score_methods": {
+#         "aln_property_entropy":{
+#             "matrix_name": "EDSSMat50_max_off_diagonal_norm",
+#             "gap_frac_cutoff": 0.2
+#         },
+#     },
+#     "clear_files": False
+# }
 # test2 = {
 #     "output_folder": "./ortholog_analysis",
 #     "database_filekey": "../../data/example_orthogroup_database/human_odb_groups/database_key.json",
@@ -175,7 +196,7 @@ test = {
 #         "min_num_orthos": 20
 #     },
 #     "new_score_methods": {
-#         "property_entropy":{
+#         "aln_property_entropy":{
 #             "matrix_name": "EDSSMat50_max_off_diagonal_norm",
 #             "gap_frac_cutoff": 0.2
 #         },
