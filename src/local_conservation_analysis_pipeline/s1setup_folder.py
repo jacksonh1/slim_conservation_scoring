@@ -2,11 +2,12 @@ import copy
 import json
 from pathlib import Path
 
-import local_env_variables.env_variables as env
-import local_seqtools.general_utils as tools
 import numpy as np
 import pandas as pd
 import yaml
+
+import local_env_variables.env_variables as env
+import local_seqtools.general_utils as tools
 
 HITS_FILE = "./table.csv"
 DATABASE_KEY_FILE = (
@@ -61,7 +62,7 @@ def ortholog_analysis_setup(
     for level in levels:
         output_dict["orthogroups"][level] = copy.deepcopy(database_files[level])
     output_dict["query_sequence"] = aln_2_query_seq(
-        output_dict["orthogroups"][levels[0]]["alignment_clustered_ldos_file"],
+        output_dict["orthogroups"][levels[0]]["alignment_file"],
         query_gene_id,
     )
     return output_dict

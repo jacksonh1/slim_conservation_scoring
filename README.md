@@ -84,6 +84,9 @@ Whether or not to use a precalculated conservation score and any new scores to c
 # Using the pipeline
 See `./examples/table_annotation/` for an example. <br>
 
+
+## pipeline overview
+
 The main pipeline is executed via the script `./`, which executes the following steps (code in `./src/local_conservation_analysis_pipeline/`) for each row in the input table:
 1. setup the analysis folder (create folders and files for each row in the input table)
     - The gene id of the protein is looked up in the database key to find the alignment file(s) for the protein and its orthologs
@@ -106,7 +109,37 @@ The main pipeline is executed via the script `./`, which executes the following 
 
 
 ## pipeline parameters
-The pipeline parameters are specified in a yaml file
+The main pipeline is run via the file `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`. The pipeline parameters are specified in a yaml file, for example:
+```yaml
+clear_files: true
+output_folder: "./conservation_analysis"
+database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
+table_file: "./table.csv"
+hit_sequence_params:
+  hit_sequence_search_method: "search"
+idr_params:
+  find_idrs: true
+  # idr_map_file: "./idr_map.json"
+  iupred_cutoff: 0.4
+  gap_merge_threshold: 10
+  idr_min_length: 8
+precalculated_aln_conservation_score_keys:
+  - "property_entropy"
+filter_params:
+  min_num_orthos: 20
+new_score_methods:
+  aln_asym_sum_of_pairs:
+    matrix_name: "BLOSUM62_max_off_diagonal_norm"
+    gap_frac_cutoff: 0.2
+    overwrite: true
+table_annotation_params:
+  score_key_for_table: "property_entropy"
+  motif_regex: "P.P.E"
+  levels:
+    - "Metazoa"
+    - "Vertebrata"
+clean_analysis_files: false
+```
 
 
 

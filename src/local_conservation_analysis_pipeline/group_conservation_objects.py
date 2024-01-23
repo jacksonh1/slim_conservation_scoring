@@ -44,6 +44,7 @@ class ConserGene:
             )
     
     def load_aln_scores(self, score_key, bg_region=None, num_bg_scores_cutoff=20):
+        self.aln_score_objects = {}
         self.load_levels()
         for level, level_obj in self.level_objects.items():
             self.aln_score_objects[level] = LevelAlnScore.from_conser_level(

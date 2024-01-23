@@ -3,5 +3,5 @@
     "query_gene_id": NaN,
     "critical_error": "not found in database: 1 - nan: nan",
     "hit_sequence": "FPTPPNY",
-    "analysis_folder": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation_ind_folders/conservation_analysis/1-nan"
+    "analysis_folder": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/1-nan"
 }

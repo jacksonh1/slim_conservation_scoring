@@ -1,0 +1,27 @@
+# configfile: "./snake_config.yaml"
+
+database_dir = "../../../data/example_orthogroup_database_snakemake/human_odb_groups"
+# INFOJSONS, = glob_wildcards("../../data/example_orthogroup_database_snakemake/human_odb_groups/info_jsons/")
+INFOJSONS, = glob_wildcards(f"{database_dir}/info_jsons/"+"{info_json}.json")
+
+rule all:
+    input:
+        expand(f"{database_dir}/alignments/"+"{info_json}_clustered_ldos_aln.fasta", info_json=INFOJSONS),
+
+rule clustered_ldo_fasta:
+    input:
+        f"{database_dir}/info_jsons/"+"{info_json}.json"
+    output:
+        temp(f"{database_dir}/clustered_ldo_fastas/"+"{info_json}.fasta")
+    shell:
+        "python ./info_json_2_clusteredldofasta.py {input} {output}"
+
+rule mafft:
+    input:
+        f"{database_dir}/clustered_ldo_fastas/"+"{info_json}.fasta"
+    output:
+        f"{database_dir}/alignments/"+"{info_json}_clustered_ldos_aln.fasta"
+    threads: 8
+    shell:
+        "mafft --thread {threads} --quiet --anysymbol {input} > {output}"
+

@@ -16,11 +16,12 @@ def compute_conservation_scores(
     output_folder = Path(og.info_dict["analysis_folder"])
     for level in og.level_objects:
         lvlo = og.level_objects[level]
-        aln_file = lvlo.alignment_clustered_ldos_file
+        aln_file = lvlo.alignment_file
         output_file = output_folder / f"{aln_file.stem}-{score_key}.json"
         env.CONSERVATION_SCORE_METHODS[score_key](
             input_alignment_file=aln_file,
             output_file=output_file,
+            reference_id=og.query_gene_id,
             **score_params,
         )
         

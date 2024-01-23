@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
 
+from Bio import AlignIO
+
 import local_env_variables.env_variables as env
 import local_seqtools.general_utils as tools
-from Bio import AlignIO
 
 
 def get_info_from_aln_str(hit_start, hit_end, idr_start, idr_end, aln_str):
@@ -28,7 +29,7 @@ def main(
     passing_levels = []
     for lvl in info_dict["orthogroups"].keys():
         lvl_dict = info_dict["orthogroups"][lvl]
-        fa_importer = tools.FastaImporter(lvl_dict["alignment_clustered_ldos_file"])
+        fa_importer = tools.FastaImporter(lvl_dict["alignment_file"])
         aln = fa_importer.import_as_dict()
         query_aln_str = str(aln[info_dict["query_gene_id"]].seq)
         hit_aln_start, hit_aln_end, idr_aln_start, idr_aln_end = get_info_from_aln_str(
