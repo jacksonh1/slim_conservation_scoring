@@ -1,12 +1,12 @@
-todo:
-- idr mapping file
-- clear analysis files
-- motif regex conservation scores
-- change pipeline to access __init__ for scores and not env
-- references
-  - disorder matrix
-  - iupred
-  - capra/singh
+- todo:
+  - idr mapping file
+  - clear analysis files
+  - motif regex conservation scores
+  - change pipeline to access __init__ for scores and not env
+  - references
+    - disorder matrix
+    - iupred
+    - capra/singh
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
@@ -21,6 +21,7 @@ todo:
   - [currently implemented scores:](#currently-implemented-scores)
     - [property entropy](#property-entropy)
     - [asymmetric sum-of-pairs score](#asymmetric-sum-of-pairs-score)
+- [table annotations](#table-annotations)
 
 
 
@@ -238,6 +239,13 @@ gap_frac_cutoff : float
 overwrite : bool, optional
     if True, overwrites the `output_file` if it already exists, by default False
 ```
+example `new_score_methods` parameters in yaml file:
+```yaml
+new_score_methods:
+  aln_property_entropy:
+    gap_frac_cutoff: 0.2
+    overwrite: true
+```
 
 ### asymmetric sum-of-pairs score
 
@@ -282,3 +290,20 @@ gap_frac_cutoff : float
 overwrite : bool, optional
     if True, overwrites the `output_file` if it already exists, by default False
 ```
+
+example `new_score_methods` parameters in yaml file:
+```yaml
+new_score_methods:
+  aln_asym_sum_of_pairs:
+    matrix_name: "BLOSUM62_max_off_diagonal_norm"
+    gap_frac_cutoff: 0.2
+    overwrite: true
+```
+
+
+
+
+
+
+
+# table annotations
