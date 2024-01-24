@@ -214,7 +214,7 @@ The conservation score functions are located in `./src/local_conservation_scores
 ## currently implemented scores:
 
 ### property entropy
-- score from [capra and singh](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2689944/)
+- score from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
 
 docstring from `main` in `./src/local_conservation_scores/aln_property_entropy.py`:
 ```
