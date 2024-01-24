@@ -18,4 +18,5 @@ dependencies:
   - certifi
   - alv
   - openpyxl
-prefix: /Users/jackson/mambaforge/envs/slim_conservation
+  - pip:
+    - logomaker

@@ -8,6 +8,7 @@
     - iupred
     - capra/singh
   - generate "proteome" from orthodb in first step of pipeline
+  - add optional link to odb database to get uniprot 2 odb id mapping
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
