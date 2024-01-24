@@ -7,6 +7,7 @@
     - disorder matrix
     - iupred
     - capra/singh
+  - generate "proteome" from orthodb in first step of pipeline
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
@@ -21,9 +22,8 @@
   - [currently implemented scores:](#currently-implemented-scores)
     - [property entropy](#property-entropy)
     - [asymmetric sum-of-pairs score](#asymmetric-sum-of-pairs-score)
+  - [multiple scores at once](#multiple-scores-at-once)
 - [table annotations](#table-annotations)
-
-
 
 # motif conservation in disordered regions
 
@@ -36,7 +36,7 @@ A series of tools to quantify the conservation of potential short linear motifs 
 - pipeline outputs:
   - a variety of conservation scores for each candidate motif, that are added back to the input table as a column
 
-This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes).
+This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes). The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)).
 
 # setup TL;DR:
 
@@ -133,8 +133,6 @@ The main pipeline is executed via the script `./`, which executes the following 
 8. add the conservation scores and file links back to the table and save a new annotated table.
 
 
-
-
 ## pipeline parameters
 The main pipeline is run via the file `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`. The pipeline parameters are specified in a yaml file, for example:
 ```yaml
@@ -194,7 +192,7 @@ clean_analysis_files: false
 - `filter_params`:
   - `min_num_orthos`: minimum number of orthologs required for the group to be used in the analysis (default 20). For each phylogenetic level, if the corresponding alignment file has less than this number of orthologs, that level is skipped.
 - `new_score_methods`:
-  - Any new scores that are to be calculated are included here. The key is the score key corresponding to the conservation scoring method to use, and the value is a dictionary of parameters for the score. The parameters are specific to each score (See [scores](#conservation-scores)) but each score will have an input file, output file, and reference id which do **not** need to be provided here.
+  - Any new scores that are to be calculated are included here. The key is the score key corresponding to the conservation scoring method to use, and the value is a dictionary of parameters for the score. The parameters are specific to each score (See [scores](#conservation-scores)) but each score will have an input file, output file, and reference id which do **not** need to be provided here. See the [currently implemented scores](#currently-implemented-scores) for examples of how to format the yaml file.
 - `multilevel_plot_params`: parameters for the multilevel plots of the hit sequence conservation
   - `score_key`: the score key to use for the multilevel plot (default "aln_property_entropy")
   - `num_bg_scores_cutoff`: The minimum number or background scores required to calculate the zscores (default 20). If there are less than this number of background scores, the zscores are not calculated.
@@ -300,8 +298,18 @@ new_score_methods:
     overwrite: true
 ```
 
-
-
+## multiple scores at once
+To calculate multiple conservation scores at once, you can add multiple score keys to the `new_score_methods` parameter. For example:
+```yaml
+new_score_methods:
+  aln_asym_sum_of_pairs:
+    matrix_name: "BLOSUM62_max_off_diagonal_norm"
+    gap_frac_cutoff: 0.2
+    overwrite: true
+  aln_property_entropy:
+    gap_frac_cutoff: 0.2
+    overwrite: true
+```
 
 
 
