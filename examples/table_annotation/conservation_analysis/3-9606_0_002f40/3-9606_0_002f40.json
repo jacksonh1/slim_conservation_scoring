@@ -108,5 +108,5 @@
         "Tetrapoda",
         "Mammalia"
     ],
-    "multilevel_plot_file-aln_asym_sum_of_pairs": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-aln_asym_sum_of_pairs_og_level_score_screen.png"
+    "multilevel_plot_file-aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-aln_property_entropy_og_level_score_screen.png"
 }

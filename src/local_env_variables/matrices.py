@@ -5,10 +5,11 @@ from pathlib import Path
 import dotenv
 import pandas as pd
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+src_dir = Path(os.path.dirname(__file__)).parent
+ROOT = src_dir.parent
+dotenv_path = ROOT / '.env'
 dotenv.load_dotenv(dotenv_path)
-src_dir = Path(dotenv_path).parent.parent
-MATRIX_DIR = src_dir / os.environ['SUBSTITUTION_MATRIX_DIR']
+MATRIX_DIR = ROOT / os.environ['SUBSTITUTION_MATRIX_DIR']
 
 MATRIX_DF_DICT = {
     'BLOSUM62': MATRIX_DIR / "BLOSUM62.csv",

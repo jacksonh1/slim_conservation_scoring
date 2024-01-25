@@ -1,8 +1,8 @@
 reference_index,Uniprotid,hit_sequence,gene_id,fail_reason,json_file,image_file
 0,A6ND36,FPGPPRY,,not found in database: 0 - nan: nan,conservation_analysis/0-nan/0-nan.json,
 1,C9J302,FPTPPNY,,not found in database: 1 - nan: nan,conservation_analysis/1-nan/1-nan.json,
-2,Q8TC90,AFSPNPEENQS,9606_0:002f40,,conservation_analysis/2-9606_0_002f40/2-9606_0_002f40.json,"=HYPERLINK(""/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-aln_asym_sum_of_pairs_og_level_score_screen.png"")"
-3,Q8TC90,EEEEVEDEEEEV,9606_0:002f40,,conservation_analysis/3-9606_0_002f40/3-9606_0_002f40.json,"=HYPERLINK(""/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-aln_asym_sum_of_pairs_og_level_score_screen.png"")"
+2,Q8TC90,AFSPNPEENQS,9606_0:002f40,,conservation_analysis/2-9606_0_002f40/2-9606_0_002f40.json,"=HYPERLINK(""/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-aln_property_entropy_og_level_score_screen.png"")"
+3,Q8TC90,EEEEVEDEEEEV,9606_0:002f40,,conservation_analysis/3-9606_0_002f40/3-9606_0_002f40.json,"=HYPERLINK(""/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0002f40-aln_property_entropy_og_level_score_screen.png"")"
 4,Q8TC90,EEEE,9606_0:002f40,subsequence EEEE found in query sequence more than once,conservation_analysis/4-9606_0_002f40/4-9606_0_002f40.json,
 5,Q8TC90,FPPPPPPP,9606_0:002f40,hit sequence FPPPPPPP not found in query sequence,conservation_analysis/5-9606_0_002f40/5-9606_0_002f40.json,
 6,A0A1U9X8D2,FRHLLEY,9606_0:001c7b,hit sequence not in an idr,conservation_analysis/6-9606_0_001c7b/6-9606_0_001c7b.json,
