@@ -9,14 +9,6 @@ import yaml
 import local_env_variables.env_variables as env
 import local_seqtools.general_utils as tools
 
-HITS_FILE = "./table.csv"
-DATABASE_KEY_FILE = (
-    env.ROOT
-    / "data/example_orthogroup_database_merged_version/human_odb_groups/database_key.json"
-)
-OUTPUT_FOLDER = "./conservation_analysis"
-HIT_SEARCH_METHOD = "search"
-
 
 def import_and_reindex_hits_df(hits_file):
     hits_df = pd.read_csv(hits_file)
@@ -143,11 +135,6 @@ def main(hits_file, database_key_file, output_folder, hit_search_method):
             json.dump(output_dict, f, indent=4)
 
 
-if __name__ == "__main__":
-    main(HITS_FILE, DATABASE_KEY_FILE, OUTPUT_FOLDER, HIT_SEARCH_METHOD)
+# if __name__ == "__main__":
+#     main(HITS_FILE, DATABASE_KEY_FILE, OUTPUT_FOLDER, HIT_SEARCH_METHOD)
 
-
-"""
-
-make sure that odb_gene_id is in the hits_df
-"""

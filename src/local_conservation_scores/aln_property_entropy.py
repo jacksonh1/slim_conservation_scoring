@@ -4,13 +4,10 @@
 import argparse
 import copy
 import json
-import multiprocessing
 from argparse import RawTextHelpFormatter
 from pathlib import Path
 
-import pandas as pd
 from Bio import Align, AlignIO, Seq, SeqIO
-from pyprojroot import here
 
 import local_conservation_score_tools.conservation_scoring_tools as cons_tools
 from local_conservation_score_tools import \
@@ -141,7 +138,7 @@ if __name__ == "__main__":
     main(
         args.input,
         args.output_file,
-        args.gap_frac_cutoff,
-        overwrite=args.overwrite,
         reference_id=args.reference_id,
+        gap_frac_cutoff=args.gap_frac_cutoff,
+        overwrite=args.overwrite,
     )

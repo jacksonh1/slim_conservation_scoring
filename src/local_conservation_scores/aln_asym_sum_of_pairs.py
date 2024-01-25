@@ -8,7 +8,7 @@ from argparse import RawTextHelpFormatter
 from pathlib import Path
 
 import pandas as pd
-from Bio import AlignIO, Seq, SeqIO
+from Bio import Align, AlignIO, Seq, SeqIO, SeqRecord
 
 import local_env_variables.matrices as submats
 from local_conservation_score_tools import \
@@ -16,7 +16,7 @@ from local_conservation_score_tools import \
 
 
 def mask_alignment(
-    alignment: AlignIO.MultipleSeqAlignment,
+    alignment: Align.MultipleSeqAlignment,
     reference_seq_str: str,
     gap_frac_cutoff: float = 0.2,
 ):
@@ -31,8 +31,8 @@ def mask_alignment(
 
 
 def score_alignment(
-    reference_seqrecord: SeqIO.SeqRecord,
-    alignment: AlignIO.MultipleSeqAlignment,
+    reference_seqrecord: SeqRecord.SeqRecord,
+    alignment: Align.MultipleSeqAlignment,
     matrix_df: pd.DataFrame,
 ):
     scores = cons_tools.asymmetric_valdar_score_df_unweighted(
@@ -174,8 +174,8 @@ if you are going to be calculating a z-score, do not use a matrix that has diffe
     main(
         args.input,
         args.output_file,
-        args.matrix,
-        args.gap_frac_cutoff,
-        overwrite=args.overwrite,
         reference_id=args.reference_id,
+        matrix_name = args.matrix,
+        gap_frac_cutoff = args.gap_frac_cutoff,
+        overwrite=args.overwrite,
     )

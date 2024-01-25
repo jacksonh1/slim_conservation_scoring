@@ -278,7 +278,7 @@ def big_score_plot(og: group_tools.ConserGene, **kwargs):
             continue
         lvl_o = og.aln_score_objects[level]
         add_score_plots_to_mosaic(axd, level, lvl_o, **kwargs)
-        plot_title = f"{og.query_gene_id} - {level} - {len(lvl_o.aln)} sequences - NOT Z-SCORES. Hit not in IDR."
+        plot_title = f"{og.query_gene_id} - {level} - {len(lvl_o.aln)} sequences - NOT Z-SCORES"
         axd[f"scores-{level}"].set_title(plot_title, fontsize=11)
     return fig, axd
 
@@ -288,9 +288,9 @@ def big_score_plot(og: group_tools.ConserGene, **kwargs):
 # // big plot driver
 # ==============================================================================
 def ogscreen_plot_from_og_folder_class(
-    og: group_tools.ConserGene, big_plot_output_folder, save_big_plot=True, score_name=None, score_type='z-scores', **kwargs
+    og: group_tools.ConserGene, big_plot_output_folder, save_big_plot=True, score_name=None, score_type='zscore', **kwargs
 ):
-    if score_type == 'z-scores':
+    if score_type == 'zscore':
         fig, axd=big_z_score_plot(og, **kwargs)
     else:
         fig, axd=big_score_plot(og, **kwargs)

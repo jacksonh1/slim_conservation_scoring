@@ -10,26 +10,25 @@ idr_params:
   iupred_cutoff: 0.4
   gap_merge_threshold: 10
   idr_min_length: 8
-precalculated_aln_conservation_score_keys:
-  - "aln_property_entropy"
+# precalculated_aln_conservation_score_keys:
+  # - "aln_property_entropy"
 filter_params:
   min_num_orthos: 20
 new_score_methods:
   aln_asym_sum_of_pairs:
-    matrix_name: "BLOSUM62_max_off_diagonal_norm"
+    matrix_name: "EDSSMat50_max_off_diagonal_norm"
     gap_frac_cutoff: 0.2
     overwrite: true
+multilevel_plot_params:
+  score_key: "aln_property_entropy"
+  score_type: "zscore"
 table_annotation_params:
   score_key_for_table: "aln_property_entropy"
   motif_regex: "P.P.E"
   levels:
     # - "Eukaryota"
-    # - "Metazoa"
+    - "Metazoa"
     - "Vertebrata"
     # - "Tetrapoda"
     # - "Mammalia"
 clean_analysis_files: false
-# new_score_methods:
-#   aln_property_entropy:
-#     matrix_name: "EDSSMat50_max_off_diagonal_norm"
-#     gap_frac_cutoff: 0.2

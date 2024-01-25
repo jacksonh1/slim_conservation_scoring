@@ -16,6 +16,6 @@ class conservation_score_methods:
     def __delitem__(self, key):
         delattr(self, key)
 
-CONSERVATION_SCORE_METHODS = conservation_score_methods()
+# CONSERVATION_SCORE_METHODS = conservation_score_methods()
 
     

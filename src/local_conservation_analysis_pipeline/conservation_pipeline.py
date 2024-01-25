@@ -1,20 +1,21 @@
+import argparse
 import json
 import multiprocessing
 import shutil
 from pathlib import Path
 
-import local_config.pipeline_parameters as conf
 import yaml
 from attrs import asdict
+
+import local_config.pipeline_parameters as conf
 from local_conservation_analysis_pipeline import (s1setup_folder,
                                                   s2define_idrs, s3find_hit,
                                                   s4add_lvlinfo,
                                                   s5compute_scores,
-                                                  s5multilevel_plots,
-                                                  s6output_aln_slice,
-                                                  s7map_results,
-                                                  s8table_annotations)
-import argparse
+                                                  s6multilevel_plots,
+                                                  s7output_aln_slice,
+                                                  s8map_results,
+                                                  s9table_annotations)
 
 CONFIG_FILE = './params.yaml'
 N_CORES = multiprocessing.cpu_count()
@@ -76,11 +77,13 @@ def run_multiprocess_steps(file, config: conf.PipelineParameters):
                 score_key=scoremethod.score_key,
                 score_params=scoremethod.score_kwargs,
             )
-    s5multilevel_plots.main(
+    s6multilevel_plots.multi_level_plots(
         json_file=file,
         score_key=config.multilevel_plot_params.score_key,
+        score_type=config.multilevel_plot_params.score_type,
+        num_bg_scores_cutoff=config.multilevel_plot_params.num_bg_scores_cutoff,
     )
-    s6output_aln_slice.main(
+    s7output_aln_slice.main(
         json_file=file,
         n_flanking_cols=config.aln_slice_params.n_flanking_cols,
     )
@@ -104,8 +107,8 @@ def main(config_file, n_cores):
     p.starmap(run_multiprocess_steps, f_args)
     p.close()
     p.join()
-    s7map_results.main(config.output_folder, config.table_file)
-    s8table_annotations.main(
+    s8map_results.main(config.output_folder, config.table_file, config.multilevel_plot_params.score_key)
+    s9table_annotations.main(
         config.table_file,
         config.table_annotation_params.score_key_for_table,
         config.table_annotation_params.levels,

@@ -9,6 +9,8 @@
     - capra/singh
   - generate "proteome" from orthodb in first step of pipeline
   - add optional link to odb database to get uniprot 2 odb id mapping
+  - annotate msa's with organism names
+  - add a parameter to specify which steps of the pipeline to run
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
@@ -149,8 +151,6 @@ idr_params:
   iupred_cutoff: 0.4
   gap_merge_threshold: 10
   idr_min_length: 8
-precalculated_aln_conservation_score_keys:
-  - "property_entropy"
 filter_params:
   min_num_orthos: 20
 new_score_methods:
@@ -189,13 +189,12 @@ clean_analysis_files: false
   - `iupred_cutoff`: the iupred cutoff to use when finding idrs (default 0.4). Scores above this are considered disordered.
   - `gap_merge_threshold`: if the distance between two idrs is less than or equal to this, the two idrs are merged into one (default 10)
   - `idr_min_length`: the minimum length of an idr (default 8). If an idr is shorter than this, it is discarded.
-- `precalculated_aln_conservation_score_keys`: a list of conservation scores that are already calculated for the alignments in the database. The pipeline will look for these scores in the database key and use them instead of calculating them again. The scores should be in the database key under the key `conservation_scores`. See [database setup](#database-setup) for more details.
 - `filter_params`:
   - `min_num_orthos`: minimum number of orthologs required for the group to be used in the analysis (default 20). For each phylogenetic level, if the corresponding alignment file has less than this number of orthologs, that level is skipped.
 - `new_score_methods`:
   - Any new scores that are to be calculated are included here. The key is the score key corresponding to the conservation scoring method to use, and the value is a dictionary of parameters for the score. The parameters are specific to each score (See [scores](#conservation-scores)) but each score will have an input file, output file, and reference id which do **not** need to be provided here. See the [currently implemented scores](#currently-implemented-scores) for examples of how to format the yaml file.
 - `multilevel_plot_params`: parameters for the multilevel plots of the hit sequence conservation
-  - `score_key`: the score key to use for the multilevel plot (default "aln_property_entropy")
+  - `score_key`: the score key to use for the multilevel plot (default "aln_property_entropy"). This can be a score that is already in the database key, or a new score that is calculated during pipeline execution.
   - `num_bg_scores_cutoff`: The minimum number or background scores required to calculate the zscores (default 20). If there are less than this number of background scores, the zscores are not calculated.
   - `score_type`: "score" or "zscore" (default "zscore"). If "score", the raw score is used. If "zscore", the zscore is used.
 - `aln_slice_params`

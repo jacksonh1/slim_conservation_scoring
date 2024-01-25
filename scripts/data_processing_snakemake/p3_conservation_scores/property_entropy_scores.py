@@ -8,7 +8,7 @@ import local_env_variables.env_variables as env
 
 GAP_FRAC_CUTOFF = 0.2
 OVERWRITE = True
-database_dir = env.ROOT / 'data/example_orthogroup_database_snakemake/human_odb_groups'
+database_dir = Path('../../../data/example_orthogroup_database_snakemake/human_odb_groups')
 JSON_DIR = database_dir / 'info_jsons'
 OUTPUT_DIR = database_dir / 'alignment_conservation_scores' / 'aln_property_entropy'
 N_CORES = multiprocessing.cpu_count()

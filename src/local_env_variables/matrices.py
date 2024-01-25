@@ -5,9 +5,10 @@ from pathlib import Path
 import dotenv
 import pandas as pd
 
-dotenv.load_dotenv()
-ROOT = Path(dotenv.find_dotenv()).parent
-MATRIX_DIR = ROOT / Path(os.environ['SUBSTITUTION_MATRIX_DIR'])
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+dotenv.load_dotenv(dotenv_path)
+src_dir = Path(dotenv_path).parent.parent
+MATRIX_DIR = src_dir / os.environ['SUBSTITUTION_MATRIX_DIR']
 
 MATRIX_DF_DICT = {
     'BLOSUM62': MATRIX_DIR / "BLOSUM62.csv",
@@ -22,7 +23,7 @@ MATRIX_DF_DICT = {
     'grantham_similarity_norm': MATRIX_DIR / "grantham_similarity_norm.csv",
 }
 
-def load_precomputed_matrix_df(matrix_name=None):
+def load_precomputed_matrix_df(matrix_name='BLOSUM62_max_off_diagonal_norm'):
     '''
     BLOSUM62
     BLOSUM62_norm
@@ -36,11 +37,6 @@ def load_precomputed_matrix_df(matrix_name=None):
     EDSSMat50_max_off_diagonal_norm
     grantham_similarity_norm
     '''
-    if matrix_name is None:
-        print("Available matrices:")
-        for k in MATRIX_DF_DICT.keys():
-            print(k)
-        return
     mat_df = pd.read_csv(MATRIX_DF_DICT[matrix_name], index_col=0)
     return mat_df
 

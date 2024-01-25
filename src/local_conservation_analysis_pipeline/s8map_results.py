@@ -33,19 +33,19 @@ def check_json(json_file):
         return False
 
 
-def get_image_map(json_files):
+def get_image_map(json_files, image_score_key):
     image_map = {}
     for json_file in json_files:
         with open(json_file, "r") as f:
             json_dict = json.load(f)
-        if "multilevel_plot_file-property_entropy" in json_dict:
+        if f"multilevel_plot_file-{image_score_key}" in json_dict:
             # file = Path(json_dict["multilevel_plot_file-property_entropy"]).resolve().relative_to(Path.cwd())
-            file = Path(json_dict["multilevel_plot_file-property_entropy"])
-            image_map[json_dict["reference_index"]] = rf'=HYPERLINK("{file}", "image")'
+            file = Path(json_dict[f"multilevel_plot_file-{image_score_key}"])
+            image_map[json_dict["reference_index"]] = rf'=HYPERLINK("{file}")'
     return image_map
 
 
-def main(search_dir, table_file):
+def main(search_dir, table_file, image_score_key):
     json_files = Path(search_dir).rglob("*.json")
     checked_jsons = [i for i in json_files if check_json(i)]
     table_file = table_file.replace(".csv", "_original_reindexed.csv")
@@ -54,7 +54,7 @@ def main(search_dir, table_file):
     json_map = get_json_map(checked_jsons)
     table_df["fail_reason"] = table_df["reference_index"].map(failure_map)
     table_df["json_file"] = table_df["reference_index"].map(json_map)
-    image_map = get_image_map(checked_jsons)
+    image_map = get_image_map(checked_jsons, image_score_key)
     table_df["image_file"] = table_df["reference_index"].map(image_map)
     table_df.to_csv(table_file, index=False)
     # table_df.to_excel(table_file.replace(".csv", ".xlsx"), index=False)

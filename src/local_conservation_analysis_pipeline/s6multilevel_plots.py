@@ -15,7 +15,7 @@ import local_seqtools.general_utils as tools
 # %%
 
 
-def multi_level_plots(json_file, score_key, num_bg_scores_cutoff=20):
+def multi_level_plots(json_file, score_key, score_type='zscore', num_bg_scores_cutoff=20):
     og = group_tools.ConserGene(json_file)
     og.load_aln_scores(score_key, num_bg_scores_cutoff=num_bg_scores_cutoff)
     output_folder = Path(og.info_dict["analysis_folder"])
@@ -37,16 +37,13 @@ def multi_level_plots(json_file, score_key, num_bg_scores_cutoff=20):
         og,
         big_plot_output_folder=output_folder,
         score_name=f"{score_key}",
+        score_type=score_type,
         bar_ylim=[-0.5, 2.5],
         strip_gaps=False,
     )
     og.add_item_to_json(
         f"multilevel_plot_file-{score_key}", str(multi_plot_filename_2), save_json=True
     )
-
-
-def main(json_file, score_key):
-    multi_level_plots(json_file, score_key)
 
 
 # lvlo.load_scores('property_entropy')
