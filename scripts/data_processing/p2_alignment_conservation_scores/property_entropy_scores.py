@@ -33,7 +33,7 @@ def run_pe(data, output_dir, gap_frac_cutoff=GAP_FRAC_CUTOFF, overwrite=OVERWRIT
     except ZeroDivisionError as err:
         data['conservation_scores']['aln_property_entropy'] = f'error - {str(err)}'
         return data
-    data['conservation_scores']['aln_property_entropy'] = str(output_file)
+    data['conservation_scores']['aln_property_entropy'] = str(output_file.resolve())
     return data
 
 def run_pe_driver(json_file: str|Path, output_dir, gap_frac_cutoff=GAP_FRAC_CUTOFF, overwrite=OVERWRITE):
