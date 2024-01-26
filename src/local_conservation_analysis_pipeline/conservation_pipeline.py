@@ -109,10 +109,13 @@ def main(config_file, n_cores):
     p.join()
     s8map_results.main(config.output_folder, config.table_file, config.multilevel_plot_params.score_key)
     s9table_annotations.main(
-        config.table_file,
-        config.table_annotation_params.score_key_for_table,
-        config.table_annotation_params.levels,
+        table_file=config.table_file,
+        score_key_for_table=config.table_annotation_params.score_key_for_table,
+        levels=config.table_annotation_params.levels,
+        regex=config.table_annotation_params.motif_regex,
     )
+    if config.clean_analysis_files:
+        shutil.rmtree(config.output_folder)
 
 
 if __name__ == "__main__":

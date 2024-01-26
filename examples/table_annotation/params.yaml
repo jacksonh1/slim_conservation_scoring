@@ -27,8 +27,8 @@ table_annotation_params:
   motif_regex: "P.P.E"
   levels:
     # - "Eukaryota"
-    - "Metazoa"
+    # - "Metazoa"
     - "Vertebrata"
-    # - "Tetrapoda"
+    - "Tetrapoda"
     # - "Mammalia"
 clean_analysis_files: false

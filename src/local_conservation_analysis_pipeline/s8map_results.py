@@ -40,8 +40,8 @@ def get_image_map(json_files, image_score_key):
             json_dict = json.load(f)
         if f"multilevel_plot_file-{image_score_key}" in json_dict:
             # file = Path(json_dict["multilevel_plot_file-property_entropy"]).resolve().relative_to(Path.cwd())
-            file = Path(json_dict[f"multilevel_plot_file-{image_score_key}"])
-            image_map[json_dict["reference_index"]] = rf'=HYPERLINK("{file}")'
+            file = Path(json_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path.cwd())
+            image_map[json_dict["reference_index"]] = rf'=HYPERLINK("./{file}")'
     return image_map
 
 

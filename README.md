@@ -1,6 +1,4 @@
 - todo:
-  - idr mapping file
-  - clear analysis files
   - motif regex conservation scores
   - change pipeline to access __init__ for scores and not env
   - references
@@ -11,6 +9,8 @@
   - add optional link to odb database to get uniprot 2 odb id mapping
   - annotate msa's with organism names
   - add a parameter to specify which steps of the pipeline to run
+  - Trim unused src code
+  - slice by query gapless
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
