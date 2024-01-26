@@ -9,9 +9,8 @@ from pathlib import Path
 
 from Bio import Align, AlignIO, Seq, SeqIO
 
-import local_conservation_score_tools.conservation_scoring_tools as cons_tools
-from local_conservation_score_tools import \
-    conservation_scores_2007_capra_singh as cs
+import local_conservation_score_tools.score_tools as cons_tools
+from local_conservation_score_tools import capra_singh_2007_scores as cs
 
 
 def score_alignment(alignment: Align.MultipleSeqAlignment):

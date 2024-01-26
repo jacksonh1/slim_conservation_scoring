@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
-import local_conservation_score_tools.conservation_scoring_tools as cons_tools
+import local_conservation_score_tools.score_tools as cons_tools
 import local_seqtools.general_utils as tools
 
 # table_file = "./table_original_reindexed.csv"
@@ -26,7 +26,7 @@ def get_hit_zscores(lvlo: group_tools.LevelAlnScore):
     hit_z_scores = lvlo.z_scores[hit_slice]
     hit_scores = lvlo.scores[hit_slice]
     hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
-    inds = cons_tools.get_non_gap_indexes(hit_aln_seq)
+    inds = tools.get_non_gap_indexes(hit_aln_seq)
     return list(np.array(hit_scores)[inds]), list(np.array(hit_z_scores)[inds])
 
 

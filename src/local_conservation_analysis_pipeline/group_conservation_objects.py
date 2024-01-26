@@ -4,8 +4,7 @@ from pathlib import Path
 
 from Bio import AlignIO, SeqIO
 
-from local_conservation_score_tools import \
-    conservation_scoring_tools as score_tools
+from local_seqtools import general_utils as tools
 
 
 class ConserGene:
@@ -116,7 +115,7 @@ class LevelAlnScore(ConserLevel):
         if bg_region is None:
             bg_region = [self.idr_aln_start, self.idr_aln_end+1]
         try:
-            z_score_dict = score_tools.calculate_z_score_bg_region(
+            z_score_dict = tools.calculate_z_score_bg_region(
                 self.scores,
                 self.score_mask,
                 bg_region,

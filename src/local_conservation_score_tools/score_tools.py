@@ -11,11 +11,6 @@ from Bio import Align, AlignIO, Seq, SeqIO
 import local_env_variables.matrices as mats
 
 
-def get_non_gap_indexes(hit_seq_in_alignment_str):
-    """get list of nongap positions in `hit_seq_in_alignment_str`"""
-    return [c for c, i in enumerate(hit_seq_in_alignment_str) if i != "-"]
-
-
 def aln_gaps_mask(aln, gap_frac_cutoff=0.20):
     """returns a mask of positions in alignment with less than gap_perc_cutoff gaps"""
     gap_frac_list = []
@@ -123,8 +118,6 @@ def asymmetric_valdar_score_df_unweighted_strings(
     if not found_query:
         raise ValueError("query_id not found in alignment")
     return scores
-
-
     
     
 def symmetric_valdar_score_df_unweighted(alignment, mat_df):
@@ -140,56 +133,6 @@ def symmetric_valdar_score_df_unweighted(alignment, mat_df):
                 l += 1
         scores.append(score_i / l)
     return scores
-
-
-def z_score(scores):
-    scores = np.array(scores)
-    return (scores - np.mean(scores)) / np.std(scores)
-
-
-def z_score_comparison(scores, scores_ref):
-    u = np.mean(scores_ref)
-    s = np.std(scores_ref)
-    return [(i - u) / s for i in scores]
-
-
-def calculate_z_score_bg_region(
-        score_list,
-        score_list_mask,
-        bg_slicing_region = None,
-        num_bg_scores_cutoff = 20,
-    ):
-    """calculates the z-score of a score list compared to the background across a region of interest
-
-    Uses the score_list_mask choose which positions to use for the background scores. I do not want to include extremely gappy regions in the background calculation, so I use the score_list_mask to choose which positions to use for the background calculation. The background is calculated as the mean and standard deviation of the background scores. The z-score is calculated as (score - mean) / std
-
-    Parameters
-    ----------
-    score_list : list
-        list of scores. Usually for the entire sequence
-    score_list_mask : list
-        boolean mask. Must be the same length as the `score_list`. This is primarally used to mask the positions used to calculate the background of the z-score
-    bg_slicing_region : list
-        region of interest to use as the background ([start_position, end_position]). Numbering must coorespond to the `score_list` and `score_list_mask`
-    num_bg_scores_cutoff : int
-        minimum number of background scores to calculate the z-score. If there are not enough background scores, then the z-score is not calculated
-
-    Returns
-    -------
-    dictionary
-        dictionary of the z-score, and the background scores (keys: "z_scores", "bg_scores")
-    """
-    score_list_mask = np.array(score_list_mask)    
-    if bg_slicing_region is not None:
-        score_list_mask = score_list_mask.copy()
-        # set mask to False for positions outside of the slicing region
-        score_list_mask[:bg_slicing_region[0]] = False
-        score_list_mask[bg_slicing_region[1]+1:] = False
-    bg_scores = np.array(score_list)[score_list_mask]
-    if len(bg_scores) < num_bg_scores_cutoff:
-        raise ValueError(f"not enough background scores to calculate z-score. Require at least {num_bg_scores_cutoff} background scores. Only have {len(bg_scores)} background scores")
-    z_scores = z_score_comparison(score_list, bg_scores)
-    return {"z_scores": list(z_scores), "bg_scores": list(bg_scores)}
 
 
 def conservation_string(scores, seq, z_score_cutoff: float = 1.0):

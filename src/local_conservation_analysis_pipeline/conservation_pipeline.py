@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from attrs import asdict
 
-import local_config.pipeline_parameters as conf
+import local_config.conservation_pipeline_parameters as conf
 from local_conservation_analysis_pipeline import (s1setup_folder,
                                                   s2define_idrs, s3find_hit,
                                                   s4add_lvlinfo,

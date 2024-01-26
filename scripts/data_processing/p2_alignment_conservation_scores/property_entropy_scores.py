@@ -4,7 +4,6 @@ from functools import partial
 from pathlib import Path
 
 import local_conservation_scores.aln_property_entropy as pe
-import local_env_variables.env_variables as env
 
 GAP_FRAC_CUTOFF = 0.2
 OVERWRITE = True

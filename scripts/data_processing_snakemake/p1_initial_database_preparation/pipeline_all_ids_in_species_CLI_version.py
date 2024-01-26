@@ -1,12 +1,13 @@
 import argparse
 import multiprocessing
 import shutil
+import traceback
 from pathlib import Path
 
-import local_config.conf as conf
 import local_orthoDB_group_tools.sql_queries as sql_queries
 import local_scripts.odb_group_pipeline as pipeline
-import traceback
+
+import local_config.orthodb_pipeline_parameters as conf
 
 SPECIES_ID = "9606_0"
 N_CORES = multiprocessing.cpu_count() - 2

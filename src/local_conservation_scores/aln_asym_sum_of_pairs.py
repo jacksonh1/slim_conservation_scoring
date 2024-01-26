@@ -11,8 +11,7 @@ import pandas as pd
 from Bio import Align, AlignIO, Seq, SeqIO, SeqRecord
 
 import local_env_variables.matrices as submats
-from local_conservation_score_tools import \
-    conservation_scoring_tools as cons_tools
+from local_conservation_score_tools import score_tools as cons_tools
 
 
 def mask_alignment(
