@@ -10,8 +10,6 @@ idr_params:
   iupred_cutoff: 0.4
   gap_merge_threshold: 10
   idr_min_length: 8
-# precalculated_aln_conservation_score_keys:
-  # - "aln_property_entropy"
 filter_params:
   min_num_orthos: 20
 new_score_methods:
@@ -31,4 +29,19 @@ table_annotation_params:
     - "Vertebrata"
     - "Tetrapoda"
     # - "Mammalia"
+  annotations:
+    - "json_file"
+    - "multi_level_plot"
+    - "hit_start_position"
+    - "regex"
+    - "regex_match"
+    - "regex_match_stpos_in_hit"
+    - "conservation_string"
+    - "aln_slice_file"
+    # - "hit_scores"
+    # - "hit_mean_score"
+    # - "hit_z_scores"
+    - "hit_mean_zscore"
+    - "best mean z-score over 5 residue window"
+    # - "best mean z-score over 10 residue window"
 clean_analysis_files: false

@@ -45,6 +45,20 @@ def get_image_map(json_files, image_score_key):
     return image_map
 
 
+def find_motif_regex(og: group_tools.ConserGene, regex):
+    hit_sequence = og.hit_sequence
+    matches = list(tools.get_regex_matches(regex, hit_sequence))
+    if len(matches) == 0:
+        return None, None, None
+    if len(matches) > 1:
+        return None, None, None
+    m = matches[0]
+    matchseq = m[0]
+    matchst = m[1]
+    matchend = m[2]
+    return matchseq, matchst, matchend
+
+
 def main(search_dir, table_file, image_score_key):
     json_files = Path(search_dir).rglob("*.json")
     checked_jsons = [i for i in json_files if check_json(i)]
@@ -56,7 +70,26 @@ def main(search_dir, table_file, image_score_key):
     table_df["json_file"] = table_df["reference_index"].map(json_map)
     image_map = get_image_map(checked_jsons, image_score_key)
     table_df["image_file"] = table_df["reference_index"].map(image_map)
+
+
+
+
+
+
+
     table_df.to_csv(table_file, index=False)
+
+
+
+
+
+
+
+
+
+
+
+    # from openpyxl import Workbook
     # table_df.to_excel(table_file.replace(".csv", ".xlsx"), index=False)
     # workbook = Workbook()
     # sheet = workbook.active

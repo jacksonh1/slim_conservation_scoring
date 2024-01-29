@@ -17,10 +17,10 @@ class ConserGene:
         with open(self.json_filepath, "r") as f:
             self.info_dict = json.load(f)
 
+        self.reference_index = self.info_dict["reference_index"]
         if "critical_error" in self.info_dict:
             self.critical_error = self.info_dict["critical_error"]
             return
-        self.reference_index = self.info_dict["reference_index"]
         self.query_gene_id = self.info_dict["query_gene_id"]
         self.hit_sequence = self.info_dict["hit_sequence"]
         self.query_sequence = self.info_dict["query_sequence"]

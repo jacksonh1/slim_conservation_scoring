@@ -14,14 +14,20 @@ from local_conservation_analysis_pipeline import (s1setup_folder,
                                                   s5compute_scores,
                                                   s6multilevel_plots,
                                                   s7output_aln_slice,
-                                                  s8map_results,
-                                                  s9table_annotations)
+                                                  s8calculate_annotations,
+                                                  s9add_annotations2table)
 
 CONFIG_FILE = './params.yaml'
 N_CORES = multiprocessing.cpu_count()
+STEPS_TO_RUN = [
+    "s1setup_folder",
+    "multiprocess_steps",
+    "s8calculate_annotations",
+    "s9add_annotations2table",
+]
 
 
-def load_config(config_file: str):
+def load_config(config_file: str) -> conf.PipelineParameters:
     # if config_file is None:
     #     config = conf.PipelineParameters()
     # else:
@@ -89,34 +95,45 @@ def run_multiprocess_steps(file, config: conf.PipelineParameters):
     )
 
 
-def main(config_file, n_cores):
+def main(config_file, n_cores, steps_to_run=None):
     config = load_config(config_file)
-    if config.clear_files:
-        if Path(config.output_folder).exists():
-            shutil.rmtree(config.output_folder)
 
-    s1setup_folder.main(
-        hits_file=config.table_file,
-        database_key_file=config.database_filekey,
-        output_folder=config.output_folder,
-        hit_search_method=config.hit_sequence_params.hit_sequence_search_method,
-    )
-    json_files = get_passing_jsons(Path(config.output_folder))
-    p = multiprocessing.Pool(n_cores)
-    f_args = [(i, config) for i in json_files]
-    p.starmap(run_multiprocess_steps, f_args)
-    p.close()
-    p.join()
-    s8map_results.main(config.output_folder, config.table_file, config.multilevel_plot_params.score_key)
-    s9table_annotations.main(
-        table_file=config.table_file,
-        score_key_for_table=config.table_annotation_params.score_key_for_table,
-        levels=config.table_annotation_params.levels,
-        regex=config.table_annotation_params.motif_regex,
-    )
+    if "s1setup_folder" in steps_to_run:
+        if config.clear_files:
+            if Path(config.output_folder).exists():
+                shutil.rmtree(config.output_folder)
+        s1setup_folder.main(
+            hits_file=config.table_file,
+            database_key_file=config.database_filekey,
+            output_folder=config.output_folder,
+            hit_search_method=config.hit_sequence_params.hit_sequence_search_method,
+        )
+    if "multiprocess_steps" in steps_to_run:
+        json_files = get_passing_jsons(Path(config.output_folder))
+        p = multiprocessing.Pool(n_cores)
+        f_args = [(i, config) for i in json_files]
+        p.starmap(run_multiprocess_steps, f_args)
+        p.close()
+        p.join()
+    if "s8calculate_annotations" in steps_to_run:
+        print("calculating annotations")
+        s8calculate_annotations.main(
+            search_dir = config.output_folder,
+            image_score_key=config.multilevel_plot_params.score_key,
+            table_annotation_score_key=config.table_annotation_params.score_key_for_table,
+            regex=config.table_annotation_params.motif_regex,
+        )
+    if "s9add_annotations2table" in steps_to_run:
+        s9add_annotations2table.main(
+            annotations_file="annotations.json",
+            table_file=config.table_file,
+            table_annotations=config.table_annotation_params.annotations,
+            table_annotation_levels=config.table_annotation_params.levels,
+            output_table_file=config.table_file.replace(".csv", "_ANNOTATED.csv"),
+        )
     if config.clean_analysis_files:
         shutil.rmtree(config.output_folder)
 
 
 if __name__ == "__main__":
-    main(CONFIG_FILE, N_CORES)
+    main(CONFIG_FILE, N_CORES, STEPS_TO_RUN)
