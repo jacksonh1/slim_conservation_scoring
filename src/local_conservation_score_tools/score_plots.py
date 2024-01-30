@@ -6,17 +6,16 @@ from pathlib import Path
 
 import logomaker as lm
 import matplotlib.pyplot as plt
+# plt.style.use("custom_standard")
+# plt.style.use("custom_small")
+import numpy as np
+import pandas as pd
 import seaborn as sns
+from Bio import Align, AlignIO, Seq, SeqIO
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
 import local_env_variables.env_variables as env
 import local_seqtools.pssms as pssms
-
-plt.style.use("custom_standard")
-plt.style.use("custom_small")
-import numpy as np
-import pandas as pd
-from Bio import Align, AlignIO, Seq, SeqIO
 
 
 def format_bar_plot(ax, xlabel_sequence: str, bar_ylim=[0, 1], labelsize=16):
