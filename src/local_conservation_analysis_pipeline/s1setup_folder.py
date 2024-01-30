@@ -65,7 +65,8 @@ def ortholog_analysis_setup_search(
     database_key: dict,
 ):
     output_dict = ortholog_analysis_setup(table_row, database_key)
-    hit_sequence = table_row["hit_sequence"]
+    # make sure that hit sequence is uppercase
+    hit_sequence = table_row["hit_sequence"].upper()
     output_dict["hit_sequence"] = hit_sequence
     # if hit_sequence not in output_dict["query_sequence"]:
     #     raise ValueError(f"hit sequence not found in query sequence: {output_dict['reference_index']} - {hit_sequence} not in {output_dict['query_sequence']}")

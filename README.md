@@ -1,5 +1,5 @@
 - todo:
-  - motif regex conservation scores
+  - add cli to basic script
   - references
     - disorder matrix
     - iupred
@@ -116,7 +116,7 @@ See `./examples/table_annotation/` for an example. <br>
 
 ## pipeline overview
 
-The main pipeline is executed via the script `./`, which executes the following steps (code in `./src/local_conservation_analysis_pipeline/`) for each row in the input table:
+The main pipeline is executed via the script `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`, which executes the following steps (code in `./src/local_conservation_analysis_pipeline/`) for each row in the input table:
 1. setup the analysis folder (create folders and files for each row in the input table)
     - The gene id of the protein is looked up in the database key to find the alignment file(s) for the protein and its orthologs
 2. define idr regions. 
