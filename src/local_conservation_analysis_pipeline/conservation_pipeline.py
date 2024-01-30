@@ -17,7 +17,7 @@ from local_conservation_analysis_pipeline import (s1setup_folder,
                                                   s8calculate_annotations,
                                                   s9add_annotations2table)
 
-CONFIG_FILE = './params.yaml'
+CONFIG_FILE = "./params.yaml"
 N_CORES = multiprocessing.cpu_count()
 STEPS_TO_RUN = [
     "s1setup_folder",
@@ -91,11 +91,12 @@ def run_multiprocess_steps(file, config: conf.PipelineParameters):
     )
     s7output_aln_slice.main(
         json_file=file,
-        n_flanking_cols=config.aln_slice_params.n_flanking_cols,
+        n_flanking_aas=config.aln_slice_params.n_flanking_aas,
+        whole_idr=config.aln_slice_params.whole_idr,
     )
 
 
-def main(config_file, n_cores, steps_to_run=None):
+def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
     config = load_config(config_file)
 
     if "s1setup_folder" in steps_to_run:
@@ -118,14 +119,14 @@ def main(config_file, n_cores, steps_to_run=None):
     if "s8calculate_annotations" in steps_to_run:
         print("calculating annotations")
         s8calculate_annotations.main(
-            search_dir = config.output_folder,
+            main_output_folder=config.output_folder,
             image_score_key=config.multilevel_plot_params.score_key,
             table_annotation_score_key=config.table_annotation_params.score_key_for_table,
             regex=config.table_annotation_params.motif_regex,
         )
     if "s9add_annotations2table" in steps_to_run:
         s9add_annotations2table.main(
-            annotations_file="annotations.json",
+            annotations_file=Path(config.output_folder) / "annotations.json",
             table_file=config.table_file,
             table_annotations=config.table_annotation_params.annotations,
             table_annotation_levels=config.table_annotation_params.levels,

@@ -1,8 +1,8 @@
 from local_conservation_analysis_pipeline import conservation_pipeline
 
 STEPS_TO_RUN = [
-    # "s1setup_folder",
-    # "multiprocess_steps",
+    "s1setup_folder",
+    "multiprocess_steps",
     "s8calculate_annotations",
     "s9add_annotations2table",
 ]

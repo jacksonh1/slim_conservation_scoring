@@ -20,6 +20,9 @@ new_score_methods:
 multilevel_plot_params:
   score_key: "aln_property_entropy"
   score_type: "zscore"
+aln_slice_params:
+  # n_flanking_aas: 20
+  whole_idr: true
 table_annotation_params:
   score_key_for_table: "aln_property_entropy"
   motif_regex: "P.P.E"

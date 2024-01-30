@@ -1,6 +1,5 @@
 - todo:
   - motif regex conservation scores
-  - change pipeline to access __init__ for scores and not env
   - references
     - disorder matrix
     - iupred
@@ -158,12 +157,33 @@ new_score_methods:
     matrix_name: "BLOSUM62_max_off_diagonal_norm"
     gap_frac_cutoff: 0.2
     overwrite: true
+multilevel_plot_params:
+  score_key: "aln_property_entropy"
+  score_type: "zscore"
+aln_slice_params:
+  # n_flanking_aas: 20
+  whole_idr: true
 table_annotation_params:
   score_key_for_table: "property_entropy"
   motif_regex: "P.P.E"
   levels:
     - "Metazoa"
     - "Vertebrata"
+  annotations:
+    - "json_file"
+    - "multi_level_plot"
+    - "hit_start_position"
+    - "regex"
+    - "regex_match"
+    - "regex_match_stpos_in_hit"
+    - "conservation_string"
+    - "aln_slice_file"
+    # - "hit_scores"
+    # - "hit_mean_score"
+    # - "hit_z_scores"
+    - "hit_mean_zscore"
+    - "best mean z-score over 5 residue window"
+    # - "best mean z-score over 10 residue window"
 clean_analysis_files: false
 ```
 
@@ -198,11 +218,27 @@ clean_analysis_files: false
   - `num_bg_scores_cutoff`: The minimum number or background scores required to calculate the zscores (default 20). If there are less than this number of background scores, the zscores are not calculated.
   - `score_type`: "score" or "zscore" (default "zscore"). If "score", the raw score is used. If "zscore", the zscore is used.
 - `aln_slice_params`
-  - `n_flanking_cols`: the number of columns in the alignment to include on either side of the hit sequence in the output alignment slice file (default 20).
+  - `n_flanking_aas`: the number of residues to include on either side of the hit sequence in the output alignment slice file (default 20). It is the number of query sequence residues flanking the hit in the query sequence. So if there are gaps in the query sequence in the msa, those columns are not counted as flanking positions.
+  - `whole_idr`: 
 - `table_annotation_params`: parameters for adding conservation scores back to the input table
   - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy")
   - `motif_regex`: (not yet implemented). The regex to search for in the hit sequence (default None). If a regex is provided, an additional column is added to the table that that is the average conservation scoresof the residues in the hit sequence matching the regex. For example if the hit sequence is "PPPEQAPAPAEPGSA" and the regex is "P.P.E", the average conservation score of the residues "PAPAE" (xxxxxxPAPAExxxx) are calculated and added to the table.
   - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, set of conservation scores is added to the table
+  - `annotations`: The new columns to add to the output table. Some annotations that are available:
+    - `json_file`: the path to the json file containing the conservation scores for the hit sequence
+    - `multi_level_plot`: the path to the multilevel plot of the hit sequence conservation
+    - `hit_start_position`: the start position of the hit sequence in the full length protein
+    - `regex`: the regex used to find the motif within the the hit sequence
+    - `regex_match`: the match of the regex in the hit sequence
+    - `regex_match_stpos_in_hit`: the start position of the regex match within the hit sequence
+    - `conservation_string`: a string of the conservation scores for the hit sequence. The string is the same length as the hit sequence. Residues with conservation z-scores < 0.5 are represented by a "_", and residues with z-scores >= 0.5 are represented by the corresponding amino acid.
+    - `aln_slice_file`: the path to the alignment slice file
+    - `hit_scores`: the conservation scores for the hit sequence (list that is the same length as hit sequence)
+    - `hit_mean_score`: the mean conservation score for the hit sequence
+    - `hit_z_scores`: the z-scores for the hit sequence (list that is the same length as hit sequence)
+    - `hit_mean_zscore`: the mean z-score for the hit sequence
+    - `best mean z-score over 5 residue window`: the best mean z-score over a 5 residue window
+    - `best mean z-score over 10 residue window`: the best mean z-score over a 10 residue window
 - `clean_analysis_files`: true or false (default false). If true, the analysis files are deleted after the pipeline is run (not yet implemented)
 
 # conservation scores

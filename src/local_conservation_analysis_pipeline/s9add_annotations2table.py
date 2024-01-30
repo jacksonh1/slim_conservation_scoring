@@ -17,9 +17,6 @@ def main(
         annotations = json.load(f)
     table_df = pd.read_csv(table_file.replace(".csv", "_original_reindexed.csv"))
     error_map = {}
-    print('table_annotations', table_annotations)
-    print('table_annotation_levels', table_annotation_levels)
-    
     df = pd.DataFrame()
     for k, d in annotations.items():
         ref_ind = int(k)

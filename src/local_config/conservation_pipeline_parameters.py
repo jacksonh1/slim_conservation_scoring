@@ -95,10 +95,11 @@ class AlnSliceConf:
 
     Parameters
     ----------
-    col_flank : int
+    n_flanking_aas : int
         number of columns in the alignment to flank the hit sequence with
     """
-    n_flanking_cols: int = field(default=20, converter=int)    
+    n_flanking_aas: int = field(default=20, converter=int)
+    whole_idr: bool = field(default=False, converter=bool)
 
 
 @define
@@ -131,6 +132,7 @@ class PipelineParameters:
             score_methods=[ScoreMethod(k, v) for k,v in d.pop("new_score_methods", {}).items()],
             multilevel_plot_params=MultiLevelPlotConf(**d.pop("multilevel_plot_params", {})),
             table_annotation_params=TableAnnotationConf(**d.pop("table_annotation_params", {})),
+            aln_slice_params=AlnSliceConf(**d.pop("aln_slice_params", {})),
             **d
         )
     

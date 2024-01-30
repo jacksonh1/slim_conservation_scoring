@@ -136,8 +136,8 @@ def add_gene_annotations_2_dict(
     return annotation_dict
 
 
-def main(search_dir, image_score_key, table_annotation_score_key, regex=None):
-    json_files = Path(search_dir).rglob("*.json")
+def main(main_output_folder, image_score_key, table_annotation_score_key, regex=None):
+    json_files = Path(main_output_folder).rglob("*.json")
     checked_jsons = [i for i in json_files if check_json(i)]
     annotations = {}
     for json_file in checked_jsons:
@@ -151,8 +151,9 @@ def main(search_dir, image_score_key, table_annotation_score_key, regex=None):
     # print(checked_jsons)
     # print(annotations)
     # return annotations
-    if Path("annotations.json").exists():
+    annotation_file = Path(main_output_folder) / "annotations.json"
+    if annotation_file.exists():
         # remove old annotations file
-        Path("annotations.json").unlink()
-    with open("annotations.json", "w") as f:
+        annotation_file.unlink()
+    with open(annotation_file, "w") as f:
         json.dump(annotations, f, indent=4)

@@ -12,11 +12,11 @@ class jch_alignment:
     "reference sequence must be the first sequence in the alignment (for now).
     The main goal is to allow for easy slicing of the alignment and the column annotations.'''
 
-    def __init__(self, alignment: AlignIO.MultipleSeqAlignment, column_annotations: dict[str, list]|None=None):
+    def __init__(self, alignment: AlignIO.MultipleSeqAlignment, query_id: str, column_annotations: dict[str, list]|None=None):
         # Store the alignment
         self.alignment = alignment
         # query sequence is the first sequence in the alignment
-        self.query_seqrecord = self.alignment[0]
+        self.query_seqrecord = [self.alignment[i] for i in range(len(self.alignment)) if self.alignment[i].id == query_id][0]
         self.query_sequence_str = str(self.query_seqrecord.seq)
         self.query_sequence_id_str = self.query_seqrecord.id
         # Store the index and unaligned sequences 
