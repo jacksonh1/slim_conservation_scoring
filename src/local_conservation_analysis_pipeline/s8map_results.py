@@ -4,6 +4,8 @@ from pathlib import Path
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 
+import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
+
 
 def get_failure_map(json_files):
     failure_map = {}

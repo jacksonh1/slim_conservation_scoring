@@ -21,9 +21,9 @@ def check_json(json_file):
 
 def get_image_file(og: group_tools.ConserGene, image_score_key):
     if f"multilevel_plot_file-{image_score_key}" in og.info_dict:
-        file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve()
-        # file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path.cwd())
-        return rf'=HYPERLINK("./{file}")'
+        # file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve()
+        file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path.cwd())
+        return rf'=HYPERLINK("./{str(file)}")'
 
 
 def find_motif_regex(og: group_tools.ConserGene, regex):
@@ -70,7 +70,7 @@ def lvl_annotation_conservation_string(lvlo: group_tools.LevelAlnScore):
 
 def lvl_annotation_aln_slice(lvlo: group_tools.LevelAlnScore):
     file = Path(lvlo.info_dict["aln_slice_file"]).resolve().relative_to(Path.cwd())
-    return rf'=HYPERLINK("{file}")'
+    return rf'=HYPERLINK("{str(file)}")'
 
 
 def get_largest_avg_zscore_for_window(score_list, window_size=5):

@@ -76,7 +76,7 @@ class TableAnnotationConf:
         "hit_start_position",
         "regex",
         "regex_match",
-        "regex_match_stpos_in_hit",
+        # "regex_match_stpos_in_hit",
         "conservation_string",
         "aln_slice_file",
         # "hit_scores",
