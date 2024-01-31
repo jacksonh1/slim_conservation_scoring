@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 
 import numpy as np
@@ -6,12 +7,11 @@ from Bio import Align, AlignIO, Seq, SeqIO
 from pyprojroot import here
 
 import local_seqtools.substitution_matrices as submats
-import math
 
 # %%
 root = here()
-data = root / "data"
-disorder_matrix_folder = data / "disorder-matrix"
+data = root / "src" / "local_data"
+disorder_matrix_folder = root / "data" / "disorder-matrix"
 matrix_folder = data / "substitution_matrices"
 matrix_folder.mkdir(exist_ok=True)
 # %%
@@ -40,3 +40,7 @@ mat = Align.substitution_matrices.read(
 )
 matEDSS50_df = submats.convert_matrix_array_2_df(mat)
 prep_matrix_dfs(matEDSS50_df, matrix_name, output_dir=matrix_folder)
+
+matrix_name = "grantham_similarity"
+gran_df = pd.read_csv(root / "data"/ "grantham_matrix" / "grantham_similarity_norm.csv", index_col=0)
+prep_matrix_dfs(gran_df, matrix_name, output_dir=matrix_folder)
