@@ -70,8 +70,6 @@ def run_multiprocess_steps(file, config: conf.PipelineParameters):
         lcs_min_length=config.hit_sequence_params.lcs_min_length,
         target_hit_length=config.hit_sequence_params.target_hit_length,
     )
-    else:
-        res = "pass"
     if res == "fail":
         print(f"failed on {file}")
         return
