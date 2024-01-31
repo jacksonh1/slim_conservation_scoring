@@ -2,6 +2,7 @@ import argparse
 import json
 import multiprocessing
 import shutil
+from functools import partial
 from pathlib import Path
 
 import yaml
@@ -109,11 +110,17 @@ def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
         )
     if "multiprocess_steps" in steps_to_run:
         json_files = get_passing_jsons(Path(config.output_folder))
-        p = multiprocessing.Pool(n_cores)
-        f_args = [(i, config) for i in json_files]
-        p.starmap(run_multiprocess_steps, f_args)
-        p.close()
-        p.join()
+        # p = multiprocessing.Pool(n_cores)
+        # f_args = [(i, config) for i in json_files]
+        # p.starmap(run_multiprocess_steps, f_args)
+        # p.close()
+        # p.join()
+        with multiprocessing.Pool(n_cores) as p:
+            results_iterator = p.imap_unordered(
+                partial(run_multiprocess_steps, config=config), json_files, chunksize=1
+            )
+            for result in results_iterator:
+                pass
     if "s8calculate_annotations" in steps_to_run:
         print("calculating annotations")
         s8calculate_annotations.main(
