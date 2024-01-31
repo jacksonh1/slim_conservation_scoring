@@ -34,9 +34,7 @@ def find_all_substring_occurences(substring: str, string: str):
 def find_query_hit_sequence(subsequence: str, sequence: str):
     occurences = find_all_substring_occurences(subsequence, sequence)
     if len(occurences) == 0:
-        raise ValueError(
-            f"subsequence {subsequence} not found in query sequence"
-        )
+        raise ValueError(f"subsequence {subsequence} not found in query sequence")
     elif len(occurences) == 1:
         return occurences[0]
     else:
@@ -54,10 +52,7 @@ def hit_in_idr(hit_start_position, hit_end_position, idr_regions):
     d = {}
     d["hit_in_idr"] = False
     for region in idr_regions:
-        if (
-            hit_start_position >= region[0]
-            and hit_end_position <= region[1]
-        ):
+        if hit_start_position >= region[0] and hit_end_position <= region[1]:
             d["hit_in_idr"] = True
             d["idr_start"] = region[0]
             d["idr_end"] = region[1]
@@ -86,14 +81,14 @@ def main(
                     "critical_error"
                 ] = f"could not find a common substring of at least {lcs_min_length} characters between the hit sequence and the query sequence"
                 save_out_json(info_dict, json_file)
-                return 'fail'
+                return "fail"
 
         if hit_sequence not in query_sequence:
             info_dict[
                 "critical_error"
             ] = f"hit sequence {hit_sequence} not found in query sequence"
             save_out_json(info_dict, json_file)
-            return 'fail'
+            return "fail"
         try:
             hit_start_position, hit_end_position = find_query_hit_sequence(
                 hit_sequence, query_sequence
@@ -101,7 +96,7 @@ def main(
         except ValueError as e:
             info_dict["critical_error"] = str(e)
             save_out_json(info_dict, json_file)
-            return 'fail'
+            return "fail"
 
         if target_hit_length > 0:
             hit_start_position, hit_end_position, hit_sequence = pad_hit_sequence(
@@ -118,10 +113,10 @@ def main(
     if not info_dict["hit_in_idr"]:
         info_dict["critical_error"] = "hit sequence not in an idr"
     save_out_json(info_dict, json_file)
-    if 'critical_error' in info_dict:
-        return 'fail'
+    if "critical_error" in info_dict:
+        return "fail"
     else:
-        return 'pass'
+        return "pass"
 
 
 # def driver(
@@ -129,7 +124,7 @@ def main(
 #     hit_sequence,
 #     longest_common_subsequence=False,
 #     lcs_min_length=20,
-#     target_hit_length=0,        
+#     target_hit_length=0,
 # ):
 #     if longest_common_subsequence:
 #         hit_sequence = tools.longest_common_substring(
@@ -163,7 +158,7 @@ def main(
 #     info_dict["hit_end_position"] = hit_end_position
 #     info_dict["hit_sequence"] = hit_sequence
 #     return info_dict
-    
+
 
 # def main(
 #     json_file,
