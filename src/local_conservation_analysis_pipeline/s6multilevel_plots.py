@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 from Bio import AlignIO, SeqIO
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
@@ -42,6 +43,7 @@ def multi_level_plots(json_file, score_key, score_type='zscore', num_bg_scores_c
     og.add_item_to_json(
         f"multilevel_plot_file-{score_key}", str(multi_plot_filename_2), save_json=True
     )
+    plt.close("all")
 
 
 # lvlo.load_scores('property_entropy')
