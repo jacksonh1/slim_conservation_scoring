@@ -66,6 +66,7 @@ def hit_in_idr(hit_start_position, hit_end_position, idr_regions):
 
 def main(
     json_file,
+    search_method="search",
     longest_common_subsequence=False,
     lcs_min_length=20,
     target_hit_length=0,
@@ -74,40 +75,44 @@ def main(
         info_dict = json.load(f)
     query_sequence = info_dict["query_sequence"]
     hit_sequence = info_dict["hit_sequence"]
-    if longest_common_subsequence:
-        hit_sequence = tools.longest_common_substring(
-            hit_sequence,
-            query_sequence,
-        )
-        if len(hit_sequence) < lcs_min_length:
+    if search_method == "search":
+        if longest_common_subsequence:
+            hit_sequence = tools.longest_common_substring(
+                hit_sequence,
+                query_sequence,
+            )
+            if len(hit_sequence) < lcs_min_length:
+                info_dict[
+                    "critical_error"
+                ] = f"could not find a common substring of at least {lcs_min_length} characters between the hit sequence and the query sequence"
+                save_out_json(info_dict, json_file)
+                return 'fail'
+
+        if hit_sequence not in query_sequence:
             info_dict[
                 "critical_error"
-            ] = f"could not find a common substring of at least {lcs_min_length} characters between the hit sequence and the query sequence"
+            ] = f"hit sequence {hit_sequence} not found in query sequence"
+            save_out_json(info_dict, json_file)
+            return 'fail'
+        try:
+            hit_start_position, hit_end_position = find_query_hit_sequence(
+                hit_sequence, query_sequence
+            )
+        except ValueError as e:
+            info_dict["critical_error"] = str(e)
             save_out_json(info_dict, json_file)
             return 'fail'
 
-    if hit_sequence not in query_sequence:
-        info_dict[
-            "critical_error"
-        ] = f"hit sequence {hit_sequence} not found in query sequence"
-        save_out_json(info_dict, json_file)
-        return 'fail'
-    try:
-        hit_start_position, hit_end_position = find_query_hit_sequence(
-            hit_sequence, query_sequence
-        )
-    except ValueError as e:
-        info_dict["critical_error"] = str(e)
-        save_out_json(info_dict, json_file)
-        return 'fail'
-
-    if target_hit_length > 0:
-        hit_start_position, hit_end_position, hit_sequence = pad_hit_sequence(
-            hit_start_position, hit_end_position, query_sequence, target_hit_length
-        )
-    info_dict["hit_start_position"] = hit_start_position
-    info_dict["hit_end_position"] = hit_end_position
-    info_dict["hit_sequence"] = hit_sequence
+        if target_hit_length > 0:
+            hit_start_position, hit_end_position, hit_sequence = pad_hit_sequence(
+                hit_start_position, hit_end_position, query_sequence, target_hit_length
+            )
+        info_dict["hit_start_position"] = hit_start_position
+        info_dict["hit_end_position"] = hit_end_position
+        info_dict["hit_sequence"] = hit_sequence
+    else:
+        hit_start_position = info_dict["hit_start_position"]
+        hit_end_position = info_dict["hit_end_position"]
     d = hit_in_idr(hit_start_position, hit_end_position, info_dict["idr_regions"])
     info_dict.update(d)
     if not info_dict["hit_in_idr"]:

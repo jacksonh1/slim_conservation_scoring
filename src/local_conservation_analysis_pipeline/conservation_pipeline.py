@@ -66,6 +66,7 @@ def run_multiprocess_steps(file, config: conf.PipelineParameters):
     if config.hit_sequence_params.hit_sequence_search_method == "search":
         res = s3find_hit.main(
             json_file=file,
+            search_method=config.hit_sequence_params.hit_sequence_search_method,
             longest_common_subsequence=config.hit_sequence_params.longest_common_subsequence,
             lcs_min_length=config.hit_sequence_params.lcs_min_length,
             target_hit_length=config.hit_sequence_params.target_hit_length,
