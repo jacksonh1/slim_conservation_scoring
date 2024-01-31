@@ -20,12 +20,6 @@ from local_conservation_analysis_pipeline import (s1setup_folder,
 
 CONFIG_FILE = "./params.yaml"
 N_CORES = multiprocessing.cpu_count()
-STEPS_TO_RUN = [
-    "s1setup_folder",
-    "multiprocess_steps",
-    "s8calculate_annotations",
-    "s9add_annotations2table",
-]
 
 
 def load_config(config_file: str) -> conf.PipelineParameters:
@@ -56,49 +50,55 @@ def get_passing_jsons(search_dir):
 
 def run_multiprocess_steps(file, config: conf.PipelineParameters):
     # find idrs
-    s2define_idrs.main(
-        info_json_file=file,
-        find_idrs=config.idr_params.find_idrs,
-        idr_map_file=config.idr_params.idr_map_file,
-        iupred_cutoff=config.idr_params.iupred_cutoff,
-        gap_merge_threshold=config.idr_params.gap_merge_threshold,
-        idr_min_length=config.idr_params.idr_min_length,
-    )
-    res = s3find_hit.main(
-        json_file=file,
-        search_method=config.hit_sequence_params.hit_sequence_search_method,
-        longest_common_subsequence=config.hit_sequence_params.longest_common_subsequence,
-        lcs_min_length=config.hit_sequence_params.lcs_min_length,
-        target_hit_length=config.hit_sequence_params.target_hit_length,
-    )
-    if res == "fail":
-        print(f"failed on {file}")
-        return
-    s4add_lvlinfo.main(file, config.filter_params.min_num_orthos)
-    if len(config.score_methods) > 0:
-        for scoremethod in config.score_methods:
-            s5compute_scores.compute_conservation_scores(
-                json_file=file,
-                score_key=scoremethod.score_key,
-                score_params=scoremethod.score_kwargs,
-            )
-    s6multilevel_plots.multi_level_plots(
-        json_file=file,
-        score_key=config.multilevel_plot_params.score_key,
-        score_type=config.multilevel_plot_params.score_type,
-        num_bg_scores_cutoff=config.multilevel_plot_params.num_bg_scores_cutoff,
-    )
-    s7output_aln_slice.main(
-        json_file=file,
-        n_flanking_aas=config.aln_slice_params.n_flanking_aas,
-        whole_idr=config.aln_slice_params.whole_idr,
-    )
+    if "s2" in config.steps_to_run:
+        s2define_idrs.main(
+            info_json_file=file,
+            find_idrs=config.idr_params.find_idrs,
+            idr_map_file=config.idr_params.idr_map_file,
+            iupred_cutoff=config.idr_params.iupred_cutoff,
+            gap_merge_threshold=config.idr_params.gap_merge_threshold,
+            idr_min_length=config.idr_params.idr_min_length,
+        )
+    if "s3" in config.steps_to_run:
+        res = s3find_hit.main(
+            json_file=file,
+            search_method=config.hit_sequence_params.hit_sequence_search_method,
+            longest_common_subsequence=config.hit_sequence_params.longest_common_subsequence,
+            lcs_min_length=config.hit_sequence_params.lcs_min_length,
+            target_hit_length=config.hit_sequence_params.target_hit_length,
+        )
+        if res == "fail":
+            print(f"failed on {file}")
+            return
+    if "s4" in config.steps_to_run:
+        s4add_lvlinfo.main(file, config.filter_params.min_num_orthos)
+    if "s5" in config.steps_to_run:
+        if len(config.score_methods) > 0:
+            for scoremethod in config.score_methods:
+                s5compute_scores.compute_conservation_scores(
+                    json_file=file,
+                    score_key=scoremethod.score_key,
+                    score_params=scoremethod.score_kwargs,
+                )
+    if "s6" in config.steps_to_run:
+        s6multilevel_plots.multi_level_plots(
+            json_file=file,
+            score_key=config.multilevel_plot_params.score_key,
+            score_type=config.multilevel_plot_params.score_type,
+            num_bg_scores_cutoff=config.multilevel_plot_params.num_bg_scores_cutoff,
+        )
+    if "s7" in config.steps_to_run:
+        s7output_aln_slice.main(
+            json_file=file,
+            n_flanking_aas=config.aln_slice_params.n_flanking_aas,
+            whole_idr=config.aln_slice_params.whole_idr,
+        )
 
 
-def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
+def main(config_file, n_cores):
     config = load_config(config_file)
 
-    if "s1setup_folder" in steps_to_run:
+    if "s1" in config.steps_to_run:
         if config.clear_files:
             if Path(config.output_folder).exists():
                 shutil.rmtree(config.output_folder)
@@ -108,20 +108,19 @@ def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
             output_folder=config.output_folder,
             hit_search_method=config.hit_sequence_params.hit_sequence_search_method,
         )
-    if "multiprocess_steps" in steps_to_run:
-        json_files = get_passing_jsons(Path(config.output_folder))
-        # p = multiprocessing.Pool(n_cores)
-        # f_args = [(i, config) for i in json_files]
-        # p.starmap(run_multiprocess_steps, f_args)
-        # p.close()
-        # p.join()
-        with multiprocessing.Pool(n_cores) as p:
-            results_iterator = p.imap_unordered(
-                partial(run_multiprocess_steps, config=config), json_files, chunksize=1
-            )
-            for result in results_iterator:
-                pass
-    if "s8calculate_annotations" in steps_to_run:
+    json_files = get_passing_jsons(Path(config.output_folder))
+    # p = multiprocessing.Pool(n_cores)
+    # f_args = [(i, config) for i in json_files]
+    # p.starmap(run_multiprocess_steps, f_args)
+    # p.close()
+    # p.join()
+    with multiprocessing.Pool(n_cores) as p:
+        results_iterator = p.imap_unordered(
+            partial(run_multiprocess_steps, config=config), json_files, chunksize=1
+        )
+        for result in results_iterator:
+            pass
+    if "s8" in config.steps_to_run:
         print("calculating annotations")
         s8calculate_annotations.main(
             main_output_folder=config.output_folder,
@@ -129,7 +128,7 @@ def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
             table_annotation_score_key=config.table_annotation_params.score_key_for_table,
             regex=config.table_annotation_params.motif_regex,
         )
-    if "s9add_annotations2table" in steps_to_run:
+    if "s9" in config.steps_to_run:
         s9add_annotations2table.main(
             annotations_file=Path(config.output_folder) / "annotations.json",
             table_file=config.table_file,
@@ -142,4 +141,4 @@ def main(config_file, n_cores, steps_to_run=STEPS_TO_RUN):
 
 
 if __name__ == "__main__":
-    main(CONFIG_FILE, N_CORES, STEPS_TO_RUN)
+    main(CONFIG_FILE, N_CORES)

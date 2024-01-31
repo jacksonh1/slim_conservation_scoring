@@ -8,6 +8,7 @@ from Bio import Align, AlignIO, SeqIO
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
 import local_env_variables.env_variables as env
+import local_seqtools.alignment_tools as aln_tools
 import local_seqtools.general_utils as tools
 
 # import local_seqtools.jch_alignment as jch_alignment
@@ -99,9 +100,7 @@ def save_colored_protein_msa_html(
                     style += "background-color: #f9f90262;"
             # if highlight_region and c in highlight_region:
             #     style += "font-weight: bold;"
-            sequence_line += (
-                f'<span style="{style}">{symbol}</span>'
-            )
+            sequence_line += f'<span style="{style}">{symbol}</span>'
         html_content += f"{formatted_id} {sequence_line}\n"
     html_content += "</pre></body></html>"
     with open(output_html_file, "w") as html_file:
@@ -138,9 +137,13 @@ def main(json_file, n_flanking_aas, whole_idr=False):
     for level in og.levels_passing_filters:
         lvl = og.level_objects[level]
         aln = lvl.aln
-        # aln_slice_start, aln_slice_end = index2alnindex_V2(
-        #     lvl, hit_start, hit_end, n_flanking_aas
-        # )
+        # sort aln by percent identity to query
+        aln.sort(
+            key=lambda record: aln_tools.percent_identity(
+                record, lvl.query_aln_sequence
+            ),
+            reverse=True,
+        )
         if whole_idr:
             aln_slice_start, aln_slice_end = index2alnindex_V2(
                 lvl, og.idr_start, og.idr_end, n_flanking_aas
@@ -157,11 +160,8 @@ def main(json_file, n_flanking_aas, whole_idr=False):
         soffset = lvl.hit_aln_start - aln_slice_start
         eoffset = lvl.hit_aln_end - aln_slice_start
         save_colored_protein_msa_html(
-            aln[:, aln_slice_start:aln_slice_end+1],
+            aln[:, aln_slice_start : aln_slice_end + 1],
             slice_file,
             color_scheme="clustal",
             highlight_region=(soffset, eoffset + 1),
         )
-        # start = max(0, lvl.hit_aln_start - n_flanking_aas)
-        # end = min(len(aln[0]), lvl.hit_aln_end + 1 + n_flanking_aas)
-        # aln_slice = slice(start, end)

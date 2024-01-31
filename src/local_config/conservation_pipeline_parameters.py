@@ -110,9 +110,8 @@ class PipelineParameters:
 
     database_filekey: str | Path
     table_file: str | Path
-    precalculated_aln_conservation_score_keys: list[str] = field(factory=list)
     clear_files: bool = field(default=False, converter=bool)
-    clean_analysis_files: bool = field(default=True, converter=bool)
+    steps_to_run: list = field(default=['s1','s2','s3','s4','s5','s6','s7','s8','s9'])
     score_methods: list[ScoreMethod] = field(factory=list)
     output_folder: str | Path = field(default="conservation_analysis")
     hit_sequence_params: HitSequenceConf = field(default=HitSequenceConf())
@@ -121,6 +120,7 @@ class PipelineParameters:
     multilevel_plot_params: MultiLevelPlotConf = field(default=MultiLevelPlotConf())
     aln_slice_params: AlnSliceConf = field(default=AlnSliceConf())
     table_annotation_params: TableAnnotationConf = field(default=TableAnnotationConf())
+    clean_analysis_files: bool = field(default=False, converter=bool)
     
     @classmethod
     def from_dict(cls, d: dict[str, Any]):

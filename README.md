@@ -53,7 +53,7 @@ This repo includes an example database (`./data/example_orthogroup_database/`). 
 6. install the src code as a local package: `pip install .` <br>
 
 # database setup
-An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./src/data_processing/`. The script `./src/data_processing/p1_initial_database_preparation/create_database.sh` was run with the [orthodb preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), whereas the other scripts were run with this repo. They are numbered in the order they were run.
+An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./scripts/data_processing/`. The script `./scripts/data_processing/p1_initial_database_preparation/create_database.sh` was run with the [orthodb preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), whereas the other scripts were run with this repo. They are numbered in the order they were run.
 
 Regardless of whether or not you use the orthodb preprocessing pipeline, the database needs to consist of multiple sequence alignments for each of the full length proteins that are in the input table, and a json file (database key) that maps the gene id to the alignment files. The minimal json file should look like this:
 ```
@@ -87,7 +87,7 @@ Because the example database is created from the orthoDB, there are multiple phy
     ...
 }
 ```
-For conservation scores that are calculated for an entire msa, the scores can be precalculated for all of the alignments in the database to save time when running the pipeline later. I did this for the example database with `./src/data_processing/p2_alignment_conservation_scores/property_entropy_scores.py`. Precalculated scores should be added to the database json file as a new key-value pair under the key `conservation_scores`. For example, I precalculated property entropy scores for the example database and the json file now looks like this:
+For conservation scores that are calculated for an entire msa, the scores can be precalculated for all of the alignments in the database to save time when running the pipeline later. I did this for the example database with `./scripts/data_processing/p2_alignment_conservation_scores/property_entropy_scores.py`. Precalculated scores should be added to the database json file as a new key-value pair under the key `conservation_scores`. For example, I precalculated property entropy scores for the example database and the json file now looks like this:
 ```
 {
     "gene_id": {
