@@ -69,8 +69,9 @@ def lvl_annotation_conservation_string(lvlo: group_tools.LevelAlnScore):
 
 
 def lvl_annotation_aln_slice(lvlo: group_tools.LevelAlnScore):
-    file = Path(lvlo.info_dict["aln_slice_file"]).resolve().relative_to(Path.cwd())
-    return rf'=HYPERLINK("{str(file)}")'
+    if "aln_slice_file" in lvlo.info_dict:
+        file = Path(lvlo.info_dict["aln_slice_file"]).resolve().relative_to(Path.cwd())
+        return rf'=HYPERLINK("{str(file)}")'
 
 
 def get_largest_avg_zscore_for_window(score_list, window_size=5):

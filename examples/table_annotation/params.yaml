@@ -2,6 +2,16 @@ clear_files: true
 output_folder: "./conservation_analysis"
 database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
 table_file: "./table.csv"
+steps_to_run:
+  - "s1"
+  - "s2"
+  - "s3"
+  - "s4"
+  - "s5"
+  - "s6"
+  - "s7"
+  - "s8"
+  - "s9"
 hit_sequence_params:
   hit_sequence_search_method: "search"
 idr_params:
