@@ -80,8 +80,8 @@ def ortholog_analysis_setup_given_positions(
     output_dict = ortholog_analysis_setup(table_row, database_key)
     hit_start_pos = int(table_row["hit start position"])
     hit_end_pos = int(table_row["hit end position"])
-    output_dict["hit_start_pos"] = hit_start_pos
-    output_dict["hit_end_pos"] = hit_end_pos
+    output_dict["hit_start_position"] = hit_start_pos
+    output_dict["hit_end_position"] = hit_end_pos
     output_dict["hit_sequence"] = output_dict["query_sequence"][
         hit_start_pos : hit_end_pos + 1
     ]
