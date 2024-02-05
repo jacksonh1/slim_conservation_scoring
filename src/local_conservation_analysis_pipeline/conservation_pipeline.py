@@ -134,10 +134,15 @@ def main(config_file, n_cores):
             table_file=config.table_file,
             table_annotations=config.table_annotation_params.annotations,
             table_annotation_levels=config.table_annotation_params.levels,
-            output_table_file=config.table_file.replace(".csv", "_ANNOTATED.csv"),
+            output_table_file=str(config.table_file).replace(".csv", "_ANNOTATED.csv"),
         )
     if config.clean_analysis_files:
         shutil.rmtree(config.output_folder)
+    # delete the reindexed table file
+    Path(str(config.table_file).replace(".csv", "_original_reindexed.csv")).unlink()
+    # save config to a parameters file
+    with open(Path(config.output_folder) / 'processing_parameters.yaml', 'w') as f:
+        yaml.dump(asdict(config), f, default_flow_style=False)
 
 
 if __name__ == "__main__":

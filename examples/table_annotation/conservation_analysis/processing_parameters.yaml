@@ -1,0 +1,57 @@
+aln_slice_params:
+  n_flanking_aas: 20
+  whole_idr: true
+clean_analysis_files: false
+clear_files: true
+database_filekey: ../../data/example_orthogroup_database/human_odb_groups/database_key.json
+filter_params:
+  min_num_orthos: 20
+hit_sequence_params:
+  hit_sequence_search_method: search
+  lcs_min_length: 20
+  longest_common_subsequence: false
+  target_hit_length: 0
+idr_params:
+  find_idrs: true
+  gap_merge_threshold: 10
+  idr_map_file: null
+  idr_min_length: 8
+  iupred_cutoff: 0.4
+multilevel_plot_params:
+  num_bg_scores_cutoff: 20
+  score_key: aln_property_entropy
+  score_type: zscore
+output_folder: ./conservation_analysis
+score_methods:
+- score_key: aln_asym_sum_of_pairs
+  score_kwargs:
+    gap_frac_cutoff: 0.2
+    matrix_name: EDSSMat50_max_off_diagonal_norm
+    overwrite: true
+steps_to_run:
+- s1
+- s2
+- s3
+- s4
+- s5
+- s6
+- s7
+- s8
+- s9
+table_annotation_params:
+  annotations:
+  - json_file
+  - multi_level_plot
+  - hit_start_position
+  - regex
+  - regex_match
+  - regex_match_mean_zscore
+  - conservation_string
+  - aln_slice_file
+  - hit_mean_zscore
+  levels:
+  - Vertebrata
+  - Tetrapoda
+  motif_regex: P.P.E
+  score_key_for_table: aln_property_entropy
+table_file: ./table.csv
