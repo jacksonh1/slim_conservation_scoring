@@ -7,100 +7,116 @@ import local_seqtools.general_utils as tools
 
 
 class jch_alignment:
-    '''This class stores an alignment as a AlignIO.MultipleSeqAlignment object and columnwise annotations.
-    It stores an index for converting between the unaligned and aligned sequence positions. The "query" or 
+    """This class stores an alignment as a AlignIO.MultipleSeqAlignment object and columnwise annotations.
+    It stores an index for converting between the unaligned and aligned sequence positions. The "query" or
     "reference sequence must be the first sequence in the alignment (for now).
-    The main goal is to allow for easy slicing of the alignment and the column annotations.'''
+    The main goal is to allow for easy slicing of the alignment and the column annotations.
+    """
 
-    def __init__(self, alignment: AlignIO.MultipleSeqAlignment, query_id: str, column_annotations: dict[str, list]|None=None):
+    def __init__(
+        self,
+        alignment: AlignIO.MultipleSeqAlignment,
+        query_id: str,
+        column_annotations: dict[str, list] | None = None,
+    ):
         # Store the alignment
         self.alignment = alignment
         # query sequence is the first sequence in the alignment
-        self.query_seqrecord = [self.alignment[i] for i in range(len(self.alignment)) if self.alignment[i].id == query_id][0]
+        self.query_seqrecord = [
+            self.alignment[i]
+            for i in range(len(self.alignment))
+            if self.alignment[i].id == query_id
+        ][0]
         self.query_sequence_str = str(self.query_seqrecord.seq)
         self.query_sequence_id_str = self.query_seqrecord.id
-        # Store the index and unaligned sequences 
-        self.query_unaligned_str, self.index = tools.reindex_alignment_str(self.query_sequence_str)
+        # Store the index and unaligned sequences
+        self.query_unaligned_str, self.index = tools.reindex_alignment_str(
+            self.query_sequence_str
+        )
         if column_annotations is not None:
             self.alignment.column_annotations = column_annotations
 
     def __str__(self):
-        s = f'jch_alignment object\n{self.alignment.get_alignment_length()} columns\n{len(self.alignment)} sequences\ncolumn annotations: {self.alignment.column_annotations.keys()}'
+        s = f"jch_alignment object\n{self.alignment.get_alignment_length()} columns\n{len(self.alignment)} sequences\ncolumn annotations: {self.alignment.column_annotations.keys()}"
         return s
-        
+
     def unaligned_annotation_to_column_annotation(self, unaligned_annotation: list):
-        '''Takes a list of annotations that correspond to the unaligned sequence and returns a list of annotations that correspond to the aligned sequence'''
+        """Takes a list of annotations that correspond to the unaligned sequence and returns a list of annotations that correspond to the aligned sequence"""
         column_annotation = []
         unaligned_pos = 0
         for char in self.query_sequence_str:
-            if char == '-':
-                column_annotation.append('-')
+            if char == "-":
+                column_annotation.append("-")
             else:
                 column_annotation.append(unaligned_annotation[unaligned_pos])
                 unaligned_pos += 1
         return column_annotation
-        
-    def add_unaligned_annotation_to_column_annotations(self, key: str, unaligned_annotation: list):
-        '''Takes a list of annotations that correspond to the unaligned sequence and adds it to the column annotations for the alignment'''
-        column_annotation = self.unaligned_annotation_to_column_annotation(unaligned_annotation)
+
+    def add_unaligned_annotation_to_column_annotations(
+        self, key: str, unaligned_annotation: list
+    ):
+        """Takes a list of annotations that correspond to the unaligned sequence and adds it to the column annotations for the alignment"""
+        column_annotation = self.unaligned_annotation_to_column_annotation(
+            unaligned_annotation
+        )
         self.alignment.column_annotations[key] = column_annotation
 
     def slice_by_unaligned_positions_inclusive(self, start, end):
-        '''INCLUSIVE. Returns a new alignment object that is a slice of the current
+        """INCLUSIVE. Returns a new alignment object that is a slice of the current
         alignment.  The slice is defined by the start and end positions of the
-        query sequence.'''
+        query sequence."""
         # Get the start and end positions in the alignment
         start_aln, end_aln = self.index[start], self.index[end]
         # Slice the alignment
-        aln_slice = self.alignment[:, start_aln:end_aln+1]
+        aln_slice = self.alignment[:, start_aln : end_aln + 1]
         return jch_alignment(aln_slice)
-    
+
     def slice_by_aln_positions(self, start, end):
-        '''Returns a new alignment object that is a slice of the current
+        """Returns a new alignment object that is a slice of the current
         alignment.  The slice is defined by the start and end positions of the
-        alignment.'''
+        alignment."""
         # Slice the alignment
         aln_slice = self.alignment[:, start:end]
         return jch_alignment(aln_slice)
-    
+
     def format_export_dict(self):
         export_dict = {}
-        export_dict['alignment'] = format(self.alignment, 'fasta')
-        export_dict['column_annotations'] = self.alignment.column_annotations
+        export_dict["alignment"] = format(self.alignment, "fasta")
+        export_dict["column_annotations"] = self.alignment.column_annotations
         return export_dict
 
     def write_json(self, filename):
         export_dict = self.format_export_dict()
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             json.dump(export_dict, f, indent=4)
-    
+
     @classmethod
-    def from_seq_file(cls, filename, format='fasta'):
-        '''Reads in an alignment from a file.  The file can be in any format
-        that is supported by biopython.'''
+    def from_seq_file(cls, filename, format="fasta"):
+        """Reads in an alignment from a file.  The file can be in any format
+        that is supported by biopython."""
         aln = AlignIO.read(filename, format)
         return cls(aln)
-    
+
     @classmethod
     def from_seqrecord_list(cls, seqrecord_list):
-        '''Creates an alignment from a list of SeqRecord objects.'''
+        """Creates an alignment from a list of SeqRecord objects."""
         aln = AlignIO.MultipleSeqAlignment(seqrecord_list)
         return cls(aln)
-    
+
     @classmethod
     def from_json(cls, filename):
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             data = json.load(f)
-        text_fa = data['alignment']
-        aln = AlignIO.read(io.StringIO(text_fa), 'fasta')
-        column_annotations = data['column_annotations']
+        text_fa = data["alignment"]
+        aln = AlignIO.read(io.StringIO(text_fa), "fasta")
+        column_annotations = data["column_annotations"]
         return cls(aln, column_annotations)
 
     @classmethod
     def from_dict(cls, aln_dict: dict):
-        text_fa = aln_dict['alignment']
-        aln = AlignIO.read(io.StringIO(text_fa), 'fasta')
-        column_annotations = aln_dict['column_annotations']
+        text_fa = aln_dict["alignment"]
+        aln = AlignIO.read(io.StringIO(text_fa), "fasta")
+        column_annotations = aln_dict["column_annotations"]
         return cls(aln, column_annotations)
 
 
@@ -256,13 +272,13 @@ class jch_alignment:
 #         self.alignment = alignment
 #         # query sequence is the first sequence in the alignment
 #         self.query_seqrecord = self.alignment[0]
-#         # Store the index and unaligned sequences 
+#         # Store the index and unaligned sequences
 #         self.query_unaligned_str, self.index = tools.reindex_alignment(self.query_seqrecord)
 #         self.column_annotations = ColumnAnnotations(self.alignment)
 #         if column_annotations is not None:
 #             for key, value in column_annotations.items():
 #                 self.column_annotations[key] = value
-    
+
 #     # @property
 #     # def column_annotations(self):
 #     #     # make sure that the column annotations are the same length as the alignment
@@ -270,7 +286,7 @@ class jch_alignment:
 #     #         raise ValueError('Column annotations are not the same length as the alignment')
 #     #     return self._column_annotations
 
-    
+
 #     def slice_by_unaligned_positions_inclusive(self, start, end):
 #         '''Returns a new alignment object that is a slice of the current
 #         alignment.  The slice is defined by the start and end positions of the
@@ -284,7 +300,7 @@ class jch_alignment:
 #         for key, value in self.column_annotations.items():
 #             col_annots[key] = value[start_aln:end_aln]
 #         return jch_alignment(aln_slice, col_annots)
-    
+
 #     def slice_by_aln_positions(self, start, end):
 #         '''Returns a new alignment object that is a slice of the current
 #         alignment.  The slice is defined by the start and end positions of the
@@ -296,7 +312,7 @@ class jch_alignment:
 #         for key, value in self.column_annotations.items():
 #             col_annots[key] = value[start:end]
 #         return jch_alignment(aln_slice, col_annots)
-    
+
 #     def format_export_dict(self):
 #         export_dict = {}
 #         export_dict['alignment'] = format(self.alignment, 'fasta')
@@ -307,20 +323,20 @@ class jch_alignment:
 #         export_dict = self.format_export_dict()
 #         with open(filename, 'w') as f:
 #             json.dump(export_dict, f, indent=4)
-    
+
 #     @classmethod
 #     def from_seq_file(cls, filename, format='fasta'):
 #         '''Reads in an alignment from a file.  The file can be in any format
 #         that is supported by biopython.'''
 #         aln = AlignIO.read(filename, format)
 #         return cls(aln)
-    
+
 #     @classmethod
 #     def from_seqrecord_list(cls, seqrecord_list):
 #         '''Creates an alignment from a list of SeqRecord objects.'''
 #         aln = AlignIO.MultipleSeqAlignment(seqrecord_list)
 #         return cls(aln)
-    
+
 #     @classmethod
 #     def from_json(cls, filename):
 #         with open(filename, 'r') as f:

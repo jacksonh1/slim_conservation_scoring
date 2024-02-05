@@ -35,6 +35,11 @@ class ConserGene:
         self.level_objects: dict[str,ConserLevel]|None = None
         self.aln_score_objects: dict[str,LevelAlnScore]|None = None
     
+    def get_level_obj(self, level):
+        return ConserLevel(
+            self.info_dict["orthogroups"][level]
+        )
+
     def load_levels(self):
         self.level_objects = {}
         for level in self.levels_passing_filters:

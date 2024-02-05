@@ -39,6 +39,7 @@ def main(
     reference_id,
     gap_frac_cutoff,
     overwrite=False,
+    **kwargs,
 ):
     """
     calculate the property entropy score for each column in an alignment

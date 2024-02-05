@@ -47,8 +47,9 @@ def main(
     output_file,
     reference_id,
     matrix_name,
-    gap_frac_cutoff,
+    gap_frac_cutoff=0.2,
     overwrite=False,
+    **kwargs,
 ):
     """
     calculate the asymmetric sum-of-pairs score for each column in an alignment
@@ -75,7 +76,7 @@ def main(
             EDSSMat50_row_norm
             EDSSMat50_max_off_diagonal_norm
     gap_frac_cutoff : float
-        A number between 0 and 1. he fraction of gaps allowed in a column. If column has >gap_frac_cutoff gaps, it is masked in the gap mask
+        A number between 0 and 1. he fraction of gaps allowed in a column. If column has >gap_frac_cutoff gaps, it is masked in the gap mask. by default 0.2
     overwrite : bool, optional
         if True, overwrites the `output_file` if it already exists, by default False
     """

@@ -280,6 +280,7 @@ dependencies:
   - tomli=2.0.1=pyhd8ed1ab_0
   - toposort=1.10=pyhd8ed1ab_0
   - tornado=6.3.3=py312h98912ed_1
+  - tqdm=4.66.1=pyhd8ed1ab_0
   - traitlets=5.14.1=pyhd8ed1ab_0
   - types-python-dateutil=2.8.19.20240106=pyhd8ed1ab_0
   - typing-extensions=4.9.0=hd8ed1ab_0
@@ -323,4 +324,5 @@ dependencies:
   - zlib=1.2.13=hd590300_5
   - zstd=1.5.5=hfc55251_0
   - pip:
+      - alfpy==1.0.6
       - logomaker==0.8

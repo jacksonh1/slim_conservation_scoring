@@ -15,8 +15,7 @@ src/archive/
 archive/
 
 *.pyc
-
-
+conservation_analysis_runs/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
