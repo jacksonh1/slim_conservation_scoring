@@ -147,7 +147,7 @@ class PipelineParameters:
 
 
 
-# print(test["new_score_methods"])
+
 
 # test = {
 #     "table_file": "../../examples/table_annotation/table.csv",
