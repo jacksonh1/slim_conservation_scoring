@@ -71,20 +71,24 @@ class TableAnnotationConf:
     motif_regex: str|None = field(default=None)
     levels: list[str] = field(factory=list)
     annotations: list[str] = field(default=[
-        "json_file",
+        # "json_file",
         "multi_level_plot",
-        "hit_start_position",
+        # "hit_start_position",
         "regex",
         "regex_match",
         # "regex_match_stpos_in_hit",
-        "conservation_string",
+        # 'regex_match_scores',
+        # 'regex_match_mean_score',
+        # 'regex_match_zscores',
+        'regex_match_mean_zscore',
+        # "conservation_string",
         "aln_slice_file",
         # "hit_scores",
         # "hit_mean_score",
         # "hit_z_scores",
         "hit_mean_zscore",
-        "best mean z-score over 5 residue window",
-        "best mean z-score over 10 residue window",
+        # "best mean z-score over 5 residue window",
+        # "best mean z-score over 10 residue window",
     ])
 
 
