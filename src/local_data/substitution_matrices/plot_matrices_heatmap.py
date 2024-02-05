@@ -3,16 +3,17 @@ import os
 import re
 import sys
 from pathlib import Path
-from Bio import AlignIO, Seq, SeqIO, Align
-import numpy as np
-import pandas as pd
 
 # %load_ext autoreload
 # %autoreload 2
 import matplotlib.pyplot as plt
-plt.style.use('custom_standard')
-plt.style.use('custom_small')
+import numpy as np
+import pandas as pd
+# plt.style.use('custom_standard')
+# plt.style.use('custom_small')
 import seaborn as sns
+from Bio import Align, AlignIO, Seq, SeqIO
+
 # pd.options.plotting.backend = "plotly"
 # %%
 

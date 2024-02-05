@@ -1,14 +1,13 @@
+import math
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from Bio import Align, AlignIO, Seq, SeqIO
-
-plt.style.use("custom_standard")
-plt.style.use("custom_small")
+# plt.style.use("custom_standard")
+# plt.style.use("custom_small")
 import seaborn as sns
-import math
+from Bio import Align, AlignIO, Seq, SeqIO
 
 
 def load_matrix_as_df(matrix_name):
