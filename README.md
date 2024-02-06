@@ -1,5 +1,4 @@
 - todo:
-  - add cli to basic script
   - references
     - disorder matrix
     - iupred
@@ -7,9 +6,7 @@
   - generate "proteome" from orthodb in first step of pipeline
   - add optional link to odb database to get uniprot 2 odb id mapping
   - annotate msa's with organism names
-  - add a parameter to specify which steps of the pipeline to run
   - Trim unused src code
-  - slice by query gapless
 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
@@ -224,13 +221,17 @@ clean_analysis_files: false
   - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy")
   - `motif_regex`: (not yet implemented). The regex to search for in the hit sequence (default None). If a regex is provided, an additional column is added to the table that that is the average conservation scoresof the residues in the hit sequence matching the regex. For example if the hit sequence is "PPPEQAPAPAEPGSA" and the regex is "P.P.E", the average conservation score of the residues "PAPAE" (xxxxxxPAPAExxxx) are calculated and added to the table.
   - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, set of conservation scores is added to the table
-  - `annotations`: The new columns to add to the output table. Some annotations that are available:
+  - `annotations`: The new columns to add to the output table. Some annotations are calculated for each "level" specified above. The background for the z-scores is the conservation scores for every residue in the idr that is not masked in the 'score_mask'. The 'score_mask' masks alignment columns that are gaps in the query sequence or that have more than the allowed fraction of gaps (>`gap_frac_cutoff`). Available annotations:
     - `json_file`: the path to the json file containing the conservation scores for the hit sequence
     - `multi_level_plot`: the path to the multilevel plot of the hit sequence conservation
     - `hit_start_position`: the start position of the hit sequence in the full length protein
     - `regex`: the regex used to find the motif within the the hit sequence
     - `regex_match`: the match of the regex in the hit sequence
     - `regex_match_stpos_in_hit`: the start position of the regex match within the hit sequence
+    - `regex_match_scores`: the conservation scores for the residues in the regex match (list)
+    - `regex_match_mean_score`: the mean conservation score for the residues in the regex match
+    - `regex_match_z_scores`: the z-scores for the residues in the regex match (list)
+    - `regex_match_mean_zscore`: the mean z-score for the residues in the regex match
     - `conservation_string`: a string of the conservation scores for the hit sequence. The string is the same length as the hit sequence. Residues with conservation z-scores < 0.5 are represented by a "_", and residues with z-scores >= 0.5 are represented by the corresponding amino acid.
     - `aln_slice_file`: the path to the alignment slice file
     - `hit_scores`: the conservation scores for the hit sequence (list that is the same length as hit sequence)
@@ -346,8 +347,5 @@ new_score_methods:
     gap_frac_cutoff: 0.2
     overwrite: true
 ```
-
-
-
 
 # table annotations
