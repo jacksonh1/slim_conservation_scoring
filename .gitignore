@@ -8,6 +8,7 @@ development/
 workspace.code-workspace
 pipeline_pt2.code-workspace
 .vscode/
+# *.vscode/
 plan.md
 *.sqlite
 temp.py
