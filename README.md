@@ -32,13 +32,13 @@ A series of tools to quantify the conservation of potential short linear motifs 
 - pipeline outputs:
   - a variety of conservation scores for each candidate motif, that are added back to the input table as a column
 
-This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes). The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)).
+The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)). This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes). 
 
 # setup TL;DR:
 
 1. download this repository
 2. download iupred2a from [here](https://iupred2a.elte.hu/download_new)
-3. edit the `.env` file with the location of the downloaded iupred2a folder: `ORTHODB_DATA_DIR=/absolute/path/to/iupred2a/folder/`
+3. edit the `.env` (`./src/local_env_variables/.env`) file with the location of the downloaded iupred2a folder: `ORTHODB_DATA_DIR=/absolute/path/to/iupred2a/folder/`
    - the folder should contain the file `iupred2a_lib.py`
 4. create a new python environment with the dependencies: 
    - Mac - `conda env create -f environment.yml` <br>
@@ -47,7 +47,7 @@ This repo includes an example database (`./data/example_orthogroup_database/`). 
 6. install the src code as a local package: `pip install .` <br>
 
 # database setup
-An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./scripts/data_processing/`. The script `./scripts/data_processing/p1_initial_database_preparation/create_database.sh` was run with the [orthodb preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), whereas the other scripts were run with this repo. They are numbered in the order they were run.
+An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./src/data_processing/`. The script `./src/data_processing/p1_initial_database_preparation/create_database.sh` was run with the [orthodb preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), whereas the other scripts were run with the tools in this repo. They are numbered in the order they were run.
 
 Regardless of whether or not you use the orthodb preprocessing pipeline, the database needs to consist of multiple sequence alignments for each of the full length proteins that are in the input table, and a json file (database key) that maps the gene id to the alignment files. The minimal json file should look like this:
 ```
@@ -81,7 +81,7 @@ Because the example database is created from the orthoDB, there are multiple phy
     ...
 }
 ```
-For conservation scores that are calculated for an entire msa, the scores can be precalculated for all of the alignments in the database to save time when running the pipeline later. I did this for the example database with `./scripts/data_processing/p2_alignment_conservation_scores/property_entropy_scores.py`. Precalculated scores should be added to the database json file as a new key-value pair under the key `conservation_scores`. For example, I precalculated property entropy scores for the example database and the json file now looks like this:
+For conservation scores that are calculated for an entire msa, the scores can be precalculated for all of the alignments in the database to save time when running the pipeline later. I did this for the example database with `./src/data_processing/p2_alignment_conservation_scores/property_entropy_scores.py`. Precalculated scores should be added to the database json file as a new key-value pair under the key `conservation_scores`. For example, I precalculated property entropy scores for the example database and the json file now looks like this:
 ```
 {
     "gene_id": {
@@ -102,7 +102,7 @@ For conservation scores that are calculated for an entire msa, the scores can be
     ...
 }
 ```
-Whether or not to use a precalculated conservation score and any new scores to calculate are specified in the conservation pipeline parameters (see below).
+The precalculated conservation score can just be specified in the conservation pipeline parameters (see below).
 
 # Using the pipeline
 See `./examples/table_annotation/` for an example. <br>
@@ -215,7 +215,7 @@ clean_analysis_files: false
   - `n_flanking_aas`: the number of residues to include on either side of the hit sequence in the output alignment slice file (default 20). It is the number of query sequence residues flanking the hit in the query sequence. So if there are gaps in the query sequence in the msa, those columns are not counted as flanking positions.
   - `whole_idr`: 
 - `table_annotation_params`: parameters for adding conservation scores back to the input table
-  - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy")
+  - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy"). This can be a score that is already in the database key, or a new score that is calculated during pipeline execution.
   - `motif_regex`: (not yet implemented). The regex to search for in the hit sequence (default None). If a regex is provided, an additional column is added to the table that that is the average conservation scoresof the residues in the hit sequence matching the regex. For example if the hit sequence is "PPPEQAPAPAEPGSA" and the regex is "P.P.E", the average conservation score of the residues "PAPAE" (xxxxxxPAPAExxxx) are calculated and added to the table.
   - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, set of conservation scores is added to the table
   - `annotations`: The new columns to add to the output table. Some annotations are calculated for each "level" specified above. The background for the z-scores is the conservation scores for every residue in the idr that is not masked in the 'score_mask'. The 'score_mask' masks alignment columns that are gaps in the query sequence or that have more than the allowed fraction of gaps (>`gap_frac_cutoff`). Available annotations:
@@ -246,7 +246,7 @@ The conservation score functions are located in `./src/local_conservation_scores
 ## currently implemented scores:
 
 ### property entropy
-- score from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
+- score (including code) is from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
 
 docstring from `main` in `./src/local_conservation_scores/aln_property_entropy.py`:
 ```
