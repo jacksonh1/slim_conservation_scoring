@@ -1,6 +1,12 @@
+Written by Jackson Halpin <br>
+
 **this is a Work in progress**
 
 - todo:
+  - Improve explanation of the output of the pipeline 
+    - advertise the outputs at the top of the readme so that people know why they'd want to use the tools
+    - screenshots
+  - fix links in excel
   - add references
     - disorder matrix
     - iupred
