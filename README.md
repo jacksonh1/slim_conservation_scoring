@@ -52,7 +52,7 @@ The basic idea is that you precalculate ortholog groups for conservation analysi
 3. edit the `.env` (`./src/local_env_variables/.env`) file with the location of the downloaded iupred2a folder: `ORTHODB_DATA_DIR=/absolute/path/to/iupred2a/folder/`
    - the folder should contain the file `iupred2a_lib.py`
 4. create a new python environment with the dependencies: 
-   - Mac - `conda env create -f environment.yml` <br>
+   - Mac - `conda env create -f environment_mac.yml` <br>
    - Linux/windows WSL - `conda env create -f environment_linux.yml` <br>
 5. activate the environment: `conda activate slim_conservation` <br>
 6. install the src code as a local package: `pip install .` <br>

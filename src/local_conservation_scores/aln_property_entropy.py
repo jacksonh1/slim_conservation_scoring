@@ -9,8 +9,8 @@ from pathlib import Path
 
 from Bio import Align, AlignIO, Seq, SeqIO
 
-import local_conservation_score_tools.score_tools as cons_tools
-from local_conservation_score_tools import capra_singh_2007_scores as cs
+import local_conservation_scores.tools.general as cons_tools
+from local_conservation_scores.tools import capra_singh_2007_scores as cs
 
 
 def score_alignment(alignment: Align.MultipleSeqAlignment):
@@ -22,7 +22,11 @@ def score_alignment(alignment: Align.MultipleSeqAlignment):
     return scores
 
 
-def mask_alignment(alignment: Align.MultipleSeqAlignment, reference_seq_str: str, gap_frac_cutoff: float = 0.2):
+def mask_alignment(
+    alignment: Align.MultipleSeqAlignment,
+    reference_seq_str: str,
+    gap_frac_cutoff: float = 0.2,
+):
     gap_mask, score_mask = cons_tools.make_score_mask(
         alignment,
         reference_seq_str,
@@ -62,14 +66,14 @@ def main(
         A number between 0 and 1. he fraction of gaps allowed in a column. If column has >gap_frac_cutoff gaps, it is masked in the gap mask
     overwrite : bool, optional
         if True, overwrites the `output_file` if it already exists, by default False
-    """    
-    with open(input_alignment_file, 'r') as f:
-        alignment = AlignIO.read(f, 'fasta')
+    """
+    with open(input_alignment_file, "r") as f:
+        alignment = AlignIO.read(f, "fasta")
 
     # check if output file exists
     if Path(output_file).exists() and not overwrite:
-        print(f'{output_file} exists and overwrite is False')
-        print('exiting...')
+        print(f"{output_file} exists and overwrite is False")
+        print("using file that is already there...")
         return
 
     alignment_seqrecord_dict = {seqrecord.id: seqrecord for seqrecord in alignment}
@@ -88,51 +92,49 @@ def main(
         alignment,
     )
 
-    with open(output_file, 'w') as f:
-        json.dump(score_dict, f, indent=4)
+    with open(output_file, "w") as f:
+        json.dump(score_dict, f)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='calculate asymmetric sum of pairs conservation scores (valdar) for an input alignment file',
-        formatter_class=RawTextHelpFormatter
+        description="calculate the property entropy conservation score for an input alignment file",
+        formatter_class=RawTextHelpFormatter,
     )
     parser.add_argument(
-        '-i',
-        '--input',
+        "-i",
+        "--input",
         type=str,
-        metavar='<file>',
+        metavar="<file>",
         required=True,
-        help='input alignment file (fasta format)'
+        help="input alignment file (fasta format)",
     )
     parser.add_argument(
-        '-o',
-        '--output_file',
+        "-o",
+        "--output_file",
         type=str,
-        metavar='<file>',
+        metavar="<file>",
         required=True,
-        help='output file (json)'
+        help="output file (json)",
     )
     parser.add_argument(
-        '--overwrite',
-        action='store_true',
-        help='overwrite existing results'
+        "--overwrite", action="store_true", help="overwrite existing results"
     )
     parser.add_argument(
-        '-g',
-        '--gap_frac_cutoff',
+        "-g",
+        "--gap_frac_cutoff",
         type=float,
-        metavar='<float>',
+        metavar="<float>",
         default=0.2,
-        help='''fraction of gaps allowed in a column. If column has >gap_frac_cutoff, it is masked in the gap mask, default=0.2'''
+        help="""fraction of gaps allowed in a column. If column has >gap_frac_cutoff, it is masked in the gap mask, default=0.2""",
     )
     parser.add_argument(
-        '-r',
-        '--reference_id',
+        "-r",
+        "--reference_id",
         type=str,
-        metavar='<str>',
+        metavar="<str>",
         default=None,
-        help='''reference id to calculate score mask with (gaps in this sequence will be masked). If not provided, the first sequence in the alignment will be used'''
+        help="""reference id to calculate score mask with (gaps in this sequence will be masked). If not provided, the first sequence in the alignment will be used""",
     )
     args = parser.parse_args()
     main(

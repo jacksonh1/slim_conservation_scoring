@@ -45,10 +45,13 @@ def main(
         if lvl_dict["num_clustered_ldos"] >= min_num_orthologs:
             passing_levels.append(lvl)
     # sort passing levels by the ordering in another list
-    passing_levels = sorted(
-        passing_levels,
-        key=lambda x: env.PHYLOGENY_LVL_ORDERING.index(x),
-    )
+    if all([x in env.PHYLOGENY_LVL_ORDERING for x in passing_levels]):
+        passing_levels = sorted(
+            passing_levels,
+            key=lambda x: env.PHYLOGENY_LVL_ORDERING.index(x),
+        )
+    else:
+        passing_levels = passing_levels
     
     info_dict["levels_passing_filters"] = passing_levels
     with open(json_file, "w") as f:

@@ -6,7 +6,7 @@ import pandas as pd
 from openpyxl import Workbook, load_workbook
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
-import local_conservation_score_tools.score_tools as cons_tools
+import local_conservation_scores.tools.general as cons_tools
 import local_seqtools.general_utils as tools
 
 
@@ -22,7 +22,7 @@ def check_json(json_file):
 def get_image_file(og: group_tools.ConserGene, image_score_key):
     if f"multilevel_plot_file-{image_score_key}" in og.info_dict:
         # file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve()
-        file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path.cwd())
+        file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path(og.analysis_folder).parent.parent)
         return rf'=HYPERLINK("./{str(file)}")'
 
 
@@ -42,35 +42,16 @@ def find_motif_regex(og: group_tools.ConserGene, regex):
     return matchseq, matchst, matchend
 
 
-def get_hit_aln_z_scores(lvlo: group_tools.LevelAlnScore):
-    hit_slice = slice(lvlo.hit_aln_start, lvlo.hit_aln_end + 1)
-    hit_z_scores = lvlo.z_scores[hit_slice]
-    hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
-    nongap_inds = tools.get_non_gap_indexes(hit_aln_seq)
-    return list(np.array(hit_z_scores)[nongap_inds])
-
-def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
-    """
-    returns a list of the scores and a list of the z scores for the hit (non-gap) positions in query sequence
-    """
-    hit_slice = slice(lvlo.hit_aln_start, lvlo.hit_aln_end + 1)
-    hit_scores = lvlo.scores[hit_slice]
-    hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
-    nongap_inds = tools.get_non_gap_indexes(hit_aln_seq)
-    return list(np.array(hit_scores)[nongap_inds])
-
-
-def lvl_annotation_conservation_string(lvlo: group_tools.LevelAlnScore):
-    z_scores = get_hit_aln_z_scores(lvlo)
+def lvl_annotation_conservation_string(lvlo: group_tools.ConserLevel, z_scores: list):
     cons_str = cons_tools.conservation_string(
         z_scores, lvlo.hit_aln_sequence.replace('-', ''), z_score_cutoff=0.5
     )
     return cons_str
 
 
-def lvl_annotation_aln_slice(lvlo: group_tools.LevelAlnScore):
+def lvl_annotation_aln_slice(lvlo: group_tools.ConserLevel, og: group_tools.ConserGene):
     if "aln_slice_file" in lvlo.info_dict:
-        file = Path(lvlo.info_dict["aln_slice_file"]).resolve().relative_to(Path.cwd())
+        file = Path(lvlo.info_dict["aln_slice_file"]).resolve().relative_to(Path(og.analysis_folder).parent.parent)
         return rf'=HYPERLINK("{str(file)}")'
 
 
@@ -107,29 +88,35 @@ def add_gene_annotations_2_dict(
     d["regex_match"] = match[0]
     d["regex_match_stpos_in_hit"] = match[1]
     d["regex_match_endpos_in_hit"] = match[2]
+    if table_annotation_score_key is None:
+        annotation_dict[ref_ind] = d
+        return annotation_dict
+    
     # alignment score annotations
-    og.load_aln_scores(score_key=table_annotation_score_key)
+    og.load_levels()
     d['level_annotations'] = {}
-    for level, lvlo in og.aln_score_objects.items():
+    for level, lvlo in og.level_objects.items():
         if level in d['level_annotations']:
             raise ValueError(f"level {level} already in d['level_annotations']")
         d['level_annotations'][level] = {}
         dlvl = d['level_annotations'][level]
-        dlvl["aln_slice_file"] = lvl_annotation_aln_slice(lvlo)
-        hit_scores = get_hit_aln_scores(lvlo)
+        dlvl["aln_slice_file"] = lvl_annotation_aln_slice(lvlo, og)
+        if "hit_scores" not in lvlo.conservation_scores[table_annotation_score_key]:
+            continue
+        hit_scores = lvlo.conservation_scores[table_annotation_score_key]['hit_scores']
         dlvl["hit_scores"] = hit_scores
         dlvl["hit_mean_score"] = np.mean(hit_scores)
         if match[1] is not None:
             regex_scores = hit_scores[match[1] : match[2] + 1]
             dlvl["regex_match_scores"] = regex_scores
             dlvl["regex_match_mean_score"] = np.mean(regex_scores)
-        if lvlo.z_score_failure is not None:
-            dlvl["z_score_failure"] = lvlo.z_score_failure
+        if "hit_z_scores" not in lvlo.conservation_scores[table_annotation_score_key]:
+            # dlvl["z_score_failure"] = 
             continue
-        hit_z_scores = get_hit_aln_z_scores(lvlo)
+        hit_z_scores = lvlo.conservation_scores[table_annotation_score_key]['hit_z_scores']
         dlvl["hit_z_scores"] = hit_z_scores
         dlvl["hit_mean_zscore"] = np.mean(hit_z_scores)
-        dlvl["conservation_string"] = lvl_annotation_conservation_string(lvlo)
+        dlvl["conservation_string"] = lvl_annotation_conservation_string(lvlo, hit_z_scores)
         if len(hit_z_scores) >= 5:
             dlvl["best mean z-score over 5 residue window"] = get_largest_avg_zscore_for_window(
                 hit_z_scores, window_size=5

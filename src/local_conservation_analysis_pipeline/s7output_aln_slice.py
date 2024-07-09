@@ -3,7 +3,6 @@
 import json
 from pathlib import Path
 
-import alv
 from Bio import Align, AlignIO, SeqIO
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools

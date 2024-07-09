@@ -8,12 +8,6 @@ import pandas as pd
 from attrs import frozen
 from Bio import SeqIO
 
-
-# src_dir = Path(os.path.dirname(__file__)).parent
-# ROOT = src_dir.parent
-# dotenv_path = ROOT / '.env'
-# dotenv.load_dotenv(dotenv_path)
-
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 dotenv.load_dotenv(dotenv_path)
 src_dir = Path(dotenv_path).parent.parent
@@ -29,6 +23,4 @@ colormap_dir = src_dir / os.environ['COLORMAP_DIR']
 COLOR_MAP_FILES = {
     'clustal': colormap_dir / 'clustal_hex_map.json',
 }
-
-
 

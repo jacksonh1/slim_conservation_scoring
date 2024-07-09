@@ -1,23 +1,35 @@
 name: slim_conservation
 channels:
+  - pytorch
   - bioconda
   - conda-forge
 dependencies:
-  - pandas
-  - numpy
-  - biopython
   - python-dotenv
-  - tabulate
-  - pyprojroot
+  - openpyxl
+  - attrs
+  - babel
+  - beautifulsoup4
+  - biopython>=1.8
+  - importlib_resources
+  - ipykernel
+  - ipython
   - jupyter
   - matplotlib
+  - pandas
+  - pip
+  - python
+  - pytorch
+  - scikit-learn
+  - scipy
   - seaborn
-  - ca-certificates
-  - openssl
-  - snakemake
-  - certifi
-  - alv
-  - openpyxl
+  - tabulate
+  - torchvision
+  - tornado
+  - yaml
   - pip:
-    - logomaker
-    - alfpy
+      - alfpy
+      - fair-esm
+      - logomaker
+      - regex
+      - tqdm
+      - transformers

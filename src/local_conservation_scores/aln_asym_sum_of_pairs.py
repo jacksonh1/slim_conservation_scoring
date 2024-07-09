@@ -11,7 +11,7 @@ import pandas as pd
 from Bio import Align, AlignIO, Seq, SeqIO, SeqRecord
 
 import local_env_variables.matrices as submats
-from local_conservation_score_tools import score_tools as cons_tools
+from local_conservation_scores.tools import general as cons_tools
 
 
 def mask_alignment(
@@ -105,7 +105,7 @@ def main(
     score_dict["scores"] = score_alignment(reference_seqrecord, alignment, matrix_df)
 
     with open(output_file, "w") as f:
-        json.dump(score_dict, f, indent=4)
+        json.dump(score_dict, f)
 
 
 if __name__ == "__main__":

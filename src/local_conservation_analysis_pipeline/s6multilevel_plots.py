@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from Bio import AlignIO, SeqIO
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
-import local_conservation_score_tools.score_plots as score_plots
+import local_conservation_scores.tools.score_plots as score_plots
 
 # %%
 

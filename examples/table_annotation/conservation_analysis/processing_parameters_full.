@@ -1,0 +1,93 @@
+aln_slice_params:
+  n_flanking_aas: 20
+  whole_idr: false
+clean_analysis_files: false
+clear_files: true
+database_filekey: ../../data/example_orthogroup_database/human_odb_groups/database_key.json
+embedding_score_methods:
+- level: Vertebrata
+  lflank: 5
+  rflank: 5
+  score_function_name: pairk_aln_embedding
+  score_key: pairk_aln_embedding_lf5_rf5
+  score_kwargs:
+    overwrite: false
+esm_params:
+  device: cuda
+  model_name: esm2_t33_650M_UR50D
+  processes: 1
+  threads: 1
+filter_params:
+  min_num_orthos: 20
+hit_sequence_params:
+  hit_sequence_search_method: search
+  lcs_min_length: 20
+  longest_common_subsequence: false
+  target_hit_length: 0
+idr_params:
+  find_idrs: true
+  gap_merge_threshold: 10
+  idr_map_file: null
+  idr_min_length: 8
+  iupred_cutoff: 0.4
+multilevel_plot_params:
+  num_bg_scores_cutoff: 20
+  score_key: null
+  score_type: zscore
+new_index: true
+output_folder: ./conservation_analysis
+pairwise_matrix_to_score_params:
+  bg_cutoff: 50
+  bg_kmer_cutoff: 10
+  columnwise_score_function_name: property_entropy
+  matrix_to_score_function_name: pairk_conservation
+score_methods:
+- level: Vertebrata
+  lflank: 0
+  rflank: 0
+  score_function_name: aln_property_entropy
+  score_key: aln_property_entropy
+  score_kwargs:
+    gap_frac_cutoff: 0.2
+    overwrite: false
+- level: Vertebrata
+  lflank: 0
+  rflank: 0
+  score_function_name: aln_shannon_entropy
+  score_key: aln_shannon_entropy
+  score_kwargs:
+    gap_frac_cutoff: 0.2
+    overwrite: false
+- level: Vertebrata
+  lflank: 5
+  rflank: 5
+  score_function_name: pairk_aln
+  score_key: pairk_aln_lf5_rf5_edssmat50
+  score_kwargs:
+    matrix_name: EDSSMat50
+    overwrite: false
+- level: Vertebrata
+  lflank: 5
+  rflank: 5
+  score_function_name: pairk_aln_needleman
+  score_key: pairk_aln_needleman_lf5_rf5_edssmat50
+  score_kwargs:
+    matrix_name: EDSSMat50
+    overwrite: false
+steps_to_run:
+- s1
+- s2
+- s3
+- s4
+- s5
+- s8
+- s9
+table_annotation_params:
+  annotations:
+  - json_file
+  levels:
+  - Vertebrata
+  - Tetrapoda
+  motif_regex: P.P.E
+  score_key_for_table: null
+table_file: ./table.csv

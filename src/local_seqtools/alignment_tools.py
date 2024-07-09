@@ -3,6 +3,7 @@ from alfpy import word_distance, word_pattern, word_vector
 from alfpy.utils import distmatrix
 from alfpy.utils import seqrecords as alf_seqrecords
 from Bio import Align, AlignIO, Seq, SeqIO
+from Bio.SeqRecord import SeqRecord
 
 
 def score_alignment(seq1: str, seq2: str, subs_mat_df: pd.DataFrame, gap_open=-10, gap_extend=-0.5) -> float:
@@ -78,7 +79,7 @@ def pairwise_alignment(seq1, seq2, scoring_matrix_name = 'BLOSUM62', gap_opening
     return alignment
 
 
-def compute_pairwise_percent_id_from_msa(seqrecord1: SeqIO.SeqRecord, seqrecord2: SeqIO.SeqRecord)-> float:
+def compute_pairwise_percent_id_from_msa(seqrecord1: SeqRecord, seqrecord2: SeqRecord)-> float:
     """compute pairwise percent identity between two sequences
     - The sequences must be pre-aligned (i.e. they have the same length)
     - The returned percent identity is computed as the number of identical 
@@ -114,7 +115,7 @@ def compute_pairwise_percent_id_from_msa(seqrecord1: SeqIO.SeqRecord, seqrecord2
     return num_same / length
 
 
-def percent_identity(seq1: str|SeqIO.SeqRecord, seq2: str|SeqIO.SeqRecord) -> float:
+def percent_identity(seq1: str|SeqRecord, seq2: str|SeqRecord) -> float:
     """
     Returns a percent identity between 0 (no identical residues) and 1 (all residues are identical)
     - The sequences must be pre-aligned (i.e. they have the same length)
@@ -169,3 +170,16 @@ def alfpy_distance_matrix(seqrecord_list, word_size=2):
     matrix = distmatrix.create(alf_seq_records.id_list, dist)
     return matrix
 
+
+def query_alfpy_distance_matrix(
+    query_id: str, matrix: distmatrix.Matrix, similarity=True
+) -> tuple[list[str], list[float]]:
+    """
+    get the row from the alfpy matrix that corresponds to the query gene
+    """
+    query_row = [c for c, i in enumerate(matrix.id_list) if query_id in i][0]
+    query_row_distance = matrix.data[query_row]
+    if similarity:
+        query_row_similarity = 1 - query_row_distance
+        return matrix.id_list, query_row_similarity
+    return matrix.id_list, query_row_distance

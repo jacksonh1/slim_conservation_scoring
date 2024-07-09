@@ -1106,7 +1106,7 @@
         "77115_0:00302b",
         "52670_0:002782"
     ],
-    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpkixzw5bs -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpkixzw5bs-cdhit.fa -M 0 -d 0 ",
+    "cdhit_command": "cd-hit -i /tmp/tmp6ir82xew -o /tmp/tmp6ir82xew-cdhit.fa -M 0 -d 0 -g 1 ",
     "species_map": {
         "38626_0:002d6b": "Phascolarctos cinereus",
         "9337_0:0036f4": "Trichosurus vulpecula",
@@ -1276,11 +1276,19 @@
         "_cd_hit_exe": "cd-hit",
         "_cd_hit_additional_args": "",
         "main_output_folder": "../../../data/example_orthogroup_database/human_odb_groups",
-        "write_files": true
+        "write_files": true,
+        "overwrite": false
     },
-    "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpl6xfio0w\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpl6xfio0w-mafft.fa\"",
+    "alignment_clustered_ldos_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/tmp/tmp7u1tulr5\" > \"/tmp/tmp7u1tulr5-mafft.fa\"",
     "conservation_scores": {
-        "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json"
+        "aln_property_entropy": {
+            "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json",
+            "score_function_name": "aln_property_entropy",
+            "score_params": {
+                "gap_frac_cutoff": 0.2,
+                "overwrite": true
+            }
+        }
     }
 }

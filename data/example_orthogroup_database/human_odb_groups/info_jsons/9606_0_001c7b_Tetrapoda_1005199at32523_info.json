@@ -668,7 +668,7 @@
         "8932_0:003b96"
     ],
     "sequences_clustered_ldos": [
-        "9606_0:001c7b",
+        "36723_0:00125d",
         "9796_0:004018",
         "9531_0:003200",
         "9417_0:00209d",
@@ -677,7 +677,7 @@
         "291302_0:0031fc",
         "30608_0:0015aa",
         "81572_0:0048a0",
-        "9483_0:0011de",
+        "9606_0:001c7b",
         "10020_0:00458d",
         "885580_0:00290a",
         "34839_0:001f21",
@@ -726,9 +726,9 @@
         "8932_0:003b96",
         "216574_0:003c68"
     ],
-    "cdhit_command": "cd-hit -i /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpedljcbhp -o /var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpedljcbhp-cdhit.fa -M 0 -d 0 ",
+    "cdhit_command": "cd-hit -i /tmp/tmpsgr31zlg -o /tmp/tmpsgr31zlg-cdhit.fa -M 0 -d 0 -g 1 ",
     "species_map": {
-        "9606_0:001c7b": "Homo sapiens",
+        "36723_0:00125d": "Mustela erminea",
         "9796_0:004018": "Equus caballus",
         "9531_0:003200": "Cercocebus atys",
         "9417_0:00209d": "Artibeus jamaicensis",
@@ -737,7 +737,7 @@
         "291302_0:0031fc": "Miniopterus natalensis",
         "30608_0:0015aa": "Microcebus murinus",
         "81572_0:0048a0": "Hylobates moloch",
-        "9483_0:0011de": "Callithrix jacchus",
+        "9606_0:001c7b": "Homo sapiens",
         "10020_0:00458d": "Dipodomys ordii",
         "885580_0:00290a": "Fukomys damarensis",
         "34839_0:001f21": "Chinchilla lanigera",
@@ -810,11 +810,19 @@
         "_cd_hit_exe": "cd-hit",
         "_cd_hit_additional_args": "",
         "main_output_folder": "../../../data/example_orthogroup_database/human_odb_groups",
-        "write_files": true
+        "write_files": true,
+        "overwrite": false
     },
-    "alignment_clustered_ldos_file": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_001c7b_Tetrapoda_1005199at32523_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpwdx5efpo\" > \"/var/folders/q4/k476_qrd3jvdvzwd6lq30kqc0000gn/T/tmpwdx5efpo-mafft.fa\"",
+    "alignment_clustered_ldos_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_001c7b_Tetrapoda_1005199at32523_clustered_ldos_aln.fasta",
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/tmp/tmpuu26huqu\" > \"/tmp/tmpuu26huqu-mafft.fa\"",
     "conservation_scores": {
-        "aln_property_entropy": "/Users/jackson/Dropbox (MIT)/work/07-SLiM_bioinformatics/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_001c7b_Tetrapoda_1005199at32523_clustered_ldos_aln.json"
+        "aln_property_entropy": {
+            "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_001c7b_Tetrapoda_1005199at32523_clustered_ldos_aln.json",
+            "score_function_name": "aln_property_entropy",
+            "score_params": {
+                "gap_frac_cutoff": 0.2,
+                "overwrite": true
+            }
+        }
     }
 }
