@@ -182,11 +182,15 @@ def generate_plots(file, config: conf.PipelineParameters):
         )
 
 
+# def calculate_embedding_pairwise_matrices(
+#     file, config: conf.PipelineParameters, mod: esm_tools.ESM_Model, **kwargs
+# ):
 def calculate_embedding_pairwise_matrices(
-    file, config: conf.PipelineParameters, mod: esm_tools.ESM_Model, **kwargs
+    file, config: conf.PipelineParameters, **kwargs
 ):
-    # def calculate_embedding_pairwise_matrices(file, config: conf.PipelineParameters, **kwargs):
-    # mod = esm_tools.ESM_Model(model_name=config.esm_params.model_name)
+    mod = esm_tools.ESM_Model(
+        model_name=config.esm_params.model_name, threads=config.esm_params.threads
+    )
     score_kwargs = dict(
         device=config.esm_params.device,
         mod=mod,
@@ -221,7 +225,7 @@ def multiprocess_function(
             pass
 
 
-def multiprocess_function_embedding(
+def __multiprocess_function_embedding(
     func: Callable,
     config: conf.PipelineParameters,
     json_files: list,
@@ -268,6 +272,7 @@ def main(config_file, n_cores):
     annotated_table_file = Path(config.output_folder).parent / table_filename.replace(
         ".csv", "_ANNOTATED.csv"
     )
+    Path(config.output_folder).mkdir(exist_ok=True, parents=True)
     score_output_folder = Path(config.output_folder).parent / "conservation_scores"
     score_output_folder.mkdir(exist_ok=True)
     if "s1" in config.steps_to_run:
@@ -344,9 +349,9 @@ def main(config_file, n_cores):
         print("calculating embedding pairwise matrices")
         # print(len(jsons_2_calc_embedding_mats))
 
-        mod = esm_tools.ESM_Model(
-            model_name=config.esm_params.model_name, threads=config.esm_params.threads
-        )
+        # mod = esm_tools.ESM_Model(
+        #     model_name=config.esm_params.model_name, threads=config.esm_params.threads
+        # )
         # mods = [mod]*len(jsons_2_calc_embedding_mats)
         # f_args = [(i, config, mod, dict(score_output_folder=score_output_folder)) for i, mod in zip(jsons_2_calc_embedding_mats, mods)]
         # f_args = [(i, config, mod) for i, mod in zip(jsons_2_calc_embedding_mats, mods)]
@@ -355,19 +360,17 @@ def main(config_file, n_cores):
         # p.close()
         # p.join()
 
-        # multiprocess_function_embedding(
-        # multiprocess_function(
-        #     calculate_embedding_pairwise_matrices,
-        #     config,
-        #     jsons_2_calc_embedding_mats,
-        #     n_cores=config.esm_params.processes,
-        #     # mod=mod,
-        #     **dict(score_output_folder=score_output_folder),
-        # )
-        for i in json_files:
-            calculate_embedding_pairwise_matrices(
-                i, config=config, mod=mod, score_output_folder=score_output_folder
-            )
+        multiprocess_function(
+            calculate_embedding_pairwise_matrices,
+            config,
+            json_files,
+            n_cores=config.esm_params.processes,
+            score_output_folder=score_output_folder,
+        )
+        # for i in json_files:
+        #     calculate_embedding_pairwise_matrices(
+        #         i, config=config, mod=mod, score_output_folder=score_output_folder
+        #     )
 
     if "s5" in config.steps_to_run:
         print("calculating kmer scores from pairwise matrices")

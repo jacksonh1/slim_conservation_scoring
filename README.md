@@ -32,9 +32,16 @@ This work was supported by the National Institutes of Health under Award Number 
     - [asymmetric sum-of-pairs score](#asymmetric-sum-of-pairs-score)
   - [multiple scores at once](#multiple-scores-at-once)
 
+
+lessons learned:
+This pipeline all works, but in hindsight, I think that it is too complicated and difficult to manage. I wanted to avoid using a workflow manager (e.g. snakemake or nextflow) and a more sophisticated database structure because I wanted to keep the pipeline easy for a non-computational biologist to use, however, I think the result is probably more difficult to use. If I had the time to redo it, I would probably use a workflow manager to handle the pipeline and a real relational database to store the data and results.
+
 # motif conservation in disordered regions
 
 A series of tools to quantify the conservation of potential short linear motifs in disordered regions.<br>
+
+The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)). This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes). 
+
 
 - pipeline inputs:
   - A table containing candidate motifs and the name of the protein they are located in. 
@@ -43,7 +50,6 @@ A series of tools to quantify the conservation of potential short linear motifs 
 - pipeline outputs:
   - a variety of conservation scores for each candidate motif, that are added back to the input table as a column
 
-The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)). This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example script](https://github.com/jacksonh1/orthogroup_generation/tree/main/examples/ex3_all_human_genes). 
 
 # setup TL;DR:
 
@@ -356,6 +362,21 @@ new_score_methods:
     overwrite: true
 ```
 
+
+## references
+
+- ESM2 (the model used to generate the embeddings): 
+    - Z. Lin, H. Akin, R. Rao, B. Hie, Z. Zhu, W. Lu, N. Smetanin, R. Verkuil, O. Kabeli, Y. Shmueli, A. Dos Santos Costa, M. Fazel-Zarandi, T. Sercu, S. Candido, A. Rives, Evolutionary-scale prediction of atomic-level protein structure with a language model. Science 379, 1123–1130 (2023).
+- Some of the ESM model sequence encoding functions are adapted from the kibby tool ([link](https://github.com/esbgkannan/kibby)): 
+    - W. Yeung, Z. Zhou, S. Li, N. Kannan, Alignment-free estimation of sequence conservation for identifying functional sites using protein sequence embeddings. Brief Bioinform 24 (2023)
+- built-in conservation scoring functions are adapted from code released with this study: 
+    - J. A. Capra, M. Singh, Predicting functionally important residues from sequence conservation. Bioinformatics 23, 1875–1882 (2007)
+- built-in scoring matrix "EDSSMat50" is from this study: 
+    - R. Trivedi, H. A. Nagarajaram, Amino acid substitution scoring matrices specific to intrinsically disordered regions in proteins. Sci Rep 9, 16380 (2019)
+- built-in "grantham" matrices (including "grantham", "grantham_similarity_norm", and "grantham_similarity_normx100_aligner_compatible") are from or derived from the distance matrix in this study: 
+    - R. Grantham, Amino acid difference formula to help explain protein evolution. Science 185, 862–864 (1974).
+- other matrices are from biopython:
+    - P. J. A. Cock, T. Antao, J. T. Chang, B. A. Chapman, C. J. Cox, A. Dalke, I. Friedberg, T. Hamelryck, F. Kauff, B. Wilczynski, M. J. L. de Hoon, Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics 25, 1422–1423 (2009).
 
 
 
