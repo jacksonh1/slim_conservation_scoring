@@ -3,20 +3,6 @@ Written by Jackson Halpin <br>
 This work was supported by the National Institutes of Health under Award Number R35GM149227. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
 
 
-**this is a Work in progress**
-
-- todo:
-  - Improve explanation of the output of the pipeline 
-    - advertise the outputs at the top of the readme so that people know why they'd want to use the tools
-    - screenshots
-  - fix links in excel
-  - add references
-    - disorder matrix
-    - iupred
-    - capra/singh
-  - annotate msa's with organism names
-  - Trim unused src code
-
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [motif conservation in disordered regions](#motif-conservation-in-disordered-regions)
@@ -33,10 +19,10 @@ This work was supported by the National Institutes of Health under Award Number 
   - [multiple scores at once](#multiple-scores-at-once)
 
 
-lessons learned:
-This pipeline all works, but in hindsight, I think that it is too complicated and difficult to manage. I wanted to avoid using a workflow manager (e.g. snakemake or nextflow) and a more sophisticated database structure because I wanted to keep the pipeline easy for a non-computational biologist to use, however, I think the result is probably more difficult to use. If I had the time to redo it, I would probably use a workflow manager to handle the pipeline and a real relational database to store the data and results.
-
 # motif conservation in disordered regions
+
+<!-- lessons learned: -->
+<!-- This pipeline all works, but in hindsight, I think that it is too complicated and difficult to manage. I wanted to avoid using a workflow manager (e.g. snakemake or nextflow) and a more sophisticated database structure because I wanted to keep the pipeline easy for a non-computational biologist to use, however, I think the result is probably more difficult to use. If I had the time to redo it, I would probably use a workflow manager to handle the pipeline and a real relational database to store the data and results. -->
 
 A series of tools to quantify the conservation of potential short linear motifs in disordered regions.<br>
 
@@ -377,6 +363,7 @@ new_score_methods:
     - R. Grantham, Amino acid difference formula to help explain protein evolution. Science 185, 862–864 (1974).
 - other matrices are from biopython:
     - P. J. A. Cock, T. Antao, J. T. Chang, B. A. Chapman, C. J. Cox, A. Dalke, I. Friedberg, T. Hamelryck, F. Kauff, B. Wilczynski, M. J. L. de Hoon, Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics 25, 1422–1423 (2009).
+
 
 
 
