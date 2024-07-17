@@ -17,6 +17,7 @@ This work was supported by the National Institutes of Health under Award Number 
     - [property entropy](#property-entropy)
     - [asymmetric sum-of-pairs score](#asymmetric-sum-of-pairs-score)
   - [multiple scores at once](#multiple-scores-at-once)
+  - [references](#references)
 
 
 # motif conservation in disordered regions
@@ -46,7 +47,7 @@ The basic idea is that you precalculate ortholog groups for conservation analysi
 4. create a new python environment with the dependencies: 
    - Mac - `conda env create -f environment_mac.yml` <br>
    - Linux/windows WSL - `conda env create -f environment_linux.yml` <br>
-5. activate the environment: `conda activate slim_conservation` <br>
+5. activate the environment: `conda activate slim_conservation_scoring` <br>
 6. install the src code as a local package: `pip install .` <br>
 
 # database setup

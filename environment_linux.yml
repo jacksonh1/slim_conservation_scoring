@@ -1,4 +1,4 @@
-name: slim_conservation
+name: slim_conservation_scoring
 channels:
   - bioconda
   - conda-forge
