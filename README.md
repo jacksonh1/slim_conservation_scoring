@@ -132,14 +132,14 @@ See `./examples/table_annotation/` for an example. <br>
 ## pipeline overview
 
 The main pipeline is executed via the script `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`, which executes the following steps (code in `./src/local_conservation_analysis_pipeline/`) for each row in the input table:
-s1. setup the analysis folder (create folders and files for each row in the input table)
+- s1. setup the analysis folder (create folders and files for each row in the input table)
     - a reference index is used to keep track of each row in the table. Each row is associated with a unique reference index.
     - For each row, the gene id of the protein is looked up in the database key to find the alignment file(s) for the protein and its orthologs
     - a folder is created for the row in the output folder, and a json file is created in the folder that stores all of the information for the row. The json file is used to keep track of the analysis files for the row.
-s2. define idr regions. 
+- s2. define idr regions. 
     - By default this uses iupred (TODO: link) to define the idrs, however an external idr mapping file can be used instead.
     - the json file is updated with the IDR information
-s3. find the hit sequence (candidate motif sequence) in the full length protein. This is done in one of two ways:
+- s3. find the hit sequence (candidate motif sequence) in the full length protein. This is done in one of two ways:
    - if you know the positions of the hit sequence in the full length protein, you can specify the start and end positions in the input table.
      - Be careful that the numbering actually lines up with the unaligned sequence in the alignment file. Different versions of the same protein can have slightly different numberings
    - search for an exact match in the full length sequence
@@ -147,12 +147,12 @@ s3. find the hit sequence (candidate motif sequence) in the full length protein.
      - if it is found more than once, the row is skipped
      - (In the future, I would like to add a parameter to add another row to the table if the hit sequence is found more than once)
    - the json file is updated with the hit sequence information and whether or not the hit is contained within an IDR
-s4. extract information from the alignment files and database and add it to the json file for each row.
-s5. compute any new conservation scores that are to be calculated. Add the scores to the json file for each row.
-s6. construct conservation score plots of the hit sequence
-s7. create stylized html files of the alignment sliced around the hit sequence
-s8. calculate table annotations to be added back to the input table
-s9. add the conservation scores and file paths back to the table and save a new annotated table.
+- s4. extract information from the alignment files and database and add it to the json file for each row.
+- s5. compute any new conservation scores that are to be calculated. Add the scores to the json file for each row.
+- s6. construct conservation score plots of the hit sequence
+- s7. create stylized html files of the alignment sliced around the hit sequence
+- s8. calculate table annotations to be added back to the input table
+- s9. add the conservation scores and file paths back to the table and save a new annotated table.
 
 
 ## pipeline parameters

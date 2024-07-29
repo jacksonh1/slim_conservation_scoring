@@ -10,7 +10,7 @@ steps_to_run:
   - "s4" # add_lvlinfo
   - "s5" # scores
   - "s6" # multilevel_plots
-  # - "s7" # output_aln_slice
+  - "s7" # output_aln_slice
   - "s8" # calculate_annotations
   - "s9" # add_annotations2table
 hit_sequence_params:
