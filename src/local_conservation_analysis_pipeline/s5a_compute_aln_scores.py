@@ -1,15 +1,14 @@
 from pathlib import Path
 
 import local_conservation_analysis_pipeline.group_conservation_objects as group_tools
-from local_conservation_scores import ConservationScoreMethods, PairwiseMatrixMethods
+from local_conservation_scores import MSAScoreMethods
 import local_seqtools.general_utils as tools
 import numpy as np
 
 # import gc
 
 
-SCORES = ConservationScoreMethods()
-PAIRWISESCORES = PairwiseMatrixMethods()
+SCORES = MSAScoreMethods()
 
 
 def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
@@ -23,26 +22,15 @@ def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
     )
 
 
-# def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
-#     """
-#     returns a list of the scores and a list of the z scores for the hit (non-gap) positions in query sequence
-#     """
-#     hit_slice = slice(lvlo.hit_aln_start, lvlo.hit_aln_end + 1)
-#     hit_scores = lvlo.scores[hit_slice]
-#     hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
-#     nongap_inds = tools.get_non_gap_indexes(hit_aln_seq)
-#     return list(np.array(hit_scores)[nongap_inds])
-
-
 def alignment_scores(
     og: group_tools.ConserGene,
     levels: list[str],
     score_key: str,
-    score_function_name: str,
-    score_params: dict,
+    function_name: str,
+    function_params: dict,
     output_folder: str | Path | None = None,
 ):
-    score_function = SCORES.__getitem__(score_function_name)
+    score_function = SCORES.__getitem__(function_name)
     if output_folder is None:
         output_folder = Path(og.info_dict["analysis_folder"])
     output_folder = Path(output_folder)
@@ -52,37 +40,20 @@ def alignment_scores(
             continue
         lvlo = og.level_objects[level]
         aln_file = lvlo.alignment_file
-        # if score_key in og.info_dict["orthogroups"][level]["conservation_scores"]:
-        #     print(f"WARNING: {score_key} already exists in {og.reference_index}-{level}")
-        #     print(f"skipping main calculation for {score_key} for {og.reference_index}-{level}")
-        #     score_dict = og.info_dict["orthogroups"][level]["conservation_scores"][f"{score_key}"]
-        # else:
-        # output_file = output_folder / f"{og.reference_index}-{level}-{score_key}.json"
-        # score_function(
-        #     input_alignment_file=aln_file,
-        #     output_file=output_file,
-        #     reference_id=og.query_gene_id,
-        #     **score_params,
-        # )
-        # og.info_dict["orthogroups"][level]["conservation_scores"][f"{score_key}"] = {}
-        # score_dict = og.info_dict["orthogroups"][level]["conservation_scores"][f"{score_key}"]
-        # score_dict["file"] = str(output_file)
-        # score_dict["score_function_name"] = score_function_name
-        # score_dict["score_params"] = score_params
         output_file = output_folder / f"{og.reference_index}-{level}-{score_key}.json"
         score_function(
             input_alignment_file=aln_file,
             output_file=output_file,
             reference_id=og.query_gene_id,
-            **score_params,
+            **function_params,
         )
         og.info_dict["orthogroups"][level]["conservation_scores"][f"{score_key}"] = {}
         score_dict = og.info_dict["orthogroups"][level]["conservation_scores"][
             f"{score_key}"
         ]
         score_dict["file"] = str(output_file)
-        score_dict["score_function_name"] = score_function_name
-        score_dict["score_params"] = score_params
+        score_dict["function_name"] = function_name
+        score_dict["function_params"] = function_params
 
         lvl_aln_o = group_tools.LevelAlnScore.from_conser_level(lvlo, score_key)
         if lvl_aln_o.z_score_failure is None:
@@ -96,8 +67,8 @@ def alignment_scores(
 def compute_aln_cons_scores(
     json_file: str | Path,
     score_key: str,
-    score_function_name: str,
-    score_params: dict,
+    function_name: str,
+    function_params: dict,
     level: str | None = None,
     score_output_folder: str | Path | None = None,
     **kwargs,
@@ -113,13 +84,13 @@ def compute_aln_cons_scores(
         levels = [level]
     else:
         levels = list(og.level_objects.keys())
-    if hasattr(SCORES, score_function_name):
+    if hasattr(SCORES, function_name):
         alignment_scores(
             og=og,
             levels=levels,
             score_key=score_key,
-            score_function_name=score_function_name,
-            score_params=score_params,
+            function_name=function_name,
+            function_params=function_params,
             output_folder=score_output_folder,
         )
     # gc.collect()

@@ -1,15 +1,15 @@
-clear_files: true
-new_index: true
+clear_files: false
+new_index: false
 output_folder: "./conservation_analysis"
 database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
 table_file: "./table.csv"
 steps_to_run:
-  - "s1" # setup folderes
-  - "s2" # define_idrs
-  - "s3" # find_hit
-  - "s4" # add_lvlinfo
-  - "s5" # scores
-  # - "s6" # multilevel_plots
+  # - "s1" # setup folderes
+  # - "s2" # define_idrs
+  # - "s3" # find_hit
+  # - "s4" # add_lvlinfo
+  # - "s5" # scores
+  - "s6" # multilevel_plots
   # - "s7" # output_aln_slice
   - "s8" # calculate_annotations
   - "s9" # add_annotations2table
@@ -24,47 +24,47 @@ idr_params:
 filter_params:
   min_num_orthos: 20
 
-new_score_methods:
+msa_score_methods:
   aln_property_entropy:
-    score_function_name: "aln_property_entropy"
-    score_kwargs:
+    function_name: "aln_property_entropy"
+    function_params:
       gap_frac_cutoff: 0.2
       overwrite: false
-    level: "Vertebrata"
   aln_shannon_entropy:
-    score_function_name: "aln_shannon_entropy"
-    score_kwargs:
+    function_name: "aln_shannon_entropy"
+    function_params:
       gap_frac_cutoff: 0.2
       overwrite: false
-    level: "Vertebrata"
+  
+pairk_aln_methods:
   pairk_aln_lf5_rf5_edssmat50:
-    score_function_name: "pairk_aln"
-    score_kwargs:
+    function_name: "pairk_aln"
+    function_params:
       overwrite: false
       matrix_name: "EDSSMat50"
     lflank: 5
     rflank: 5
     level: "Vertebrata"
   pairk_aln_needleman_lf5_rf5_edssmat50:
-    score_function_name: "pairk_aln_needleman"
-    score_kwargs:
+    function_name: "pairk_aln_needleman"
+    function_params:
       overwrite: false
       matrix_name: "EDSSMat50"
     lflank: 5
     rflank: 5
-    level: "Vertebrata"
+    # level: "Vertebrata"
 
-new_embedding_score_methods:
+pairk_embedding_aln_methods:
   pairk_aln_embedding_lf5_rf5:
-    score_function_name: "pairk_aln_embedding"
-    score_kwargs:
+    function_name: "pairk_aln_embedding"
+    function_params:
       overwrite: false
     lflank: 5
     rflank: 5
     level: "Vertebrata"
 
-pairwise_matrix_to_score_params:
-  matrix_to_score_function_name: "pairk_conservation"
+pairk_conservation_params:
+  kmer_conservation_function_name: "pairk_conservation"
   columnwise_score_function_name: "property_entropy"
   bg_cutoff: 50
   bg_kmer_cutoff: 10
@@ -74,8 +74,9 @@ esm_params:
   # threads: 10
   device: "cuda"
 multilevel_plot_params:
-  score_key: null
-  score_type: "zscore"
+  # score_key: "aln_property_entropy"
+  score_key: "pairk_aln_needleman_lf5_rf5_edssmat50"
+  score_type: "z_score"
 aln_slice_params:
   n_flanking_aas: 20
   # whole_idr: true

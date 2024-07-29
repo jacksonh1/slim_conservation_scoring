@@ -62,16 +62,16 @@ def _filter_similar_kmers(
     return passing_kmers
 
 
-def pairk_matrix_json_2_scores(
-    matrix_json: str | Path,
+def pairk_conservation_from_json(
+    kmer_aln_json: str | Path,
     hit_position: int,
     columnwise_score_func: Callable = cs.property_entropy,
     bg_cutoff: int = 50,
     bg_kmer_cutoff: int = 10,
 ) -> PairwiseScoreResults:
     """ """
-    matrix_json = Path(matrix_json)
-    pkaln = pairk.PairkAln.from_file(matrix_json)
+    kmer_aln_json = Path(kmer_aln_json)
+    pkaln = pairk.PairkAln.from_file(kmer_aln_json)
     if len(pkaln.orthokmer_matrix) < bg_kmer_cutoff:
         raise ValueError(
             f"not enough kmers in the matrices: {len(pkaln.orthokmer_matrix)}. Need at least {bg_kmer_cutoff}"

@@ -4,14 +4,9 @@ from typing import Any, Literal, Union
 
 from attrs import asdict, define, field, validators
 
-# from enum import Enum, auto
-# class SearchMethod(Enum):
-#     SEARCH = auto()
-#     GIVEN_POSITIONS = auto()
-
 
 @define
-class HitSequenceConf:
+class HitSequenceParams:
     hit_sequence_search_method: Literal["search", "given_positions"] = field(
         default="search",
         validator=validators.in_(["search", "given_positions"]),  # type: ignore
@@ -22,7 +17,7 @@ class HitSequenceConf:
 
 
 @define
-class IdrConf:
+class IdrParams:
     find_idrs: bool = field(default=True, converter=bool)
     idr_map_file: str | Path | None = field(default=None)
     iupred_cutoff: float = field(
@@ -45,64 +40,74 @@ class IdrConf:
 
 
 @define
-class MultiLevelPlotConf:
-    score_key: str = field(default="aln_property_entropy")
-    num_bg_scores_cutoff: int = field(default=20, converter=int)
-    score_type: Literal["score", "zscore"] = field(
-        default="zscore",
-        validator=validators.in_(["score", "zscore"]),  # type: ignore
-    )  # type: ignore
-
-
-@define
-class FilterConf:
+class FilterParams:
     min_num_orthos: int = field(default=20, converter=int)
 
 
+# @define
+# class ScoreMethod:
+#     """
+#     lflank and rflank are only used for pairwise scores.
+#     """
+
+#     score_key: str = field(default="aln_property_entropy")
+#     score_function_name: str = field(default="aln_property_entropy")
+#     score_kwargs: dict[str, Any] = field(factory=dict)
+#     level: str | None = field(default=None)
+#     lflank: int = field(default=0, converter=int)
+#     rflank: int = field(default=0, converter=int)
+
+
 @define
-class ScoreMethod:
+class MSAScoreMethod:
     """
     lflank and rflank are only used for pairwise scores.
     """
 
     score_key: str = field(default="aln_property_entropy")
-    score_function_name: str = field(default="aln_property_entropy")
-    score_kwargs: dict[str, Any] = field(factory=dict)
+    function_name: str = field(default="aln_property_entropy")
+    function_params: dict[str, Any] = field(factory=dict)
+    level: str | None = field(default=None)
+
+
+@define
+class PairKAlnMethod:
+    score_key: str = field(default="pairk_aln_needleman_lf0_rf0")
+    function_name: str = field(default="pairk_aln_needleman")
+    function_params: dict[str, Any] = field(factory=dict)
+    level: str | None = field(default=None)
+    lflank: int = field(default=4, converter=int)
+    rflank: int = field(default=4, converter=int)
+
+
+@define
+class EsmParams:
+    processes: int = field(default=4, converter=int)
+    threads: int = field(default=1, converter=int)
+    device: Literal["cuda", "cpu"] = field(default="cuda")
+    model_name: str = field(default="esm2_t33_650M_UR50D")
+
+
+@define
+class PairKEmbeddingAlnMethod:
+    """
+    Score methods that use embeddings. You may want to define different parameters
+    for running anything that uses embeddings because of the high memory usage and
+    option to use GPU.
+    """
+
+    score_key: str = field(default="pairk_aln_embedding_lf0_rf0")
+    function_name: str = field(default="pairk_aln_embedding")
+    function_params: dict[str, Any] = field(factory=dict)
     level: str | None = field(default=None)
     lflank: int = field(default=0, converter=int)
     rflank: int = field(default=0, converter=int)
 
 
-# @define
-# class AlnScoreMethod:
-#     """
-#     lflank and rflank are only used for pairwise scores.
-#     """
-#     score_key: str = field(default="aln_property_entropy")
-#     score_function_name: str = field(default="aln_property_entropy")
-#     score_kwargs: dict[str, Any] = field(factory=dict)
-#     level: str|None = field(default=None)
-
-# @define
-# class PairwiseMatrixMethod:
-#     score_key: str = field(default="fragment_pairwise_gapless")
-#     score_function_name: str = field(default="fragment_pairwise_gapless")
-#     score_kwargs: dict[str, Any] = field(factory=dict)
-#     lflank: int = field(default=4, converter=int)
-#     rflank: int = field(default=4, converter=int)
-#     level: str = field(default="Vertebrata")
-
-
 @define
-class PairMatrixToScoreConf:
-    matrix_to_score_function_name: str = "pairwise_matrix_to_kmer_scores"
+class PairKmerConservationParams:
+    kmer_conservation_function_name: str = "pairk_conservation"
     columnwise_score_function_name: str = "shannon_entropy"
-    # reciprocal_best_match: bool = False
-    # similarity_threshold: float = field(
-    #     default=1.0,
-    #     converter=float,
-    #     validator=validators.and_(validators.le(1), validators.ge(0)),
-    # )
     bg_cutoff: int = field(
         default=50,
         converter=int,
@@ -114,36 +119,14 @@ class PairMatrixToScoreConf:
 
 
 @define
-class EsmConf:
-    processes: int = field(default=4, converter=int)
-    threads: int = field(default=1, converter=int)
-    device: Literal["cuda", "cpu"] = field(default="cuda")
-    model_name: str = field(default="esm2_t33_650M_UR50D")
-
-
-@define
-class ScoreMethodEmbedding:
-    """
-    Score methods that use embeddings. You may want to define different parameters
-    for running anything that uses embeddings because of the high memory usage and
-    option to use GPU.
-    """
-
-    score_key: str = field(default="frag_pairwise_gapless_embedding")
-    score_function_name: str = field(default="frag_pairwise_gapless_embedding")
-    score_kwargs: dict[str, Any] = field(factory=dict)
-    level: str | None = field(default=None)
-    lflank: int = field(default=0, converter=int)
-    rflank: int = field(default=0, converter=int)
-
-
-# @define
-# class PairwiseScoreMethod:
-#     score_key: str = field(default="fragment_pairwise_gapless")
-#     score_kwargs: dict[str, Any] = field(factory=dict)
-#     lflank: int = field(default=4, converter=int)
-#     rflank: int = field(default=4, converter=int)
-#     level: str = field(default="Vertebrata")
+class MultiLevelPlotParams:
+    score_key: str = field(default="aln_property_entropy")
+    num_bg_scores_cutoff: int = field(default=20, converter=int)
+    score_type: Literal["score", "z_score"] = field(
+        default="z_score",
+        validator=validators.in_(["score", "z_score"]),  # type: ignore
+    )  # type: ignore
+    strip_gaps: bool = field(default=False, converter=bool)
 
 
 @define
@@ -201,53 +184,109 @@ class PipelineParameters:
     steps_to_run: list = field(
         default=["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"]
     )
-    score_methods: list[ScoreMethod] = field(factory=list)
-    embedding_score_methods: list[ScoreMethodEmbedding] = field(factory=list)
+    msa_score_methods: list[MSAScoreMethod] = field(factory=list)
+    pairk_aln_methods: list[PairKAlnMethod] = field(factory=list)
+    pairk_embedding_aln_methods: list[PairKEmbeddingAlnMethod] = field(factory=list)
     # pairwise_score_methods: list[PairwiseScoreMethod] = field(factory=list)
     output_folder: str | Path = field(default="conservation_analysis")
-    hit_sequence_params: HitSequenceConf = field(default=HitSequenceConf())
-    idr_params: IdrConf = field(default=IdrConf())
-    filter_params: FilterConf = field(default=FilterConf())
-    multilevel_plot_params: MultiLevelPlotConf = field(default=MultiLevelPlotConf())
+    hit_sequence_params: HitSequenceParams = field(default=HitSequenceParams())
+    idr_params: IdrParams = field(default=IdrParams())
+    filter_params: FilterParams = field(default=FilterParams())
+    multilevel_plot_params: MultiLevelPlotParams = field(default=MultiLevelPlotParams())
     aln_slice_params: AlnSliceConf = field(default=AlnSliceConf())
     table_annotation_params: TableAnnotationConf = field(default=TableAnnotationConf())
     clean_analysis_files: bool = field(default=False, converter=bool)
-    esm_params: EsmConf = field(default=EsmConf())
-    pairwise_matrix_to_score_params: PairMatrixToScoreConf = field(
-        default=PairMatrixToScoreConf()
+    esm_params: EsmParams = field(default=EsmParams())
+    pairk_conservation_params: PairKmerConservationParams = field(
+        default=PairKmerConservationParams()
     )
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]):
         d = copy.deepcopy(d)
         return cls(
-            hit_sequence_params=HitSequenceConf(**d.pop("hit_sequence_params", {})),
-            idr_params=IdrConf(**d.pop("idr_params", {})),
-            filter_params=FilterConf(**d.pop("filter_params", {})),
-            score_methods=[
-                ScoreMethod(score_key=k, **v)
-                for k, v in d.pop("new_score_methods", {}).items()
+            hit_sequence_params=HitSequenceParams(**d.pop("hit_sequence_params", {})),
+            idr_params=IdrParams(**d.pop("idr_params", {})),
+            filter_params=FilterParams(**d.pop("filter_params", {})),
+            msa_score_methods=[
+                MSAScoreMethod(score_key=k, **v)
+                for k, v in d.pop("msa_score_methods", {}).items()
             ],
-            embedding_score_methods=[
-                ScoreMethodEmbedding(score_key=k, **v)
-                for k, v in d.pop("new_embedding_score_methods", {}).items()
+            pairk_aln_methods=[
+                PairKAlnMethod(score_key=k, **v)
+                for k, v in d.pop("pairk_aln_methods", {}).items()
             ],
-            esm_params=EsmConf(**d.pop("esm_params", {})),
-            # pairwise_score_methods=[PairwiseScoreMethod(**v) for v in d.pop("new_pairwise_score_methods", {}).values()],
-            multilevel_plot_params=MultiLevelPlotConf(
+            pairk_embedding_aln_methods=[
+                PairKEmbeddingAlnMethod(score_key=k, **v)
+                for k, v in d.pop("pairk_embedding_aln_methods", {}).items()
+            ],
+            esm_params=EsmParams(**d.pop("esm_params", {})),
+            multilevel_plot_params=MultiLevelPlotParams(
                 **d.pop("multilevel_plot_params", {})
             ),
             table_annotation_params=TableAnnotationConf(
                 **d.pop("table_annotation_params", {})
             ),
             aln_slice_params=AlnSliceConf(**d.pop("aln_slice_params", {})),
-            pairwise_matrix_to_score_params=PairMatrixToScoreConf(
-                **d.pop("pairwise_matrix_to_score_params", {})
+            pairk_conservation_params=PairKmerConservationParams(
+                **d.pop("pairk_conservation_params", {})
             ),
-            **d
+            **d,
         )
 
-    # def __attrs_post_init__(self):
+    def print_params(self):
+        for k, v in asdict(self).items():
+            if isinstance(v, dict):
+                print(f"{k}:")
+                for k2, v2 in v.items():
+                    print(" ", f"{k2}:", v2)
+                continue
+            if isinstance(v, list):
+                print(f"{k}:")
+                for v2 in v:
+                    print(" ", v2)
+                continue
+            print(f"{k}:", v)
+
+    def check_for_dup_scorekeys(self):
+        all_score_keys = []
+        if len(self.msa_score_methods) > 0:
+            for scoremethod in self.msa_score_methods:
+                all_score_keys.append(scoremethod.score_key)
+        if len(self.pairk_aln_methods) > 0:
+            for pairk_method in self.pairk_aln_methods:
+                all_score_keys.append(pairk_method.score_key)
+        if len(self.pairk_embedding_aln_methods) > 0:
+            for pairk_method in self.pairk_embedding_aln_methods:
+                all_score_keys.append(pairk_method.score_key)
+        seen = set()
+        dupes = set()
+        for score_key in all_score_keys:
+            if score_key in seen:
+                dupes.add(score_key)
+            else:
+                seen.add(score_key)
+        if len(dupes) > 0:
+            raise ValueError(
+                f"there are duplicate score keys in the configuration file: {dupes}"
+            )
+
+    def get_score_key_dict(self):
+        score_key_dict = {}
+        if len(self.msa_score_methods) > 0:
+            for scoremethod in self.msa_score_methods:
+                score_key_dict[scoremethod.score_key] = scoremethod
+        if len(self.pairk_aln_methods) > 0:
+            for pairk_method in self.pairk_aln_methods:
+                score_key_dict[pairk_method.score_key] = pairk_method
+        if len(self.pairk_embedding_aln_methods) > 0:
+            for pairk_method in self.pairk_embedding_aln_methods:
+                score_key_dict[pairk_method.score_key] = pairk_method
+        return score_key_dict
+
+    def __attrs_post_init__(self):
+        self.check_for_dup_scorekeys()
+
     #     if not Path(self.table_file).exists():
     #         raise FileNotFoundError(f"table_file {self.table_file} does not exist")
     #     if not Path(self.database_filekey).exists():

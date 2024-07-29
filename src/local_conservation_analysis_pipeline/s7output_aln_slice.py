@@ -9,8 +9,11 @@ import local_conservation_analysis_pipeline.group_conservation_objects as group_
 import local_env_variables.env_variables as env
 import local_seqtools.alignment_tools as aln_tools
 import local_seqtools.general_utils as tools
+from local_conservation_scores import MSAScoreMethods
+from local_conservation_scores import PairKmerAlnMethods
 
-# import local_seqtools.jch_alignment as jch_alignment
+MSASCORES = MSAScoreMethods()
+PAIRKALNFUNCS = PairKmerAlnMethods()
 
 json_file = "./conservation_analysis/2-9606_0_002f40/2-9606_0_002f40.json"
 n_flanking_aas = 20
@@ -106,14 +109,6 @@ def save_colored_protein_msa_html(
         html_file.write(html_content)
 
 
-# def index2alnindex(aln, query_id, hit_start, hit_end, n_flanking_aas):
-#     flaln = jch_alignment.jch_alignment(aln, query_id)
-#     query_seq = flaln.query_unaligned_str
-#     slice_start = max(0, hit_start - n_flanking_aas)
-#     slice_end = min(len(query_seq) - 1, hit_end + n_flanking_aas)
-#     flaln.slice_by_unaligned_positions_inclusive(slice_start, slice_end)
-
-
 def index2alnindex_V2(
     lvlo: group_tools.ConserLevel, hit_start, hit_end, n_flanking_aas
 ):
@@ -159,7 +154,7 @@ def main(json_file, n_flanking_aas, whole_idr=False):
         soffset = lvl.hit_aln_start - aln_slice_start
         eoffset = lvl.hit_aln_end - aln_slice_start
         save_colored_protein_msa_html(
-            aln[:, aln_slice_start : aln_slice_end + 1],
+            aln[:, aln_slice_start : aln_slice_end + 1],  # type: ignore
             slice_file,
             color_scheme="clustal",
             highlight_region=(soffset, eoffset + 1),

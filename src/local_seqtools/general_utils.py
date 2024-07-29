@@ -251,7 +251,7 @@ def join_overlapping_paths(p1, p2):
 
 def import_fasta(
     fasta_path, output_format="list"
-) -> list[SeqIO.SeqRecord] | dict[str, SeqIO.SeqRecord]:
+) -> list[SeqRecord] | dict[str, SeqRecord]:
     """import fasta file into a list or dictionary of SeqRecord objects
 
     Parameters
@@ -291,23 +291,23 @@ class FastaImporter:
     def __init__(self, fasta_path: str | Path):
         self.fasta_path = fasta_path
 
-    def import_as_list(self) -> list[SeqIO.SeqRecord]:
+    def import_as_list(self) -> list[SeqRecord]:
         """return list of SeqRecord objects for each sequence in the fasta file
 
         Returns
         -------
-        List[SeqIO.SeqRecord]
+        List[SeqRecord]
             list of SeqRecord objects
         """
         with open(self.fasta_path) as handle:
             return list(SeqIO.parse(handle, "fasta"))
 
-    def import_as_dict(self) -> dict[str, SeqIO.SeqRecord]:
+    def import_as_dict(self) -> dict[str, SeqRecord]:
         """return dictionary of SeqRecord objects for each sequence in the fasta file
 
         Returns
         -------
-        dict[str, SeqIO.SeqRecord]
+        dict[str, SeqRecord]
             dictionary of SeqRecord objects, keys are the sequence ids and values are the SeqRecord objects
         """
         with open(self.fasta_path) as handle:
@@ -545,7 +545,7 @@ def get_regex_matches(regex_pattern: str, seq_str: str):
 
 def precision_recall_curve(
     true_labels: list[int], scores: list[float]
-) -> tuple[np.array, np.array, np.array, float]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
     """calculates the precision recall curve from 2 lists. one with the true labels (1 and 0's) and one with measured scores
 
     Parameters
@@ -569,12 +569,12 @@ def precision_recall_curve(
         np.array(scores),
     )
     auPRC = metrics.auc(recall, precision)
-    return precision, recall, thresholds, auPRC
+    return precision, recall, thresholds, float(auPRC)
 
 
 def df_2_precision_recall_curve(
     df: pd.DataFrame, label_col: str, score_col: str
-) -> tuple[np.array, np.array, np.array, float]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
     """calculates the precision recall curve from a dataframe with 2 columns. one with the true labels (1 and 0's) and one with measured scores
 
     Parameters
@@ -611,7 +611,7 @@ def ave_precision(true_labels, scores):
     float
         average precision
     """
-    return metrics.average_precision_score(true_labels, scores)
+    return float(metrics.average_precision_score(true_labels, scores))
 
 
 def df_2_ave_precision(df: pd.DataFrame, label_col: str, score_col: str) -> float:

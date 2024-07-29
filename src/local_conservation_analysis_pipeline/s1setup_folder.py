@@ -39,9 +39,9 @@ def ortholog_analysis_setup(
     try:
         database_files = database_key[query_gene_id]
     except KeyError as ke:
-        output_dict[
-            "critical_error"
-        ] = f"not found in database: {ref_ind} - {query_gene_id}: {ke}"
+        output_dict["critical_error"] = (
+            f"not found in database: {ref_ind} - {query_gene_id}: {ke}"
+        )
         return output_dict
     levels = [k for k in database_files.keys() if k != "query_uniprot_id"]
     if "query_uniprot_id" in database_files:
@@ -123,12 +123,21 @@ def main(hits_file, database_key_file, output_folder, hit_search_method, new_ind
 
     if new_index:
         hits_df = import_and_reindex_hits_df(hits_file)
-        hits_df.to_csv(output_folder / Path(hits_file).name.replace(".csv", "_original_reindexed.csv"), index=False)
+        hits_df.to_csv(
+            output_folder
+            / Path(hits_file).name.replace(".csv", "_original_reindexed.csv"),
+            index=False,
+        )
     else:
         hits_df = pd.read_csv(hits_file)
         assert (
             "reference_index" in hits_df.columns
         ), "hits_df should already have a reference_index column if new_index=False."
+        hits_df.to_csv(
+            output_folder
+            / Path(hits_file).name.replace(".csv", "_original_reindexed.csv"),
+            index=False,
+        )
 
     with open(database_key_file, "r") as f:
         database_key = json.load(f)
@@ -139,11 +148,15 @@ def main(hits_file, database_key_file, output_folder, hit_search_method, new_ind
         else:
             output_dict = ortholog_analysis_setup_given_positions(row, database_key)
         # if 'critical_error' in output_dict:
-        analysis_folder = output_folder / f'{output_dict["reference_index"]}-{str(output_dict["query_gene_id"]).replace(":","_")}'
+        analysis_folder = (
+            output_folder
+            / f'{output_dict["reference_index"]}-{str(output_dict["query_gene_id"]).replace(":","_")}'
+        )
         analysis_folder.mkdir(parents=True, exist_ok=True)
         output_dict["analysis_folder"] = str(analysis_folder.resolve())
         output_file = (
-            analysis_folder / f'{output_dict["reference_index"]}-{str(output_dict["query_gene_id"]).replace(":","_")}.json'
+            analysis_folder
+            / f'{output_dict["reference_index"]}-{str(output_dict["query_gene_id"]).replace(":","_")}.json'
         )
         if output_file.exists():
             print(f"File already exists: {output_file}")
@@ -156,4 +169,3 @@ def main(hits_file, database_key_file, output_folder, hit_search_method, new_ind
 
 # if __name__ == "__main__":
 #     main(HITS_FILE, DATABASE_KEY_FILE, OUTPUT_FOLDER, HIT_SEARCH_METHOD)
-

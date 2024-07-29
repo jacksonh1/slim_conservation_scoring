@@ -46,7 +46,7 @@ def main(
     **kwargs,
 ):
     """
-    calculate the property entropy score for each column in an alignment
+    calculate the shannon entropy score for each column in an alignment
 
     Parameters
     ----------

@@ -7,12 +7,166 @@
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.fasta",
             "conservation_scores": {
                 "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
+                    "file": "conservation_analysis/conservation_score_files/2-Tetrapoda-aln_property_entropy.json",
+                    "function_name": "aln_property_entropy",
+                    "function_params": {
                         "gap_frac_cutoff": 0.2,
-                        "overwrite": true
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.34505679125266564,
+                        0.5947441470686817,
+                        0.5834629550999894,
+                        0.8764338636900881,
+                        0.25488380811844463,
+                        0.592355167280912,
+                        0.40161110025665614,
+                        0.44339460600093517,
+                        0.3168344632594629,
+                        0.32504541999749204,
+                        0.4889493607703916
+                    ],
+                    "hit_z_scores": [
+                        -1.3206604071624588,
+                        0.08865147404434622,
+                        0.024976972691670464,
+                        1.6785944775693225,
+                        -1.8296243315854466,
+                        0.07516734070542101,
+                        -1.0014505723180613,
+                        -0.7656116733420323,
+                        -1.479955866983195,
+                        -1.4336107132642124,
+                        -0.5084866902517226
+                    ]
+                },
+                "pairk_aln_needleman_lf5_rf5_edssmat50": {
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Tetrapoda-pairk_aln_needleman_lf5_rf5_edssmat50.json",
+                    "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_start_position_in_idr": 120,
+                    "original_hit_st_in_flanked_hit": 5,
+                    "original_hit_end_in_flanked_hit": 15,
+                    "function_name": "pairk_aln_needleman",
+                    "function_params": {
+                        "overwrite": false,
+                        "matrix_name": "EDSSMat50"
+                    },
+                    "lflank": 5,
+                    "rflank": 5,
+                    "flanked_hit_sequence": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_scores": [
+                        0.5362770865214285,
+                        0.4857487866639003,
+                        0.5595471759742869,
+                        0.3952771540168538,
+                        0.7115560502228144,
+                        0.4438140493271746,
+                        0.5970109977431441,
+                        0.5725514697887124,
+                        0.630041955659782,
+                        0.24481035828029052,
+                        0.47578617504540044,
+                        0.4024586871237257,
+                        0.43090526257998996,
+                        0.3506569815355768,
+                        0.2913166270797932,
+                        0.28384285578162927,
+                        0.29159314863623365,
+                        0.3264741429333021,
+                        0.2125403089307264,
+                        0.2581185602591032,
+                        0.32197733032383735
+                    ],
+                    "flanked_hit_z_scores": [
+                        -0.3500551814177084,
+                        -0.6290859554019474,
+                        -0.22155152922632804,
+                        -1.1286944867062516,
+                        0.617882094181448,
+                        -0.8606607807747628,
+                        -0.014666294337223763,
+                        -0.14973834377601708,
+                        0.16773948181016268,
+                        -1.9596123404967818,
+                        -0.6841021589681202,
+                        -1.089036141841016,
+                        -0.931946550678374,
+                        -1.3750990025491887,
+                        -1.7027922967819935,
+                        -1.744064459031426,
+                        -1.7012652708552465,
+                        -1.5086430994484492,
+                        -2.1378161762068193,
+                        -1.886120892952393,
+                        -1.5334757003160617
+                    ],
+                    "hit_sequence": "AFSPNPEENQS",
+                    "hit_scores": [
+                        0.4438140493271746,
+                        0.5970109977431441,
+                        0.5725514697887124,
+                        0.630041955659782,
+                        0.24481035828029052,
+                        0.47578617504540044,
+                        0.4024586871237257,
+                        0.43090526257998996,
+                        0.3506569815355768,
+                        0.2913166270797932,
+                        0.28384285578162927
+                    ],
+                    "hit_z_scores": [
+                        -0.8606607807747628,
+                        -0.014666294337223763,
+                        -0.14973834377601708,
+                        0.16773948181016268,
+                        -1.9596123404967818,
+                        -0.6841021589681202,
+                        -1.089036141841016,
+                        -0.931946550678374,
+                        -1.3750990025491887,
+                        -1.7027922967819935,
+                        -1.744064459031426
+                    ],
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
+                        "columnwise_score_function_name": "property_entropy",
+                        "bg_cutoff": 50,
+                        "bg_kmer_cutoff": 10
                     }
+                },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Tetrapoda-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.3552652623709609,
+                        0.661036762309713,
+                        0.5747917067027292,
+                        0.9008790500611307,
+                        0.27962264308344825,
+                        0.6573705075318301,
+                        0.46075088306916023,
+                        0.5050375244239363,
+                        0.3594556551785124,
+                        0.4112024578121432,
+                        0.527126311512337
+                    ],
+                    "hit_z_scores": [
+                        -1.5616572903036592,
+                        0.35709479517675546,
+                        -0.18410306120103564,
+                        1.86213332853126,
+                        -2.03632361315647,
+                        0.33408861571799514,
+                        -0.899722627513281,
+                        -0.6218187500249577,
+                        -1.5353620831307142,
+                        -1.2106448171654076,
+                        -0.4832090159585348
+                    ]
                 }
             },
             "hit_aln_start": 500,
@@ -27,9 +181,9 @@
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
             "conservation_scores": {
                 "aln_property_entropy": {
-                    "file": "conservation_scores/2-Vertebrata-aln_property_entropy.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
+                    "file": "conservation_analysis/conservation_score_files/2-Vertebrata-aln_property_entropy.json",
+                    "function_name": "aln_property_entropy",
+                    "function_params": {
                         "gap_frac_cutoff": 0.2,
                         "overwrite": false
                     },
@@ -61,9 +215,9 @@
                     ]
                 },
                 "aln_shannon_entropy": {
-                    "file": "conservation_scores/2-Vertebrata-aln_shannon_entropy.json",
-                    "score_function_name": "aln_shannon_entropy",
-                    "score_params": {
+                    "file": "conservation_analysis/conservation_score_files/2-Vertebrata-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
                         "gap_frac_cutoff": 0.2,
                         "overwrite": false
                     },
@@ -95,13 +249,13 @@
                     ]
                 },
                 "pairk_aln_lf5_rf5_edssmat50": {
-                    "matrix_file": "conservation_scores/2-Vertebrata-pairk_aln_lf5_rf5_edssmat50.json",
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Vertebrata-pairk_aln_lf5_rf5_edssmat50.json",
                     "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
                     "flanked_hit_start_position_in_idr": 120,
                     "original_hit_st_in_flanked_hit": 5,
                     "original_hit_end_in_flanked_hit": 15,
-                    "score_function_name": "pairk_aln",
-                    "score_params": {
+                    "function_name": "pairk_aln",
+                    "function_params": {
                         "overwrite": false,
                         "matrix_name": "EDSSMat50"
                     },
@@ -181,21 +335,21 @@
                         -1.2946796118695996,
                         -0.9431175322108972
                     ],
-                    "mat2score_params": {
-                        "matrix_to_score_function_name": "pairk_conservation",
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
                         "columnwise_score_function_name": "property_entropy",
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
                     }
                 },
                 "pairk_aln_needleman_lf5_rf5_edssmat50": {
-                    "matrix_file": "conservation_scores/2-Vertebrata-pairk_aln_needleman_lf5_rf5_edssmat50.json",
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Vertebrata-pairk_aln_needleman_lf5_rf5_edssmat50.json",
                     "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
                     "flanked_hit_start_position_in_idr": 120,
                     "original_hit_st_in_flanked_hit": 5,
                     "original_hit_end_in_flanked_hit": 15,
-                    "score_function_name": "pairk_aln_needleman",
-                    "score_params": {
+                    "function_name": "pairk_aln_needleman",
+                    "function_params": {
                         "overwrite": false,
                         "matrix_name": "EDSSMat50"
                     },
@@ -275,21 +429,21 @@
                         -1.2946796118695996,
                         -0.9431175322108972
                     ],
-                    "mat2score_params": {
-                        "matrix_to_score_function_name": "pairk_conservation",
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
                         "columnwise_score_function_name": "property_entropy",
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
                     }
                 },
                 "pairk_aln_embedding_lf5_rf5": {
-                    "matrix_file": "conservation_scores/2-Vertebrata-pairk_aln_embedding_lf5_rf5.json",
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Vertebrata-pairk_aln_embedding_lf5_rf5.json",
                     "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
                     "flanked_hit_start_position_in_idr": 120,
                     "original_hit_st_in_flanked_hit": 5,
                     "original_hit_end_in_flanked_hit": 15,
-                    "score_function_name": "pairk_aln_embedding",
-                    "score_params": {
+                    "function_name": "pairk_aln_embedding",
+                    "function_params": {
                         "device": "cuda",
                         "overwrite": false
                     },
@@ -369,8 +523,8 @@
                         -1.487333974811274,
                         -0.9270206754221052
                     ],
-                    "mat2score_params": {
-                        "matrix_to_score_function_name": "pairk_conservation",
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
                         "columnwise_score_function_name": "property_entropy",
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
@@ -389,12 +543,166 @@
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.fasta",
             "conservation_scores": {
                 "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
+                    "file": "conservation_analysis/conservation_score_files/2-Mammalia-aln_property_entropy.json",
+                    "function_name": "aln_property_entropy",
+                    "function_params": {
                         "gap_frac_cutoff": 0.2,
-                        "overwrite": true
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.42980968194808794,
+                        0.6685466732176069,
+                        0.6210187330078111,
+                        0.896108471298522,
+                        0.30151217092262184,
+                        0.5678664562631991,
+                        0.45184719111682425,
+                        0.5055574766278038,
+                        0.3769511969520271,
+                        0.3951802559813857,
+                        0.5612624128036156
+                    ],
+                    "hit_z_scores": [
+                        -1.0833978052677062,
+                        0.22692222031252873,
+                        -0.03393727825243777,
+                        1.4759066340678486,
+                        -1.787565169674937,
+                        -0.32566623174763043,
+                        -0.9624438239674065,
+                        -0.6676522111954396,
+                        -1.3735142679233783,
+                        -1.2734631574245991,
+                        -0.36191285758001074
+                    ]
+                },
+                "pairk_aln_needleman_lf5_rf5_edssmat50": {
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Mammalia-pairk_aln_needleman_lf5_rf5_edssmat50.json",
+                    "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_start_position_in_idr": 120,
+                    "original_hit_st_in_flanked_hit": 5,
+                    "original_hit_end_in_flanked_hit": 15,
+                    "function_name": "pairk_aln_needleman",
+                    "function_params": {
+                        "overwrite": false,
+                        "matrix_name": "EDSSMat50"
+                    },
+                    "lflank": 5,
+                    "rflank": 5,
+                    "flanked_hit_sequence": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_scores": [
+                        0.6005432072600135,
+                        0.5043731640919116,
+                        0.61436085296075,
+                        0.44058662491984124,
+                        0.7890250070896282,
+                        0.4803647620474377,
+                        0.5999172409664912,
+                        0.63387269373378,
+                        0.7015847445913972,
+                        0.30955421394737614,
+                        0.5196561168898982,
+                        0.43192943582933463,
+                        0.44712762586015475,
+                        0.4246527340803383,
+                        0.3204232920661444,
+                        0.31813468946303436,
+                        0.330020145672521,
+                        0.34539317502760436,
+                        0.22341951725437292,
+                        0.277907026250671,
+                        0.3768335630931835
+                    ],
+                    "flanked_hit_z_scores": [
+                        -0.27449764081353806,
+                        -0.7932954852374008,
+                        -0.19995712311797714,
+                        -1.137397639459003,
+                        0.7422841785916072,
+                        -0.9228109436734825,
+                        -0.27787447161305956,
+                        -0.09469876406644359,
+                        0.2705799117998729,
+                        -1.8442636251937816,
+                        -0.7108502381850739,
+                        -1.184099615365096,
+                        -1.102111628593047,
+                        -1.223354429624624,
+                        -1.785629417355952,
+                        -1.7979754874846814,
+                        -1.7338583377117767,
+                        -1.6509271646671613,
+                        -2.308924901224643,
+                        -2.0149871916834945,
+                        -1.4813191971656727
+                    ],
+                    "hit_sequence": "AFSPNPEENQS",
+                    "hit_scores": [
+                        0.4803647620474377,
+                        0.5999172409664912,
+                        0.63387269373378,
+                        0.7015847445913972,
+                        0.30955421394737614,
+                        0.5196561168898982,
+                        0.43192943582933463,
+                        0.44712762586015475,
+                        0.4246527340803383,
+                        0.3204232920661444,
+                        0.31813468946303436
+                    ],
+                    "hit_z_scores": [
+                        -0.9228109436734825,
+                        -0.27787447161305956,
+                        -0.09469876406644359,
+                        0.2705799117998729,
+                        -1.8442636251937816,
+                        -0.7108502381850739,
+                        -1.184099615365096,
+                        -1.102111628593047,
+                        -1.223354429624624,
+                        -1.785629417355952,
+                        -1.7979754874846814
+                    ],
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
+                        "columnwise_score_function_name": "property_entropy",
+                        "bg_cutoff": 50,
+                        "bg_kmer_cutoff": 10
                     }
+                },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Mammalia-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.42012338697822466,
+                        0.7243962671432187,
+                        0.616218866946183,
+                        0.9152568733861223,
+                        0.33396939371157364,
+                        0.6359233702885698,
+                        0.5202077792087394,
+                        0.5808649762038395,
+                        0.40641860064346663,
+                        0.49255614844650625,
+                        0.6130995214268192
+                    ],
+                    "hit_z_scores": [
+                        -1.3870356871882068,
+                        0.4605793805374499,
+                        -0.19629872993710382,
+                        1.6195289778148096,
+                        -1.9101825940629933,
+                        -0.07664844346496445,
+                        -0.7793001866434625,
+                        -0.4109757041152168,
+                        -1.4702543089672133,
+                        -0.9472072627383961,
+                        -0.21524011498559645
+                    ]
                 }
             },
             "hit_aln_start": 385,
@@ -409,12 +717,166 @@
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
             "conservation_scores": {
                 "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
+                    "file": "conservation_analysis/conservation_score_files/2-Metazoa-aln_property_entropy.json",
+                    "function_name": "aln_property_entropy",
+                    "function_params": {
                         "gap_frac_cutoff": 0.2,
-                        "overwrite": true
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.3478063396663971,
+                        0.29813834915525006,
+                        0.6641707248647666,
+                        0.8559072255957182,
+                        0.24119540689213084,
+                        0.5344869295681324,
+                        0.22336630058006568,
+                        0.24658918059021412,
+                        0.18423125805118748,
+                        0.19994501289718292,
+                        0.37498871468234657
+                    ],
+                    "hit_z_scores": [
+                        -1.068754285185054,
+                        -1.3007865381367445,
+                        0.40919439556093584,
+                        1.3049232498960317,
+                        -1.5668049344325294,
+                        -0.1966449565918468,
+                        -1.6500965607522056,
+                        -1.5416070262788473,
+                        -1.8329224007728093,
+                        -1.7595129895660369,
+                        -0.9417673132818326
+                    ]
+                },
+                "pairk_aln_needleman_lf5_rf5_edssmat50": {
+                    "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Metazoa-pairk_aln_needleman_lf5_rf5_edssmat50.json",
+                    "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_start_position_in_idr": 120,
+                    "original_hit_st_in_flanked_hit": 5,
+                    "original_hit_end_in_flanked_hit": 15,
+                    "function_name": "pairk_aln_needleman",
+                    "function_params": {
+                        "overwrite": false,
+                        "matrix_name": "EDSSMat50"
+                    },
+                    "lflank": 5,
+                    "rflank": 5,
+                    "flanked_hit_sequence": "QNPSLAFSPNPEENQSLAPLL",
+                    "flanked_hit_scores": [
+                        0.4526583659815814,
+                        0.425067334058302,
+                        0.34882182617585056,
+                        0.34757545390441036,
+                        0.6070908302555393,
+                        0.2863776253697824,
+                        0.5003700949409892,
+                        0.3575946935600046,
+                        0.5565045597372236,
+                        0.2063719408457657,
+                        0.3615319940141972,
+                        0.37320626944543445,
+                        0.37490504394783875,
+                        0.2002690131044239,
+                        0.2229970536473267,
+                        0.2868442373940987,
+                        0.3210628312141911,
+                        0.20972055632673803,
+                        0.15646754197162027,
+                        0.1715711692281484,
+                        0.2680271966339892
+                    ],
+                    "flanked_hit_z_scores": [
+                        -0.03009433428545828,
+                        -0.18201897674657788,
+                        -0.6018500130237859,
+                        -0.608712919139024,
+                        0.8202579462834686,
+                        -0.9456868404252269,
+                        0.23262100682666673,
+                        -0.5535439277565695,
+                        0.5417145020474349,
+                        -1.386222556884348,
+                        -0.5318639498047293,
+                        -0.46758182633014844,
+                        -0.4582278554595597,
+                        -1.4198271396215056,
+                        -1.2946796118695996,
+                        -0.9431175322108972,
+                        -0.7546995112359891,
+                        -1.3677840580597624,
+                        -1.6610114077426128,
+                        -1.5778462264911635,
+                        -1.0467299015345655
+                    ],
+                    "hit_sequence": "AFSPNPEENQS",
+                    "hit_scores": [
+                        0.2863776253697824,
+                        0.5003700949409892,
+                        0.3575946935600046,
+                        0.5565045597372236,
+                        0.2063719408457657,
+                        0.3615319940141972,
+                        0.37320626944543445,
+                        0.37490504394783875,
+                        0.2002690131044239,
+                        0.2229970536473267,
+                        0.2868442373940987
+                    ],
+                    "hit_z_scores": [
+                        -0.9456868404252269,
+                        0.23262100682666673,
+                        -0.5535439277565695,
+                        0.5417145020474349,
+                        -1.386222556884348,
+                        -0.5318639498047293,
+                        -0.46758182633014844,
+                        -0.4582278554595597,
+                        -1.4198271396215056,
+                        -1.2946796118695996,
+                        -0.9431175322108972
+                    ],
+                    "pairk_conservation_params": {
+                        "kmer_conservation_function_name": "pairk_conservation",
+                        "columnwise_score_function_name": "property_entropy",
+                        "bg_cutoff": 50,
+                        "bg_kmer_cutoff": 10
                     }
+                },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Metazoa-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.3868502084402238,
+                        0.3529988115270185,
+                        0.6667065520301317,
+                        0.8827921146438482,
+                        0.29806514457294486,
+                        0.6146053881822868,
+                        0.2972323350073457,
+                        0.3033487535155455,
+                        0.23832653384036206,
+                        0.27586796402575,
+                        0.4519097677319363
+                    ],
+                    "hit_z_scores": [
+                        -1.095729701396838,
+                        -1.28063762234722,
+                        0.43294147251856185,
+                        1.613274805076229,
+                        -1.5807041210120358,
+                        0.14834707569347658,
+                        -1.5852532120205212,
+                        -1.5518432398142492,
+                        -1.907016867849287,
+                        -1.7019527216670045,
+                        -0.7403521115909114
+                    ]
                 }
             },
             "hit_aln_start": 684,
@@ -453,5 +915,7 @@
         "Vertebrata",
         "Tetrapoda",
         "Mammalia"
-    ]
+    ],
+    "multilevel_plot_file-pairk_aln_needleman_lf5_rf5_edssmat50": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-pairk_aln_needleman_lf5_rf5_edssmat50_multilevel_plot.png",
+    "multilevel_plot_file-aln_property_entropy": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-aln_property_entropy_multilevel_plot.png"
 }

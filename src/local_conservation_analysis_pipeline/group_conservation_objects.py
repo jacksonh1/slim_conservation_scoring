@@ -7,7 +7,7 @@ from typing import Callable
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from Bio import AlignIO, SeqIO
+from Bio import AlignIO, SeqIO, Align
 
 from local_conservation_scores.tools import pairwise_tools
 from local_seqtools import general_utils as tools
@@ -41,9 +41,8 @@ class ConserGene:
         if "analysis_folder" in self.info_dict:
             self.analysis_folder = self.info_dict["analysis_folder"]
         self.levels_passing_filters = self.info_dict["levels_passing_filters"]
-        self.level_objects: dict[str, ConserLevel] | None = None
-        self.aln_score_objects: dict[str, LevelAlnScore] | None = None
-
+        # self.level_objects: dict[str, ConserLevel] | None = None
+        # self.aln_score_objects: dict[str, LevelAlnScore] | None = None
         self.hit_st_in_idr = self.hit_start_position - self.idr_start
         self.hit_end_in_idr = self.hit_end_position - self.idr_start
         self.query_idr_sequence = self.query_sequence[self.idr_start : self.idr_end + 1]
@@ -150,7 +149,7 @@ class ConserLevel:
         aln_dict = {i.id: i for i in self.aln}
         query_seq = aln_dict.pop(query_gene_id)
         aln_list = [query_seq] + list(aln_dict.values())
-        return AlignIO.MultipleSeqAlignment(aln_list)
+        return Align.MultipleSeqAlignment(aln_list)
 
 
 class LevelAlnScore(ConserLevel):
@@ -170,24 +169,22 @@ class LevelAlnScore(ConserLevel):
         # self.scores = None
         # self.score_mask = None
         # self.gap_mask = None
-        self.z_scores: list | None = None
-        self.bg_scores: list | None = None
+        # self.z_scores: list | None = None
+        # self.bg_scores: list | None = None
         self.z_score_failure: str | None = None
-        self.hit_aln_scores: list | None = None
-        self.hit_scores: list | None = None
-        self.hit_aln_z_scores: list | None = None
-        self.hit_z_scores: list | None = None
+        # self.hit_aln_scores: list | None = None
+        # self.hit_scores: list | None = None
+        # self.hit_aln_z_scores: list | None = None
+        # self.hit_z_scores: list | None = None
         if filepath_converter is not None:
             self.score_file = filepath_converter(
                 self.conservation_scores[score_key]["file"]
             )
         else:
             self.score_file = self.conservation_scores[score_key]["file"]
-        self.score_function_name = self.conservation_scores[score_key][
-            "score_function_name"
-        ]
-        self.score_params = self.conservation_scores[score_key]["score_params"]
-        self.calculate_z_scores_bg_region(score_key, bg_region, num_bg_scores_cutoff)
+        self.function_name = self.conservation_scores[score_key]["function_name"]
+        self.function_params = self.conservation_scores[score_key]["function_params"]
+        self.calculate_z_scores_bg_region(bg_region, num_bg_scores_cutoff)
         self.calculate_hit_scores()
         if self.z_score_failure is None:
             self.calculate_hit_zscores()
@@ -211,17 +208,15 @@ class LevelAlnScore(ConserLevel):
             filepath_converter=filepath_converter,
         )
 
-    def load_scores(self, score_key):
+    def load_scores(self):
         with open(self.score_file, "r") as f:
             score_dict = json.load(f)
         self.scores = score_dict["scores"]
         self.score_mask = score_dict["score_mask"]
         self.gap_mask = score_dict["gap_mask"]
 
-    def calculate_z_scores_bg_region(
-        self, score_key, bg_region=None, num_bg_scores_cutoff=20
-    ):
-        self.load_scores(score_key)
+    def calculate_z_scores_bg_region(self, bg_region=None, num_bg_scores_cutoff=20):
+        self.load_scores()
         if bg_region is None:
             bg_region = [self.idr_aln_start, self.idr_aln_end + 1]
         try:
@@ -248,164 +243,3 @@ class LevelAlnScore(ConserLevel):
         self.hit_aln_z_scores = self.z_scores[hit_slice]
         nongap_inds = tools.get_non_gap_indexes(self.hit_aln_sequence)
         self.hit_z_scores = list(np.array(self.hit_aln_z_scores)[nongap_inds])
-
-
-# ==============================================================================
-# // pairwise tools - in development
-# ==============================================================================
-
-
-def plot_score_bar_plot(ax, score_list, query_seq, mask=None, **kwargs):
-    if mask is not None:
-        score_list = np.array(score_list)
-        score_list[[not i for i in mask]] = 0
-        score_list = list(score_list)
-    ax.bar(
-        list(range(len(score_list))),
-        score_list,
-    )
-    ax = _format_bar_plot(ax, query_seq, bar_ylim=False, **kwargs)
-    return ax
-
-
-def _format_bar_plot(ax, xlabel_sequence: str, bar_ylim=[0, 1], labelsize=16, **kwargs):
-    """format bar plot"""
-    _ = ax.set_xticks(
-        list(range(len(xlabel_sequence))),
-        labels=list(xlabel_sequence),
-    )
-    ax.set_xlim(-0.5, len(xlabel_sequence) - 0.5)
-    ax.tick_params(axis="x", which="major", labelsize=labelsize)
-    if bar_ylim:
-        ax.set_ylim(bar_ylim)
-    return ax
-
-
-def plot_logo(ax, str_list, tick_label_str, labelsize=16):
-    counts = pssms.alignment_2_counts(str_list, show_plot=False, heatmap=False)
-    lm.Logo(counts, color_scheme="chemistry", ax=ax)
-    ax.set_ylim(0, len(str_list))
-    _ = ax.set_xticks(
-        list(range(len(str_list[0]))),
-        labels=list(tick_label_str),
-    )
-    ax.tick_params(axis="x", which="major", labelsize=labelsize)
-    return ax
-
-
-@dataclass
-class PairwiseScoreResults:
-    flanked_hit: str
-    flanked_hit_start_position_in_idr: int
-    original_hit_st_in_flanked_hit: int
-    original_hit_end_in_flanked_hit: int
-    score_function_name: str
-    score_params: dict
-    lflank: int
-    rflank: int
-    matrix_file: str | Path
-    flanked_hit_sequence: str
-    flanked_hit_scores: list
-    flanked_hit_z_scores: list
-    hit_sequence: str
-    hit_scores: list
-    hit_z_scores: list
-    mat2score_params: dict
-
-
-class LevelPairwiseScore:
-
-    def __init__(self, level_obj: ConserLevel, score_key):
-        self.level_obj = level_obj
-        self.score_key = score_key
-        self.score_dict = level_obj.conservation_scores[score_key]
-        self.matrix_file = self.score_dict["matrix_file"]
-        self.flanked_hit = self.score_dict["flanked_hit"]
-        self.k = len(self.flanked_hit)
-        self.flanked_hit_start_position_in_idr = self.score_dict[
-            "flanked_hit_start_position_in_idr"
-        ]
-        self.original_hit_st_in_flanked_hit = self.score_dict[
-            "original_hit_st_in_flanked_hit"
-        ]
-        self.original_hit_end_in_flanked_hit = self.score_dict[
-            "original_hit_end_in_flanked_hit"
-        ]
-        # self.results = PairwiseScoreResults(**self.score_dict)
-        self.matrices = pairwise_tools.import_pairwise_matrices(self.matrix_file)
-        self.subseqdf = self.matrices["subseq_dataframe"].fillna("-" * self.k)
-        self.scoredf = self.matrices["score_dataframe"]
-        self.positiondf = self.matrices["position_dataframe"]
-        if "reciprocal_best_match_dataframe" in self.matrices:
-            self.rbmdf = self.matrices["reciprocal_best_match_dataframe"]
-            self.rbmdf = self.rbmdf.fillna(False)
-
-    def get_seqlist(self, query_position=None, reciprocal_best_match=False):
-        if query_position is None:
-            query_position = self.flanked_hit_start_position_in_idr
-        query_seq = self.subseqdf.loc[query_position, "reference_kmer"]
-        if reciprocal_best_match:
-            hitdf = pd.concat(
-                [
-                    self.subseqdf.loc[query_position],
-                    self.rbmdf.loc[query_position],
-                ],
-                axis=1,
-                keys=["subseq", "rbm"],
-            )
-            hitdf.loc["reference_kmer", "rbm"] = True
-            seqlist = hitdf[hitdf["rbm"]]["subseq"].to_list()
-        else:
-            seqlist = self.subseqdf.loc[
-                self.flanked_hit_start_position_in_idr
-            ].to_list()
-        return seqlist, query_seq
-
-    def plot_logo(self, ax, seq_list, query_seq=None):
-        if query_seq is None:
-            query_seq = self.flanked_hit
-        plot_logo(ax=ax, str_list=seq_list, tick_label_str=query_seq)
-        return ax
-
-    def plot_score_bar_plot(self, ax, score_list, query_seq=None):
-        if query_seq is None:
-            query_seq = self.flanked_hit
-        plot_score_bar_plot(ax=ax, score_list=score_list, query_seq=query_seq)
-        return ax
-
-    def plot_scoreslogo_plot(
-        self, score_list, axes=None, query_position=None, reciprocal_best_match=False
-    ):
-        if axes is None:
-            fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 4))
-        seqlist, query_seq = self.get_seqlist(query_position, reciprocal_best_match)
-        self.plot_score_bar_plot(ax=axes[0], score_list=score_list, query_seq=query_seq)
-        self.plot_logo(ax=axes[1], seq_list=seqlist, query_seq=query_seq)
-        counts = pssms.alignment_2_counts(seqlist, show_plot=False, heatmap=False)
-        return axes, counts
-
-
-def flank_hit_lr(
-    og: ConserGene,
-    lflank: int,
-    rflank: int,
-):
-    flanked_hit_st_idr, flanked_hit_end_idr, flanked_hit = tools.pad_hit(
-        og.query_idr_sequence, og.hit_st_in_idr, og.hit_end_in_idr, lflank, rflank
-    )
-    orig_hit_st_in_flanked_hit = og.hit_st_in_idr - flanked_hit_st_idr
-    orig_hit_end_in_flanked_hit = og.hit_end_in_idr - flanked_hit_st_idr
-
-
-def flank_hit_target_k(
-    og: ConserGene,
-    k: int,
-):
-    flanked_hit_st_idr, flanked_hit_end_idr, flanked_hit = pad_hit_target_length_exact(
-        og.query_idr_sequence, og.hit_st_in_idr, og.hit_end_in_idr, target_hit_length=k
-    )
-    orig_hit_st_in_flanked_hit = og.hit_st_in_idr - flanked_hit_st_idr
-    orig_hit_end_in_flanked_hit = og.hit_end_in_idr - flanked_hit_st_idr
-    assert (
-        len(flanked_hit) == k
-    ), f"length of flanked hit and k are not equal: len({flanked_hit})!={k}"
