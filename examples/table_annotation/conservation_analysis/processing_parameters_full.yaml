@@ -1,0 +1,105 @@
+aln_slice_params:
+  n_flanking_aas: 20
+  whole_idr: false
+clean_analysis_files: false
+clear_files: true
+database_filekey: ../../data/example_orthogroup_database/human_odb_groups/database_key.json
+esm_params:
+  device: cuda
+  model_name: esm2_t33_650M_UR50D
+  processes: 1
+  threads: 1
+filter_params:
+  min_num_orthos: 20
+hit_sequence_params:
+  hit_sequence_search_method: search
+  lcs_min_length: 20
+  longest_common_subsequence: false
+  target_hit_length: 0
+idr_params:
+  find_idrs: true
+  gap_merge_threshold: 10
+  idr_map_file: null
+  idr_min_length: 8
+  iupred_cutoff: 0.4
+msa_score_methods:
+- function_name: aln_property_entropy
+  function_params:
+    gap_frac_cutoff: 0.2
+    overwrite: false
+  level: null
+  score_key: aln_property_entropy
+- function_name: aln_shannon_entropy
+  function_params:
+    gap_frac_cutoff: 0.2
+    overwrite: false
+  level: null
+  score_key: aln_shannon_entropy
+multilevel_plot_params:
+  num_bg_scores_cutoff: 20
+  score_key: pairk_aln_needleman_lf5_rf5_edssmat50
+  score_type: z_score
+  strip_gaps: false
+new_index: true
+output_folder: ./conservation_analysis
+pairk_aln_methods:
+- function_name: pairk_aln
+  function_params:
+    matrix_name: EDSSMat50
+    overwrite: false
+  level: Vertebrata
+  lflank: 5
+  rflank: 5
+  score_key: pairk_aln_lf5_rf5_edssmat50
+- function_name: pairk_aln_needleman
+  function_params:
+    matrix_name: EDSSMat50
+    overwrite: false
+  level: null
+  lflank: 5
+  rflank: 5
+  score_key: pairk_aln_needleman_lf5_rf5_edssmat50
+pairk_conservation_params:
+  bg_cutoff: 50
+  bg_kmer_cutoff: 10
+  columnwise_score_function_name: property_entropy
+  kmer_conservation_function_name: pairk_conservation
+pairk_embedding_aln_methods:
+- function_name: pairk_aln_embedding
+  function_params:
+    overwrite: false
+  level: Vertebrata
+  lflank: 5
+  rflank: 5
+  score_key: pairk_aln_embedding_lf5_rf5
+steps_to_run:
+- s1
+- s2
+- s3
+- s4
+- s5
+- s6
+- s7
+- s8
+- s9
+table_annotation_params:
+  annotations:
+  - json_file
+  - multi_level_plot
+  - hit_start_position
+  - regex
+  - regex_match
+  - regex_match_stpos_in_hit
+  - regex_match_mean_score
+  - regex_match_mean_zscore
+  - conservation_string
+  - aln_slice_file
+  - hit_mean_score
+  - hit_mean_zscore
+  - best mean z-score over 5 residue window
+  - best mean z-score over 10 residue window
+  levels:
+  - Vertebrata
+  motif_regex: P.P.E
+  score_key_for_table: pairk_aln_needleman_lf5_rf5_edssmat50
+table_file: ./table.csv

@@ -1,0 +1,109 @@
+clear_files: true
+new_index: true
+output_folder: "./conservation_analysis"
+database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
+table_file: "./table.csv"
+steps_to_run:
+  - "s1" # setup folderes
+  - "s2" # define_idrs
+  - "s3" # find_hit
+  - "s4" # add_lvlinfo
+  - "s5" # scores
+  - "s6" # multilevel_plots
+  - "s7" # output_aln_slice
+  - "s8" # calculate_annotations
+  - "s9" # add_annotations2table
+hit_sequence_params:
+  hit_sequence_search_method: "search"
+idr_params:
+  find_idrs: true
+  # idr_map_file: "./idr_map.json"
+  iupred_cutoff: 0.4
+  gap_merge_threshold: 10
+  idr_min_length: 8
+filter_params:
+  min_num_orthos: 20
+
+msa_score_methods:
+  aln_property_entropy:
+    function_name: "aln_property_entropy"
+    function_params:
+      gap_frac_cutoff: 0.2
+      overwrite: false
+  aln_shannon_entropy:
+    function_name: "aln_shannon_entropy"
+    function_params:
+      gap_frac_cutoff: 0.2
+      overwrite: false
+  
+pairk_aln_methods:
+  pairk_aln_lf5_rf5_edssmat50:
+    function_name: "pairk_aln"
+    function_params:
+      overwrite: false
+      matrix_name: "EDSSMat50"
+    lflank: 5
+    rflank: 5
+    level: "Vertebrata"
+  pairk_aln_needleman_lf5_rf5_edssmat50:
+    function_name: "pairk_aln_needleman"
+    function_params:
+      overwrite: false
+      matrix_name: "EDSSMat50"
+    lflank: 5
+    rflank: 5
+    # level: "Vertebrata"
+
+pairk_embedding_aln_methods:
+  pairk_aln_embedding_lf5_rf5:
+    function_name: "pairk_aln_embedding"
+    function_params:
+      overwrite: false
+    lflank: 5
+    rflank: 5
+    level: "Vertebrata"
+
+pairk_conservation_params:
+  kmer_conservation_function_name: "pairk_conservation"
+  columnwise_score_function_name: "property_entropy"
+  bg_cutoff: 50
+  bg_kmer_cutoff: 10
+
+esm_params:
+  processes: 1
+  # threads: 10
+  device: "cuda"
+multilevel_plot_params:
+  # score_key: "aln_property_entropy"
+  score_key: "pairk_aln_needleman_lf5_rf5_edssmat50"
+  score_type: "z_score"
+aln_slice_params:
+  n_flanking_aas: 20
+  # whole_idr: true
+table_annotation_params:
+  score_key_for_table: "pairk_aln_needleman_lf5_rf5_edssmat50"
+  motif_regex: "P.P.E"
+  levels:
+    # - "Eukaryota"
+    # - "Metazoa"
+    - "Vertebrata"
+    # - "Tetrapoda"
+    # - "Mammalia"
+  annotations:
+    - "json_file"
+    - "multi_level_plot"
+    - "hit_start_position"
+    - "regex"
+    - "regex_match"
+    - "regex_match_stpos_in_hit"
+    - "regex_match_mean_score"
+    - "regex_match_mean_zscore"
+    - "conservation_string"
+    - "aln_slice_file"
+    # - "hit_scores"
+    - "hit_mean_score"
+    # - "hit_z_scores"
+    - "hit_mean_zscore"
+    - "best mean z-score over 5 residue window"
+    - "best mean z-score over 10 residue window"
+clean_analysis_files: false
