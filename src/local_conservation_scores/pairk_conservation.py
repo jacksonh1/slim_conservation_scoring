@@ -69,7 +69,40 @@ def pairk_conservation_from_json(
     bg_cutoff: int = 50,
     bg_kmer_cutoff: int = 10,
 ) -> PairwiseScoreResults:
-    """ """
+    """Calculate conservation scores from the pairk alignment results using the `pairk.calculate_conservation` function. Only the scores from the hit k-mer are returned.
+
+    Parameters
+    ----------
+    kmer_aln_json : str | Path
+        The json file storing the pairk alignment results
+    hit_position : int
+        The position of the hit k-mer in the query IDR sequence
+    columnwise_score_func : Callable, optional
+        A function to calculate conservation scores in a columnwise manner, can
+        be any function that takes a string representing a column of an MSA.
+        by default it is the property_entropy function from Capra and Singh 2007,
+        DOI: 10.1093/bioinformatics/btm270.
+    bg_cutoff : int, optional
+        the minimum number of background scores required to calculate the
+        z-scores, by default 50
+    bg_kmer_cutoff : int, optional
+        the minimum number of background kmers required to calculate the
+        z-scores, by default 10
+
+    Returns
+    -------
+    PairwiseScoreResults
+        Object containing pairk conservation results for the hit k-mer.
+        Includes the hit k-mer sequence, the conservation scores, the conservation
+        z-scores, and the background scores.
+
+    Raises
+    ------
+    ValueError
+        If there are fewer than `bg_kmer_cutoff` kmers to use for background scores
+    ValueError
+        If there are fewer than `bg_cutoff` background scores
+    """
     kmer_aln_json = Path(kmer_aln_json)
     pkaln = pairk.PairkAln.from_file(kmer_aln_json)
     if len(pkaln.orthokmer_matrix) < bg_kmer_cutoff:

@@ -2,7 +2,7 @@ aln_slice_params:
   n_flanking_aas: 20
   whole_idr: false
 clean_analysis_files: false
-clear_files: false
+clear_files: true
 database_filekey: ../../data/example_orthogroup_database/human_odb_groups/database_key.json
 esm_params:
   device: cuda
@@ -40,7 +40,7 @@ multilevel_plot_params:
   score_key: pairk_aln_needleman_lf5_rf5_edssmat50
   score_type: z_score
   strip_gaps: false
-new_index: false
+new_index: true
 output_folder: ./conservation_analysis
 pairk_aln_methods:
 - function_name: pairk_aln
@@ -73,15 +73,33 @@ pairk_embedding_aln_methods:
   rflank: 5
   score_key: pairk_aln_embedding_lf5_rf5
 steps_to_run:
+- s1
+- s2
+- s3
+- s4
+- s5
 - s6
+- s7
 - s8
 - s9
 table_annotation_params:
   annotations:
   - json_file
+  - multi_level_plot
+  - hit_start_position
+  - regex
+  - regex_match
+  - regex_match_stpos_in_hit
+  - regex_match_mean_score
+  - regex_match_mean_zscore
+  - conservation_string
+  - aln_slice_file
+  - hit_mean_score
+  - hit_mean_zscore
+  - best mean z-score over 5 residue window
+  - best mean z-score over 10 residue window
   levels:
   - Vertebrata
-  - Tetrapoda
   motif_regex: P.P.E
-  score_key_for_table: null
+  score_key_for_table: pairk_aln_needleman_lf5_rf5_edssmat50
 table_file: ./table.csv

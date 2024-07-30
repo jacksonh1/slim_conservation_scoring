@@ -25,6 +25,8 @@ This work was supported by the National Institutes of Health under Award Number 
     - [pairk alignment with needleman-wunsch](#pairk-alignment-with-needleman-wunsch)
     - [pairk alignment with embeddings](#pairk-alignment-with-embeddings)
   - [multiple pairk alignment methods](#multiple-pairk-alignment-methods)
+  - [currently implemented pairk conservation methods:](#currently-implemented-pairk-conservation-methods)
+    - [pairk conservation](#pairk-conservation)
   - [references](#references)
 
 
@@ -337,21 +339,21 @@ clean_analysis_files: false
 - `aln_slice_params`:
   - `n_flanking_aas`: the number of residues to include on either side of the hit sequence in the output alignment slice file (default 20). It is the number of query sequence residues flanking the hit in the query sequence. So if there are gaps in the query sequence in the msa, those columns are not counted as flanking positions.
   - `whole_idr`: whether or not to include the entire IDR in the alignment slice: Either true or false (default false).
-- `table_annotation_params`: parameters for adding conservation scores back to the input table. **This is mostly not yet implemented for pairk scores**. The `json_file` annotation works regardless, so you can use the `json_file` column to access all of the scores until this is implemented.
+- `table_annotation_params`: parameters for adding conservation scores back to the input table.
   - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy"). Must be a score_key that is specified via `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods`.
-  - `motif_regex`: The regex to search for in the hit sequence (default None). If a regex is provided, an additional column is added to the table that that is the average conservation scoresof the residues in the hit sequence matching the regex. For example if the hit sequence is "PPPEQAPAPAEPGSA" and the regex is "P.P.E", the average conservation score of the residues "PAPAE" (xxxxxxPAPAExxxx) are calculated and added to the table.
-  - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, set of conservation scores is added to the table
-  - `annotations`: The new columns to add to the output table. Some annotations are calculated for each "level" specified above. The background for the z-scores is the conservation scores for every residue in the idr that is not masked in the 'score_mask'. The 'score_mask' masks alignment columns that are gaps in the query sequence or that have more than the allowed fraction of gaps (>`gap_frac_cutoff`). Available annotations:
+  - `motif_regex`: The regex to search for in the hit sequence (default None). If a regex is provided, additional columns can be added to the table via the regex options below. 
+  - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, the pipeline will add annotations to the table.
+  - `annotations`: The new columns to add to the output table. Some annotations are calculated for each "level" specified above. Available annotations:
     - `json_file`: the path to the json file containing the conservation scores for the hit sequence
     - `multi_level_plot`: the path to the multilevel plot of the hit sequence conservation
     - `hit_start_position`: the start position of the hit sequence in the full length protein
     - `regex`: the regex used to find the motif within the the hit sequence
-    - `regex_match`: the match of the regex in the hit sequence
+    - `regex_match`: the match of the regex in the hit sequence. i.e. the sequence within the hit sequence matching the regex
     - `regex_match_stpos_in_hit`: the start position of the regex match within the hit sequence
     - `regex_match_scores`: the conservation scores for the residues in the regex match (list)
-    - `regex_match_mean_score`: the mean conservation score for the residues in the regex match
+    - `regex_match_mean_score`: the mean conservation score of the residues in the regex match
     - `regex_match_z_scores`: the z-scores for the residues in the regex match (list)
-    - `regex_match_mean_zscore`: the mean z-score for the residues in the regex match
+    - `regex_match_mean_zscore`: the mean z-score of the residues in the regex match
     - `conservation_string`: a string of the conservation scores for the hit sequence. The string is the same length as the hit sequence. Residues with conservation z-scores < 0.5 are represented by a "_", and residues with z-scores >= 0.5 are represented by the corresponding amino acid.
     - `aln_slice_file`: the path to the alignment slice file
     - `hit_scores`: the conservation scores for the hit sequence (list that is the same length as hit sequence)
@@ -394,7 +396,7 @@ classes in `./src/local_conservation_scores/__init__.py` and their corresponding
 <br>
 
 ## currently implemented MSA scores:
-
+For conservation scores calculated from MSAs, the background scores for the z-score calculation are the conservation scores of every column in the IDR region of the MSA that is not masked. An MSA column is masked if it corresponds to a gap in the query sequence or if the column has more than the allowed fraction of gaps (>`gap_frac_cutoff`, parameter in the below functions). 
 
 ### shannon entropy
 - score (including code) is from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
@@ -545,7 +547,7 @@ msa_score_methods:
 ```
 
 ## currently implemented pairk alignment methods:
-There are different methods to run the k-mer alignment step of pairk.
+There are different methods to run the k-mer alignment step of pairk. See [pairk](https://github.com/jacksonh1/pairk) for more details about pairk alignment.
 
 ### pairk alignment
 
@@ -639,6 +641,65 @@ pairk_embedding_aln_methods:
     rflank: 0
     level: "Vertebrata"
 ```
+
+## currently implemented pairk conservation methods:
+k-mer conservation is calculated from the results of the pairk alignment step. There are some additional parameters that can be specified here, so I did not combine pairk alignment and pairk conservation into 1 step. The pairk conservation is configured via the `pairk_conservation_params` key of the config file. See [pairk](https://github.com/jacksonh1/pairk) for more details about pairk conservation.
+
+### pairk conservation
+There is only one currently implemented function and it's likely to stay that way.
+
+docstring from `pairk_conservation_from_json` in `./src/local_conservation_scores/pairk_conservation.py`:
+```
+Calculate conservation scores from the pairk alignment results using the `pairk.calculate_conservation` function. Only the scores from the hit k-mer are returned.
+
+Parameters
+----------
+kmer_aln_json : str | Path
+    The json file storing the pairk alignment results
+hit_position : int
+    The position of the hit k-mer in the query IDR sequence
+columnwise_score_func : Callable, optional
+    A function to calculate conservation scores in a columnwise manner, can
+    be any function that takes a string representing a column of an MSA.
+    by default it is the property_entropy function from Capra and Singh 2007,
+    DOI: 10.1093/bioinformatics/btm270.
+bg_cutoff : int, optional
+    the minimum number of background scores required to calculate the
+    z-scores, by default 50
+bg_kmer_cutoff : int, optional
+    the minimum number of background kmers required to calculate the
+    z-scores, by default 10
+
+Returns
+-------
+PairwiseScoreResults
+    Object containing pairk conservation results for the hit k-mer.
+    Includes the hit k-mer sequence, the conservation scores, the conservation
+    z-scores, and the background scores.
+
+Raises
+------
+ValueError
+    If there are fewer than `bg_kmer_cutoff` kmers to use for background scores
+ValueError
+    If there are fewer than `bg_cutoff` background scores
+```
+example `pairk_conservation_params` parameters in yaml file:
+```yaml
+pairk_conservation_params:
+  kmer_conservation_function_name: "pairk_conservation"
+  columnwise_score_function_name: "shannon_entropy"
+  bg_cutoff: 50
+  bg_kmer_cutoff: 10
+```
+
+The `columnwise_score_function_name` parameter specifies the function to use for the `columnwise_score_func` argument in the `pairk_conservation_from_json` in `./src/local_conservation_scores/pairk_conservation.py`. The `bg_cutoff` and `bg_kmer_cutoff` parameters are used as keyword arguments in the function as well.
+
+The current options for the `columnwise_score_function_name` parameter are:
+- `shannon_entropy`
+- `property_entropy`
+These are the same functions as the MSA conservation scores, but they are used to calculate the conservation of the columns in the pairk alignment. To add a different columnwise conservation score to the pipeline, you would import the function into `./src/local_conservation_scores/__init__.py` and add it to the `ColumnwiseScoreMethods` class as an attribute. You can then use the function in the pipeline by setting the `columnwise_score_function_name` parameter to the attribute name.
+
 
 ## references
 

@@ -40,6 +40,40 @@
                         -0.5084866902517226
                     ]
                 },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Tetrapoda-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.3552652623709609,
+                        0.661036762309713,
+                        0.5747917067027292,
+                        0.9008790500611307,
+                        0.27962264308344825,
+                        0.6573705075318301,
+                        0.46075088306916023,
+                        0.5050375244239363,
+                        0.3594556551785124,
+                        0.4112024578121432,
+                        0.527126311512337
+                    ],
+                    "hit_z_scores": [
+                        -1.5616572903036592,
+                        0.35709479517675546,
+                        -0.18410306120103564,
+                        1.86213332853126,
+                        -2.03632361315647,
+                        0.33408861571799514,
+                        -0.899722627513281,
+                        -0.6218187500249577,
+                        -1.5353620831307142,
+                        -1.2106448171654076,
+                        -0.4832090159585348
+                    ]
+                },
                 "pairk_aln_needleman_lf5_rf5_edssmat50": {
                     "kmer_aln_file": "conservation_analysis/conservation_score_files/2-Tetrapoda-pairk_aln_needleman_lf5_rf5_edssmat50.json",
                     "flanked_hit": "QNPSLAFSPNPEENQSLAPLL",
@@ -133,40 +167,6 @@
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
                     }
-                },
-                "aln_shannon_entropy": {
-                    "file": "conservation_analysis/conservation_score_files/2-Tetrapoda-aln_shannon_entropy.json",
-                    "function_name": "aln_shannon_entropy",
-                    "function_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": false
-                    },
-                    "hit_scores": [
-                        0.3552652623709609,
-                        0.661036762309713,
-                        0.5747917067027292,
-                        0.9008790500611307,
-                        0.27962264308344825,
-                        0.6573705075318301,
-                        0.46075088306916023,
-                        0.5050375244239363,
-                        0.3594556551785124,
-                        0.4112024578121432,
-                        0.527126311512337
-                    ],
-                    "hit_z_scores": [
-                        -1.5616572903036592,
-                        0.35709479517675546,
-                        -0.18410306120103564,
-                        1.86213332853126,
-                        -2.03632361315647,
-                        0.33408861571799514,
-                        -0.899722627513281,
-                        -0.6218187500249577,
-                        -1.5353620831307142,
-                        -1.2106448171654076,
-                        -0.4832090159585348
-                    ]
                 }
             },
             "hit_aln_start": 500,
@@ -175,7 +175,8 @@
             "idr_aln_end": 960,
             "query_aln_sequence": "MTQTL-----------------DTREDPLNL-------GGGGGGGCGCG--------------------------------------------------W-----------AHSASLSSWSSCH---RRR----PGAPAYNRPH-RYSPKTEYGPPRKQPK--QQHGPGF-WFQ--PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R------------W------------GR-------------RGRGLRH-HP-RHSY-PRSPP---ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALR-AQKA------TVSGEASPARS--SGN---------------DA-P--PGG--------------------SKETWG-------------LQETLYGFVQNPS-----LAFS----PN-------P----------------------------------------EENQSLA-----PLLV--------EEE----------EEKK------------------NDD-E-EE---YDQ----------EVC--------------DAK-E----A---SE----------------------EEEEVE-D-EEEEVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NPEQIIPKVPQESLFMA-QDFNC-----------------",
             "hit_aln_sequence": "AFS----PN-------P----------------------------------------EENQS",
-            "num_clustered_ldos": 86
+            "num_clustered_ldos": 86,
+            "aln_slice_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-Tetrapoda_aln_slice.html"
         },
         "Vertebrata": {
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
@@ -537,7 +538,8 @@
             "idr_aln_end": 1202,
             "query_aln_sequence": "----------------------------------------------------MTQ-------TL-----------------DTREDPLNL-------GGGGGG-------------------------------------------------------GCGCG--------W--------------AHSASLSSWSSCH------------------RRR----PGAPAYNRPH---RYSP-----KTEYGPPRK-QPK--QQH-GPGF-WFQ-PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R-------------W------------GR-------------RGRGLR------H-HP------RHSY------------PR------SPP--------ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQ--------------------EALR-AQKA------TVSGEASPARS-SGN-------------------------DA-P-----------PGG--------------------SK-ETW-G---------------------------LQETLYGFVQNPS---LA----------FS---PN-------P----------------------------------------EENQSL-----------------------------------A-----PLLV-----EEE----------EEKK------------------NDD-E-E-E---YDQ-------EVC--------------DAK-E----A---SE----------------------EEEEVE---D-----------EEE---EVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NP----EQIIPKVPQESLFMA-QDFNC-----------------",
             "hit_aln_sequence": "A----------FS---PN-------P----------------------------------------EENQS",
-            "num_clustered_ldos": 143
+            "num_clustered_ldos": 143,
+            "aln_slice_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-Vertebrata_aln_slice.html"
         },
         "Mammalia": {
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.fasta",
@@ -574,6 +576,40 @@
                         -1.3735142679233783,
                         -1.2734631574245991,
                         -0.36191285758001074
+                    ]
+                },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Mammalia-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.42012338697822466,
+                        0.7243962671432187,
+                        0.616218866946183,
+                        0.9152568733861223,
+                        0.33396939371157364,
+                        0.6359233702885698,
+                        0.5202077792087394,
+                        0.5808649762038395,
+                        0.40641860064346663,
+                        0.49255614844650625,
+                        0.6130995214268192
+                    ],
+                    "hit_z_scores": [
+                        -1.3870356871882068,
+                        0.4605793805374499,
+                        -0.19629872993710382,
+                        1.6195289778148096,
+                        -1.9101825940629933,
+                        -0.07664844346496445,
+                        -0.7793001866434625,
+                        -0.4109757041152168,
+                        -1.4702543089672133,
+                        -0.9472072627383961,
+                        -0.21524011498559645
                     ]
                 },
                 "pairk_aln_needleman_lf5_rf5_edssmat50": {
@@ -669,40 +705,6 @@
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
                     }
-                },
-                "aln_shannon_entropy": {
-                    "file": "conservation_analysis/conservation_score_files/2-Mammalia-aln_shannon_entropy.json",
-                    "function_name": "aln_shannon_entropy",
-                    "function_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": false
-                    },
-                    "hit_scores": [
-                        0.42012338697822466,
-                        0.7243962671432187,
-                        0.616218866946183,
-                        0.9152568733861223,
-                        0.33396939371157364,
-                        0.6359233702885698,
-                        0.5202077792087394,
-                        0.5808649762038395,
-                        0.40641860064346663,
-                        0.49255614844650625,
-                        0.6130995214268192
-                    ],
-                    "hit_z_scores": [
-                        -1.3870356871882068,
-                        0.4605793805374499,
-                        -0.19629872993710382,
-                        1.6195289778148096,
-                        -1.9101825940629933,
-                        -0.07664844346496445,
-                        -0.7793001866434625,
-                        -0.4109757041152168,
-                        -1.4702543089672133,
-                        -0.9472072627383961,
-                        -0.21524011498559645
-                    ]
                 }
             },
             "hit_aln_start": 385,
@@ -711,7 +713,8 @@
             "idr_aln_end": 834,
             "query_aln_sequence": "MTQTL-DTREDPLNL----GGGGGGGCGCG---W--AHSASLSSWSSCH-RRRPGAPAYNRPH-RYSPKTEYGPPRKQPK--QQHGPGF-WFQ-PPV--------CSNWG---CW--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK------R------------W------------GRRGRGLRH-HP-RHSY-PRSPP---ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALR-AQKA------TVSGEASPARS-SGN---------------DA-P--PGG--------------------SKETWG---LQETLYGFVQNPS-LAFS---PN-------P--------------------------------------EENQSLA-----PLLV-----EEE----------EEKK------------------NDD-E-EEYDQ-------EVC-----DAK-E----A---SE------------------------------EEEEVE-D-EEEEVE-----------DEEE----EEVEEAEY---------------------VEEGEEEL-----------EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NPEQIIPKVPQESLFMA-QDFNC-----------------",
             "hit_aln_sequence": "AFS---PN-------P--------------------------------------EENQS",
-            "num_clustered_ldos": 79
+            "num_clustered_ldos": 79,
+            "aln_slice_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-Mammalia_aln_slice.html"
         },
         "Metazoa": {
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
@@ -748,6 +751,40 @@
                         -1.8329224007728093,
                         -1.7595129895660369,
                         -0.9417673132818326
+                    ]
+                },
+                "aln_shannon_entropy": {
+                    "file": "conservation_analysis/conservation_score_files/2-Metazoa-aln_shannon_entropy.json",
+                    "function_name": "aln_shannon_entropy",
+                    "function_params": {
+                        "gap_frac_cutoff": 0.2,
+                        "overwrite": false
+                    },
+                    "hit_scores": [
+                        0.3868502084402238,
+                        0.3529988115270185,
+                        0.6667065520301317,
+                        0.8827921146438482,
+                        0.29806514457294486,
+                        0.6146053881822868,
+                        0.2972323350073457,
+                        0.3033487535155455,
+                        0.23832653384036206,
+                        0.27586796402575,
+                        0.4519097677319363
+                    ],
+                    "hit_z_scores": [
+                        -1.095729701396838,
+                        -1.28063762234722,
+                        0.43294147251856185,
+                        1.613274805076229,
+                        -1.5807041210120358,
+                        0.14834707569347658,
+                        -1.5852532120205212,
+                        -1.5518432398142492,
+                        -1.907016867849287,
+                        -1.7019527216670045,
+                        -0.7403521115909114
                     ]
                 },
                 "pairk_aln_needleman_lf5_rf5_edssmat50": {
@@ -843,40 +880,6 @@
                         "bg_cutoff": 50,
                         "bg_kmer_cutoff": 10
                     }
-                },
-                "aln_shannon_entropy": {
-                    "file": "conservation_analysis/conservation_score_files/2-Metazoa-aln_shannon_entropy.json",
-                    "function_name": "aln_shannon_entropy",
-                    "function_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": false
-                    },
-                    "hit_scores": [
-                        0.3868502084402238,
-                        0.3529988115270185,
-                        0.6667065520301317,
-                        0.8827921146438482,
-                        0.29806514457294486,
-                        0.6146053881822868,
-                        0.2972323350073457,
-                        0.3033487535155455,
-                        0.23832653384036206,
-                        0.27586796402575,
-                        0.4519097677319363
-                    ],
-                    "hit_z_scores": [
-                        -1.095729701396838,
-                        -1.28063762234722,
-                        0.43294147251856185,
-                        1.613274805076229,
-                        -1.5807041210120358,
-                        0.14834707569347658,
-                        -1.5852532120205212,
-                        -1.5518432398142492,
-                        -1.907016867849287,
-                        -1.7019527216670045,
-                        -0.7403521115909114
-                    ]
                 }
             },
             "hit_aln_start": 684,
@@ -885,7 +888,8 @@
             "idr_aln_end": 1202,
             "query_aln_sequence": "----------------------------------------------------MTQ-------TL-----------------DTREDPLNL-------GGGGGG-------------------------------------------------------GCGCG--------W--------------AHSASLSSWSSCH------------------RRR----PGAPAYNRPH---RYSP-----KTEYGPPRK-QPK--QQH-GPGF-WFQ-PPV--------CSNWGC---W--GGPWRPPPPGFWKFPCPV-QVFRVYGLHPLC-F-CCCSCWSGSWNPGW-VKPPGRKK-----------R-------------W------------GR-------------RGRGLR------H-HP------RHSY------------PR------SPP--------ADVSTLPRPVKL--YEW-----REPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQ--------------------EALR-AQKA------TVSGEASPARS-SGN-------------------------DA-P-----------PGG--------------------SK-ETW-G---------------------------LQETLYGFVQNPS---LA----------FS---PN-------P----------------------------------------EENQSL-----------------------------------A-----PLLV-----EEE----------EEKK------------------NDD-E-E-E---YDQ-------EVC--------------DAK-E----A---SE----------------------EEEEVE---D-----------EEE---EVE---------------DEEE----EEVEEAEY---------------------VEEGEEEL-----EEEELEE-------EEEV---------------------LEEN------------------EQRGEE---------FHLPLEMP------LSIFVEAE-----------------E----KRENFISCTFL---------------------------------NP----EQIIPKVPQESLFMA-QDFNC-----------------",
             "hit_aln_sequence": "A----------FS---PN-------P----------------------------------------EENQS",
-            "num_clustered_ldos": 143
+            "num_clustered_ldos": 143,
+            "aln_slice_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-Metazoa_aln_slice.html"
         }
     },
     "query_sequence": "MTQTLDTREDPLNLGGGGGGGCGCGWAHSASLSSWSSCHRRRPGAPAYNRPHRYSPKTEYGPPRKQPKQQHGPGFWFQPPVCSNWGCWGGPWRPPPPGFWKFPCPVQVFRVYGLHPLCFCCCSCWSGSWNPGWVKPPGRKKRWGRRGRGLRHHPRHSYPRSPPADVSTLPRPVKLYEWREPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALRAQKATVSGEASPARSSGNDAPPGGSKETWGLQETLYGFVQNPSLAFSPNPEENQSLAPLLVEEEEEKKNDDEEEYDQEVCDAKEASEEEEEVEDEEEEVEDEEEEEVEEAEYVEEGEEELEEEELEEEEEVLEENEQRGEEFHLPLEMPLSIFVEAEEKRENFISCTFLNPEQIIPKVPQESLFMAQDFNC",
@@ -916,6 +920,5 @@
         "Tetrapoda",
         "Mammalia"
     ],
-    "multilevel_plot_file-pairk_aln_needleman_lf5_rf5_edssmat50": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-pairk_aln_needleman_lf5_rf5_edssmat50_multilevel_plot.png",
-    "multilevel_plot_file-aln_property_entropy": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-aln_property_entropy_multilevel_plot.png"
+    "multilevel_plot_file-pairk_aln_needleman_lf5_rf5_edssmat50": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0002f40-pairk_aln_needleman_lf5_rf5_edssmat50_multilevel_plot.png"
 }

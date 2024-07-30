@@ -81,27 +81,29 @@ aln_slice_params:
   n_flanking_aas: 20
   # whole_idr: true
 table_annotation_params:
-  score_key_for_table: null
+  score_key_for_table: "pairk_aln_needleman_lf5_rf5_edssmat50"
   motif_regex: "P.P.E"
   levels:
     # - "Eukaryota"
     # - "Metazoa"
     - "Vertebrata"
-    - "Tetrapoda"
+    # - "Tetrapoda"
     # - "Mammalia"
   annotations:
     - "json_file"
-    # - "multi_level_plot"
-    # - "hit_start_position"
-    # - "regex"
-    # - "regex_match"
-    # - "regex_match_stpos_in_hit"
-    # - "conservation_string"
-    # - "aln_slice_file"
+    - "multi_level_plot"
+    - "hit_start_position"
+    - "regex"
+    - "regex_match"
+    - "regex_match_stpos_in_hit"
+    - "regex_match_mean_score"
+    - "regex_match_mean_zscore"
+    - "conservation_string"
+    - "aln_slice_file"
     # - "hit_scores"
-    # - "hit_mean_score"
+    - "hit_mean_score"
     # - "hit_z_scores"
-    # - "hit_mean_zscore"
-    # - "best mean z-score over 5 residue window"
-    # - "best mean z-score over 10 residue window"
+    - "hit_mean_zscore"
+    - "best mean z-score over 5 residue window"
+    - "best mean z-score over 10 residue window"
 clean_analysis_files: false

@@ -1,16 +1,16 @@
-clear_files: false
-new_index: false
+clear_files: true
+new_index: true
 output_folder: "./conservation_analysis"
 database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
 table_file: "./table.csv"
 steps_to_run:
-  # - "s1" # setup folderes
-  # - "s2" # define_idrs
-  # - "s3" # find_hit
-  # - "s4" # add_lvlinfo
-  # - "s5" # scores
+  - "s1" # setup folderes
+  - "s2" # define_idrs
+  - "s3" # find_hit
+  - "s4" # add_lvlinfo
+  - "s5" # scores
   - "s6" # multilevel_plots
-  # - "s7" # output_aln_slice
+  - "s7" # output_aln_slice
   - "s8" # calculate_annotations
   - "s9" # add_annotations2table
 hit_sequence_params:
@@ -81,27 +81,29 @@ aln_slice_params:
   n_flanking_aas: 20
   # whole_idr: true
 table_annotation_params:
-  score_key_for_table: null
+  score_key_for_table: "pairk_aln_needleman_lf5_rf5_edssmat50"
   motif_regex: "P.P.E"
   levels:
     # - "Eukaryota"
     # - "Metazoa"
     - "Vertebrata"
-    - "Tetrapoda"
+    # - "Tetrapoda"
     # - "Mammalia"
   annotations:
     - "json_file"
-    # - "multi_level_plot"
-    # - "hit_start_position"
-    # - "regex"
-    # - "regex_match"
-    # - "regex_match_stpos_in_hit"
-    # - "conservation_string"
-    # - "aln_slice_file"
+    - "multi_level_plot"
+    - "hit_start_position"
+    - "regex"
+    - "regex_match"
+    - "regex_match_stpos_in_hit"
+    - "regex_match_mean_score"
+    - "regex_match_mean_zscore"
+    - "conservation_string"
+    - "aln_slice_file"
     # - "hit_scores"
-    # - "hit_mean_score"
+    - "hit_mean_score"
     # - "hit_z_scores"
-    # - "hit_mean_zscore"
-    # - "best mean z-score over 5 residue window"
-    # - "best mean z-score over 10 residue window"
+    - "hit_mean_zscore"
+    - "best mean z-score over 5 residue window"
+    - "best mean z-score over 10 residue window"
 clean_analysis_files: false
