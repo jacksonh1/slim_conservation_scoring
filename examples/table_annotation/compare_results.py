@@ -1,6 +1,6 @@
 # %%
 import pairk
-import local_conservation_scores.tools.pairwise_tools as pw_tools
+import conservation_scores.tools.pairwise_tools as pw_tools
 
 
 mats = pw_tools.import_pairwise_matrices(

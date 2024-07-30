@@ -34,7 +34,7 @@ This work was supported by the National Institutes of Health under Award Number 
 
 A series of tools to quantify the conservation of potential short linear motifs in disordered regions.<br>
 
-The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)). This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/slim_conservation_orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example](https://github.com/jacksonh1/slim_conservation_orthogroup_generation/tree/main/examples/ex3_all_human_genes).
+The basic idea is that you precalculate ortholog groups for conservation analysis and generate multiple sequence alignments for all of the groups. This pipeline is designed to access that "database" and calculate conservation scores for candidate motifs in a table. The pipeline can be used with any database of multiple sequence alignments, but the database key needs to be formatted in a specific way (see [database setup](#database-setup)). This repo includes an example database (`./data/example_orthogroup_database/`). The database is the output from my [orthoDB ortholog group preprocessing pipeline](https://github.com/jacksonh1/slim_conservation_orthogroup_generation), and assumes that the ortholog groups were generated for all human proteins (in orthoDB) at different phylogenetic levels (Eukaryota, Metazoa, etc.) like in the [example](https://github.com/jacksonh1/slim_conservation_orthogroup_generation/tree/main/examples/ex3_all_human_genes). The code for generating the example database is in `./data_processing/`.
 
 
 - pipeline inputs:
@@ -54,7 +54,7 @@ See [conservation scores](#conservation-scores) for more information on the cons
 
 1. download this repository
 2. download iupred2a from [here](https://iupred2a.elte.hu/download_new)
-3. edit the `.env` (`./src/local_env_variables/.env`) file with the location of the downloaded iupred2a folder: `IUPRED2A_LIB_DIR=/absolute/path/to/iupred2a/folder/`
+3. edit the `.env` (`./slim_conservation_scoring/env_variables/.env`) file with the location of the downloaded iupred2a folder: `IUPRED2A_LIB_DIR=/absolute/path/to/iupred2a/folder/`
    - the folder should contain the file `iupred2a_lib.py`
 4. create a new python environment with the dependencies: 
    - Mac - `conda env create -f environment_mac.yml` <br>
@@ -63,7 +63,7 @@ See [conservation scores](#conservation-scores) for more information on the cons
 6. install the src code as a local package: `pip install .` <br>
 
 # database setup
-An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./src/data_processing/`. The script `./src/data_processing/p1_initial_database_preparation/create_database.sh` was run with the [orthodb preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation), whereas the other scripts were run with the tools in this repo. They are numbered in the order they were run.
+An example database has already been prepared in this repo (`./data/example_orthogroup_database/human_odb_groups/`). The scripts used to generate this database are located in `./data_processing/` and were run with the [orthodb orthogroup preprocessing pipeline](https://github.com/jacksonh1/orthogroup_generation).
 
 Regardless of whether or not you use the orthodb preprocessing pipeline, the database needs to consist of multiple sequence alignments for each of the full length proteins that are in the input table, and a json file (database key) that maps the gene id to the alignment files. The minimal json file should look like this:
 ```
@@ -133,7 +133,7 @@ See `./examples/table_annotation/` for an example. <br>
 
 ## pipeline overview
 
-The main pipeline is executed via the script `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`, which executes the following steps (code in `./src/local_conservation_analysis_pipeline/`) for each row in the input table:
+The main pipeline is executed via the script `./slim_conservation_scoring/pipeline/conservation_pipeline.py`, which executes the following steps (code in `./slim_conservation_scoring/pipeline/`) for each row in the input table:
 - s1. setup the analysis folder (create folders and files for each row in the input table)
     - a reference index is used to keep track of each row in the table. Each row is associated with a unique reference index.
     - For each row, the gene id of the protein is looked up in the database key to find the alignment file(s) for the protein and its orthologs
@@ -158,7 +158,7 @@ The main pipeline is executed via the script `./src/local_conservation_analysis_
 
 
 ## pipeline parameters
-The main pipeline is run via the file `./src/local_conservation_analysis_pipeline/conservation_pipeline.py`. The pipeline parameters are specified in a yaml file, for example (example is default configuration; all entries except database_filekey, table_file, and output_folder are optional):
+The main pipeline is run via the file `./slim_conservation_scoring/pipeline/conservation_pipeline.py`. The pipeline parameters are specified in a yaml file, for example (example is default configuration; all entries except database_filekey, table_file, and output_folder are optional):
 ```yaml
 database_filekey: "../../data/example_orthogroup_database/human_odb_groups/database_key.json"
 table_file: "./table.csv"
@@ -324,7 +324,7 @@ clean_analysis_files: false
 - `pairk_embedding_aln_methods`:
   - Any embedding-based `pairk` alignment methods are added here. The parameters are formated in the same way as the `pairk_aln_methods`
 - `esm_params`:
-  - `processes`: the number of processes to use for the ESM embedding (default 4). This is the number of concurrent table rows that are processed at once with the embedding method. It is included here as a separate parameter because the ESM embedding method uses a lot of memory. This parameter overrides the `n_cores` parameter in the main pipeline function (`./src/local_conservation_analysis_pipeline/conservation_pipeline.py`) and command line script (`./src/local_scripts/conservation_analysis.py`).
+  - `processes`: the number of processes to use for the ESM embedding (default 4). This is the number of concurrent table rows that are processed at once with the embedding method. It is included here as a separate parameter because the ESM embedding method uses a lot of memory. This parameter overrides the `n_cores` parameter in the main pipeline function (`./slim_conservation_scoring/pipeline/conservation_pipeline.py`) and command line script (`./slim_conservation_scoring/scripts/conservation_analysis.py`).
   - `threads`: the number of threads to use for the ESM embedding (default 1)
   - `device`: the device to use for the ESM embedding, must be 'cpu' or 'cuda' (default "cuda")
 - `pairk_conservation_params`: parameters for calculating conservation scores from the pairk alignment results. Only applies to results from `pairk_aln_methods` and `pairk_embedding_aln_methods`.
@@ -366,10 +366,10 @@ clean_analysis_files: false
 
 
 # conservation scores
-The conservation score functions are located in `./src/local_conservation_scores/`. The main function for each score is in a separate file, and the functions are imported into classes in `./src/local_conservation_scores/__init__.py`. The `function_name` parameter under `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods` specifies the function to run (it is used to access the function from the class in `./src/local_conservation_scores/__init__.py`). Similarly, the `kmer_conservation_function_name` the `columnwise_score_function_name` parameters under `pairk_conservation_params` also specify functions to use for the pairk conservation calculations.
+The conservation score functions are located in `./slim_conservation_scoring/conservation_scores/`. The main function for each score is in a separate file, and the functions are imported into classes in `./slim_conservation_scoring/conservation_scores/__init__.py`. The `function_name` parameter under `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods` specifies the function to run (it is used to access the function from the class in `./slim_conservation_scoring/conservation_scores/__init__.py`). Similarly, the `kmer_conservation_function_name` and the `columnwise_score_function_name` parameters under `pairk_conservation_params` also specify functions to use for the pairk conservation calculations.
 <br>
 
-classes in `./src/local_conservation_scores/__init__.py` and their corresponding parameters in the configuration file:
+classes in `./slim_conservation_scoring/conservation_scores/__init__.py` and their corresponding parameters in the configuration file:
 - `MSAScoreMethods`: class that contains the functions for calculating conservation scores from multiple sequence alignments. 
   - available functions:
     - `aln_asym_sum_of_pairs`
@@ -401,7 +401,7 @@ For conservation scores calculated from MSAs, the background scores for the z-sc
 ### shannon entropy
 - score (including code) is from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
 
-docstring from `main` in `./src/local_conservation_scores/aln_shannon_entropy.py`:
+docstring from `main` in `./slim_conservation_scoring/conservation_scores/aln_shannon_entropy.py`:
 ```
 calculate the shannon entropy score for each column in an alignment
 
@@ -439,7 +439,7 @@ msa_score_methods:
 ### property entropy
 - score (including code) is from [capra and singh](https://pubmed.ncbi.nlm.nih.gov/17519246/)
 
-docstring from `main` in `./src/local_conservation_scores/aln_property_entropy.py`:
+docstring from `main` in `./slim_conservation_scoring/conservation_scores/aln_property_entropy.py`:
 ```
 calculate the property entropy score for each column in an alignment
 
@@ -487,7 +487,7 @@ msa_score_methods:
   ```
   The asymmetric score would give this position a low conservation score, whereas a symmetric score would give it a high conservation score. For this application we are interested in the conservation of the hit sequence in the reference sequence, so the asymmetric score is likely more appropriate.
 
-docstring from `main` in `./src/local_conservation_scores/aln_asym_sum_of_pairs.py`:
+docstring from `main` in `./slim_conservation_scoring/conservation_scores/aln_asym_sum_of_pairs.py`:
 ```
 calculate the asymmetric sum-of-pairs score for each column in an alignment
 
@@ -551,7 +551,7 @@ There are different methods to run the k-mer alignment step of pairk. See [pairk
 
 ### pairk alignment
 
-docstring from `main` in `./src/local_conservation_scores/pairk_aln.py`:
+docstring from `main` in `./slim_conservation_scoring/conservation_scores/pairk_aln.py`:
 ```
 run pairk alignment from a fasta alignment file
 
@@ -648,7 +648,7 @@ k-mer conservation is calculated from the results of the pairk alignment step. T
 ### pairk conservation
 There is only one currently implemented function and it's likely to stay that way.
 
-docstring from `pairk_conservation_from_json` in `./src/local_conservation_scores/pairk_conservation.py`:
+docstring from `pairk_conservation_from_json` in `./slim_conservation_scoring/conservation_scores/pairk_conservation.py`:
 ```
 Calculate conservation scores from the pairk alignment results using the `pairk.calculate_conservation` function. Only the scores from the hit k-mer are returned.
 
@@ -693,12 +693,12 @@ pairk_conservation_params:
   bg_kmer_cutoff: 10
 ```
 
-The `columnwise_score_function_name` parameter specifies the function to use for the `columnwise_score_func` argument in the `pairk_conservation_from_json` in `./src/local_conservation_scores/pairk_conservation.py`. The `bg_cutoff` and `bg_kmer_cutoff` parameters are used as keyword arguments in the function as well.
+The `columnwise_score_function_name` parameter specifies the function to use for the `columnwise_score_func` argument in the `pairk_conservation_from_json` in `./slim_conservation_scoring/conservation_scores/pairk_conservation.py`. The `bg_cutoff` and `bg_kmer_cutoff` parameters are used as keyword arguments in the function as well.
 
 The current options for the `columnwise_score_function_name` parameter are:
 - `shannon_entropy`
 - `property_entropy`
-These are the same functions as the MSA conservation scores, but they are used to calculate the conservation of the columns in the pairk alignment. To add a different columnwise conservation score to the pipeline, you would import the function into `./src/local_conservation_scores/__init__.py` and add it to the `ColumnwiseScoreMethods` class as an attribute. You can then use the function in the pipeline by setting the `columnwise_score_function_name` parameter to the attribute name.
+These are the same functions as the MSA conservation scores, but they are used to calculate the conservation of the columns in the pairk alignment. To add a different columnwise conservation score to the pipeline, you would import the function into `./slim_conservation_scoring/conservation_scores/__init__.py` and add it to the `ColumnwiseScoreMethods` class as an attribute. You can then use the function in the pipeline by setting the `columnwise_score_function_name` parameter to the attribute name.
 
 
 ## references

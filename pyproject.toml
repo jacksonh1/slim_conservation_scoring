@@ -1,3 +1,47 @@
+[project]
+name = "slim_conservation_scoring"
+description = "A pipeline for scoring conservation of short sequences in IDRs."
+dynamic = ["version"]
+readme = "README.md"
+authors = [
+    { name = "Jackson Halpin", email = "jhalpin@mit.edu" }
+]
+license = { text = "MIT" }
+# See https://pypi.org/classifiers/
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.10"
+# Declare any run-time dependencies that should be installed with the package.
+dependencies = [
+    "pairk",
+    # "importlib-resources;python_version<'3.10'",
+    "numpy",
+    "pandas",
+    "biopython >= 1.8",
+    "logomaker",
+    "matplotlib",
+    "seaborn",
+]
+
+# Update the urls once the hosting is set up.
+[project.urls]
+"Source" = "https://github.com/jacksonh1/slim_conservation_scoring"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "slim_conservation_scoring.__version__"}
+
+[tool.setuptools.packages.find]
+namespaces = false
+where = ["."]
+include = ["slim_conservation_scoring*"]
+
