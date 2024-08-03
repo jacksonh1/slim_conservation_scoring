@@ -132,9 +132,18 @@ def run_pairk_aln(file, config: conf.PipelineParameters, **kwargs):
 
 
 def run_pairk_embedding_aln(file, config: conf.PipelineParameters, **kwargs):
-    mod = esm_tools.ESM_Model(
-        model_name=config.esm_params.model_name, threads=config.esm_params.threads
-    )
+    if "embedding_file_path" in kwargs:
+        if kwargs["embedding_file_path"] is not None:
+            mod = None
+        else:
+            mod = esm_tools.ESM_Model(
+                model_name=config.esm_params.model_name,
+                threads=config.esm_params.threads,
+            )
+    else:
+        mod = esm_tools.ESM_Model(
+            model_name=config.esm_params.model_name, threads=config.esm_params.threads
+        )
     score_kwargs = dict(
         device=config.esm_params.device,
         mod=mod,

@@ -1,6 +1,7 @@
 # %%
 from pathlib import Path
 import pairk
+import torch
 
 
 def main(
@@ -12,6 +13,7 @@ def main(
     idr_aln_end: int,
     mod: pairk.ESM_Model,
     overwrite: bool = False,
+    embedding_file_path: str | Path | None = None,
     **kwargs,
 ):
     # check if output file exists
@@ -25,12 +27,25 @@ def main(
     fl_seqdict_unaligned = pairk.utilities.fasta_MSA_to_unaligned_sequences(
         input_alignment_file
     )
+    if embedding_file_path is not None:
+        embedding_file_path = Path(embedding_file_path)
+        precomputed_embeddings = {
+            i: torch.load(embedding_file_path / f"{i}.pt", weights_only=True)
+            for i in fl_seqdict_unaligned.keys()
+        }
+        for i in precomputed_embeddings.keys():
+            assert (
+                precomputed_embeddings[i].shape[0] == len(fl_seqdict_unaligned[i]) + 2
+            ), f"precomputed embedding for {i} has shape {precomputed_embeddings[i].shape} but sequence has length {len(fl_seqdict_unaligned[i])}"
+    else:
+        precomputed_embeddings = None
     alnres = pairk.pairk_alignment_embedding_distance(
         full_length_sequence_dict=fl_seqdict_unaligned,
         idr_position_map=idr_pos_map,
         query_id=reference_id,
         k=k,
         mod=mod,
+        precomputed_embeddings=precomputed_embeddings,
         **kwargs,
     )
     alnres.write_to_file(output_file)

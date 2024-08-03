@@ -1,6 +1,6 @@
 ./example_data
 ---
-- scripts for creating the example database of MSA and homologs (using pipeline #1)
+- scripts for creating the example database of MSA and homologs (using [slim_conservation_orthogroup_generation](https://github.com/jacksonh1/slim_conservation_orthogroup_generation) pipeline)
 
 ./matrices
 ---

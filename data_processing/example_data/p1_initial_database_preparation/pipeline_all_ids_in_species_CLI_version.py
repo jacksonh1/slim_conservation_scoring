@@ -4,10 +4,9 @@ import shutil
 import traceback
 from pathlib import Path
 
-import local_orthoDB_group_pipeline.sql_queries as sql_queries
-import local_scripts.odb_group_pipeline as pipeline
-
-import local_config.orthodb_pipeline_parameters as conf
+import orthodb_tools.sql_queries as sql_queries
+import orthodb_tools.orthogroup_processing.pipeline as pipeline
+from orthodb_tools.config import orthodb_pipeline_parameters as conf
 
 SPECIES_ID = "9606_0"
 N_CORES = multiprocessing.cpu_count() - 2
@@ -16,9 +15,9 @@ N_CORES = multiprocessing.cpu_count() - 2
 def multiple_levels(
     config: conf.PipelineParams, query_odb_gene_id: str, og_levels: list
 ):
-    '''
+    """
     run the pipeline for a single odb_gene_id for multiple og_levels
-    '''
+    """
     for og_level in og_levels:
         config.og_select_params.OG_level_name = og_level
         try:

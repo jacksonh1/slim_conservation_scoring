@@ -1,2 +1,2 @@
-recursive-include src/local_data *
-recursive-include src/local_env_variables *
+recursive-include slim_conservation_scoring/local_data *
+recursive-include slim_conservation_scoring/env_variables *
