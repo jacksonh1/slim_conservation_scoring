@@ -7,7 +7,7 @@ This work was supported by the National Institutes of Health under Award Number 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [motif conservation in disordered regions](#motif-conservation-in-disordered-regions)
-- [note on pipeline structure](#note-on-pipeline-structure)
+  - [note on future improvements](#note-on-future-improvements)
 - [setup TL;DR:](#setup-tldr)
 - [database setup](#database-setup)
 - [Using the pipeline](#using-the-pipeline)
@@ -47,8 +47,8 @@ The basic idea is that you precalculate ortholog groups for conservation analysi
 conservation can be calculated via traditional MSA-based methods or via [pairk](https://github.com/jacksonh1/pairk).
 See [conservation scores](#conservation-scores) for more information on the conservation scores that can be calculated and see [pairk's documentation](https://pairk.readthedocs.io/en/latest/) for more information on pairk.
 
-# note on pipeline structure
-- I wanted to avoid using a workflow manager (e.g. snakemake or nextflow) and a more sophisticated database structure because I wanted to keep the pipeline easy for anyone to use, however, I think the result is potentially more confusing. If I had the time to redo it, I would probably use a workflow manager to handle the pipeline and a different database structure to store the data and results.
+## note on future improvements
+- I wanted to avoid using a workflow manager (e.g. snakemake or nextflow) and a more sophisticated database structure because I wanted to keep the pipeline easy for anyone to use, however, I think the result is potentially more confusing. If I had the time, I might refactor everything to use a workflow manager to handle the pipeline and a different database structure to store the data. It might make the pipeline more efficient and easier to use. <br>
 
 # setup TL;DR:
 
