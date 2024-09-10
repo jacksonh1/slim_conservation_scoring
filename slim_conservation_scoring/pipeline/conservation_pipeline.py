@@ -273,6 +273,7 @@ def main(config_file, n_cores):
     Path(config.output_folder).mkdir(exist_ok=True, parents=True)
     score_output_folder = Path(config.output_folder) / "conservation_score_files"
     score_output_folder.mkdir(exist_ok=True)
+    score_output_folder = score_output_folder.resolve()
     if "s1" in config.steps_to_run:
         step1(config, reindexed_table_file)
     json_files = get_passing_jsons(

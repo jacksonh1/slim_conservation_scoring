@@ -29,6 +29,9 @@ dependencies = [
 [project.urls]
 "Source" = "https://github.com/jacksonh1/slim_conservation_scoring"
 
+[project.scripts]
+slim_conservation_scoring-pipeline = "slim_conservation_scoring.scripts.pipeline:main_cli"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"

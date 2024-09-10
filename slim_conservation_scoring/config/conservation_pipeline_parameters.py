@@ -293,6 +293,8 @@ class PipelineParameters:
     #         raise FileNotFoundError(f"database_filekey {self.database_filekey} does not exist")
 
 
+# config = PipelineParameters(database_filekey="test", table_file="test")
+# config.print_params()
 # print(test["new_score_methods"])
 
 # import yaml
@@ -306,7 +308,6 @@ class PipelineParameters:
 # }
 # config_dict.update(test)
 # config = PipelineParameters.from_dict(config_dict)
-# config = PipelineParameters(database_filekey="test", table_file="test")
 # for k, v in asdict(config).items():
 #     if isinstance(v, dict):
 #         print(k)

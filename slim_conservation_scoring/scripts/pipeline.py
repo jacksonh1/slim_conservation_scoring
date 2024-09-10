@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 import multiprocessing
 
@@ -5,7 +7,8 @@ from slim_conservation_scoring.pipeline import conservation_pipeline
 
 N_CORES = round(multiprocessing.cpu_count() / 2)
 
-if __name__ == "__main__":
+
+def main_cli():
     parser = argparse.ArgumentParser(
         description="""Run conservation analysis pipeline
 
@@ -90,7 +93,11 @@ clean_analysis_files: False
         type=int,
         metavar="<int>",
         default=N_CORES,
-        help=f"""number of cores to use""",
+        help=f"""number of cores to use. Default is {N_CORES}""",
     )
     args = parser.parse_args()
     conservation_pipeline.main(args.config, args.n_cores)
+
+
+if __name__ == "__main__":
+    main_cli()
