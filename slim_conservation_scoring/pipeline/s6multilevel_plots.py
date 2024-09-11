@@ -63,6 +63,19 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
     fig, axd = score_plots.build_og_level_screen_mosaic_z_score(levels)
     output_folder = Path(og.info_dict["analysis_folder"])
     for level in levels:
+        if level not in og.levels_passing_filters:
+            message = f"{og.query_gene_id}: not enough sequences for {level}"
+            axd[f"scores-{level}"].text(
+                0.5,
+                0.5,
+                message,
+                horizontalalignment="center",
+                verticalalignment="center",
+                transform=axd[f"scores-{level}"].transAxes,
+                fontsize=11,
+            )
+            # axd[f'scores-{level}'].set_title(, fontsize=11)
+            continue
         lvlo = og.level_objects[level]
         if config.multilevel_plot_params.score_key not in lvlo.conservation_scores:
             message = f"{og.query_gene_id}: no scores were calculated at the {level} level for {config.multilevel_plot_params.score_key}"
