@@ -109,6 +109,11 @@ def add_gene_annotations_2_dict(
         d["level_annotations"][level] = {}
         dlvl = d["level_annotations"][level]
         dlvl["aln_slice_file"] = lvl_annotation_aln_slice(lvlo, og)
+        if table_annotation_score_key not in lvlo.conservation_scores:
+            print(
+                f"{table_annotation_score_key} not in conservation scores for ref id {og.reference_index} level {level}"
+            )
+            continue
         if "hit_scores" not in lvlo.conservation_scores[table_annotation_score_key]:
             continue
         hit_scores = lvlo.conservation_scores[table_annotation_score_key]["hit_scores"]
