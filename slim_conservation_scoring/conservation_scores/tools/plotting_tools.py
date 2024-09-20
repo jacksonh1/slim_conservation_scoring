@@ -329,19 +329,15 @@ def consergene_2_multilevel_plot(
 # ==============================================================================
 # // TITLE
 # ==============================================================================
-def build_mosaic_z_score_plot():
+def build_mosaic_z_score_plot(figsize: tuple[int, int] = (15, 5)):
     mos_vector = []
     mos_vector.append(["bg_dist"] + ["scores"] * 2)
     mos_vector.append(["bg_dist"] + ["logo"] * 2)
-    fig, axd = plt.subplot_mosaic(mos_vector, figsize=(15, 5), layout="constrained")
+    fig, axd = plt.subplot_mosaic(mos_vector, figsize=figsize, layout="constrained")
     return fig, axd
 
 
-def plot_score_bar_plot(ax, score_list, query_seq, mask=None):
-    if mask is not None:
-        score_list = np.array(score_list)
-        score_list[[not i for i in mask]] = 0
-        score_list = list(score_list)
+def plot_score_bar_plot(ax, score_list, query_seq):
     ax.bar(
         list(range(len(score_list))),
         score_list,
@@ -350,18 +346,17 @@ def plot_score_bar_plot(ax, score_list, query_seq, mask=None):
     return ax
 
 
-def _format_bar_plot(ax, xlabel_sequence: str, labelsize=16):
+def _format_bar_plot(ax, xlabel_sequence: str):
     """format bar plot"""
     _ = ax.set_xticks(
         list(range(len(xlabel_sequence))),
         labels=list(xlabel_sequence),
     )
     ax.set_xlim(-0.5, len(xlabel_sequence) - 0.5)
-    ax.tick_params(axis="x", which="major", labelsize=labelsize)
     return ax
 
 
-def plot_logo(ax, str_list, tick_label_str, labelsize=16):
+def plot_logo(ax, str_list, tick_label_str):
     counts = pssms.alignment_2_counts(str_list, show_plot=False, heatmap=False)
     lm.Logo(counts, color_scheme="chemistry", ax=ax)
     ax.set_ylim(0, len(str_list))
@@ -369,7 +364,6 @@ def plot_logo(ax, str_list, tick_label_str, labelsize=16):
         list(range(len(str_list[0]))),
         labels=list(tick_label_str),
     )
-    ax.tick_params(axis="x", which="major", labelsize=labelsize)
     return ax
 
 

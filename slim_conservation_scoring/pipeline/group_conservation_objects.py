@@ -8,6 +8,11 @@ import numpy as np
 from Bio import AlignIO, SeqIO, Align
 
 from slim_conservation_scoring.seqtools import general_utils as tools
+import conservation_scores.tools.plotting_tools as plotting_tools
+import matplotlib.pyplot as plt
+import matplotlib.axes
+import matplotlib.figure
+import copy
 
 
 class ConserGene:
@@ -126,6 +131,8 @@ class ConserLevel:
         self.idr_aln_end = lvl_dict["idr_aln_end"]
         self.query_aln_sequence = lvl_dict["query_aln_sequence"]
         self.hit_aln_sequence = lvl_dict["hit_aln_sequence"]
+        self.hit_nongap_inds = tools.get_non_gap_indexes(self.hit_aln_sequence)
+        self.hit_sequence = self.hit_aln_sequence.replace("-", "")
         self.num_clustered_ldos = lvl_dict["num_clustered_ldos"]
         self.conservation_scores = lvl_dict["conservation_scores"]
         with open(self.alignment_file, "r") as f:
@@ -140,7 +147,7 @@ class ConserLevel:
         idrs = {i.id: str(i.seq) for i in idrs}
         return idrs
 
-    def reorder_aln(self, query_gene_id):
+    def reorder_aln(self, query_gene_id) -> Align.MultipleSeqAlignment:
         """order the alignment so that the sequence with the query gene id is first"""
         aln_dict = {i.id: i for i in self.aln}
         query_seq = aln_dict.pop(query_gene_id)
@@ -184,6 +191,8 @@ class LevelAlnScore(ConserLevel):
         self.calculate_hit_scores()
         if self.z_score_failure is None:
             self.calculate_hit_zscores()
+            self.bg_std = np.std(self.bg_scores)
+            self.bg_mean = np.mean(self.bg_scores)
 
     @classmethod
     def from_conser_level(
@@ -239,3 +248,178 @@ class LevelAlnScore(ConserLevel):
         self.hit_aln_z_scores = self.z_scores[hit_slice]
         nongap_inds = tools.get_non_gap_indexes(self.hit_aln_sequence)
         self.hit_z_scores = list(np.array(self.hit_aln_z_scores)[nongap_inds])
+
+    def _create_axes_if_none(
+        self, ax: matplotlib.axes.Axes | None = None
+    ) -> matplotlib.axes.Axes:
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(4, 4))
+        return ax  # type: ignore
+
+    def plot_background_distribution(
+        self,
+        ax: matplotlib.axes.Axes | None = None,
+        bins=20,
+    ):
+        """plot the background conservation scores as a histogram
+
+        Parameters
+        ----------
+        ax : matplotlib.axes.Axes | None, optional
+            if provided, the histogram will be plotted on the provided axes. If
+            None, a new axes will be created. by default None
+        bins : int, other, optional
+            passed to the `plt.hist` matplotlib function, by default 20
+
+        Returns
+        -------
+        matplotlib.axes.Axes
+            matplotlib axes with the background conservation score histogram
+        """
+        ax = self._create_axes_if_none(ax)
+        ax.hist(self.bg_scores, bins=bins, edgecolor="none")
+        # ax.set_title("Background")
+        ax.set_xlabel("Conservation score")
+        ax.set_ylabel("Count")
+        ax.axvline(self.bg_mean, color="red", linestyle=":", label="Mean", linewidth=3)
+        ax.axvline(
+            self.bg_mean + self.bg_std, color="black", label="1 std", linewidth=2
+        )
+        ax.axvline(
+            self.bg_mean - self.bg_std, color="black", label="-1 std", linewidth=2
+        )
+        ax.legend(["Mean", "+/- 1 std"], prop={"size": 12})
+        ax.set_xlim(0, 1)
+        return ax
+
+    def _check_z_scores(self):
+        if self.z_score_failure is not None:
+            raise ValueError(
+                f"No z-scores calculated for {self.score_file}: {self.z_score_failure}"
+            )
+
+    def plot_score_barplot(
+        self,
+        z_score: bool = True,
+        strip_gaps: bool = True,
+        ax: matplotlib.axes.Axes | None = None,
+    ):
+        """_summary_
+
+        Parameters
+        ----------
+        z_score : bool, optional
+            whether or not to plot z_scores, by default True (z_score). If False,
+            the raw scores will be plotted.
+        strip_gaps : bool, optional
+            whether or not to remove gap positions from the hit sequence, by default True
+        ax : matplotlib.axes.Axes | None, optional
+            if provided, the barplot will be plotted on the provided axes. If
+            None, a new axes will be created. by default None
+
+        Returns
+        -------
+        matplotlib.axes.Axes
+            matplotlib axes with the plot
+        """
+        ax = self._create_axes_if_none(ax)
+        if z_score:
+            self._check_z_scores()
+        if z_score and strip_gaps:
+            scores = copy.deepcopy(self.hit_z_scores)
+            seq = copy.deepcopy(self.hit_sequence)
+        elif not z_score and strip_gaps:
+            scores = copy.deepcopy(self.hit_scores)
+            seq = copy.deepcopy(self.hit_sequence)
+        elif z_score and not strip_gaps:
+            scores = copy.deepcopy(self.hit_aln_z_scores)
+            seq = copy.deepcopy(self.hit_aln_sequence)
+        elif not z_score and not strip_gaps:
+            scores = copy.deepcopy(self.hit_aln_scores)
+            seq = copy.deepcopy(self.hit_aln_sequence)
+        ax = plotting_tools.plot_score_bar_plot(
+            ax,
+            list(scores),
+            seq,
+        )
+        return ax
+
+    @staticmethod
+    def strip_gaps_from_slice(alignment_slice, query_aln_seq_str):
+        """strip gaps from alignment slice"""
+        new_sequences = [""] * (len(alignment_slice))
+        non_gap_indices = tools.get_non_gap_indexes(query_aln_seq_str)
+        for c in non_gap_indices:
+            for j in range(len(new_sequences)):
+                new_sequences[j] += alignment_slice[j, c]
+        return new_sequences
+
+    def plot_sequence_logo(
+        self,
+        strip_gaps: bool = True,
+        ax: matplotlib.axes.Axes | None = None,
+    ):
+        """plot the query k-mer "pseudo-MSA" as a sequence logo where the residue
+        height is proportional to the number of homologs with that residue at
+        that position. The query k-mer is included in the "pseudo-MSA"
+
+        Parameters
+        ----------
+        strip_gaps : bool, optional
+            whether or not to remove gap positions (in the query sequence) from
+            the alignment, by default True. note - Gaps can still be present in
+            the orthologs.
+        ax : matplotlib.axes.Axes | None, optional
+            if provided, the sequence logo will be plotted on the provided axes.
+            If None, a new axes will be created. by default None
+
+        Returns
+        -------
+        matplotlib.axes.Axes
+            matplotlib axes with the plot
+        """
+        ax = self._create_axes_if_none(ax)
+        aln_slice = self.aln[:, self.hit_aln_start : self.hit_aln_end + 1]
+        if strip_gaps:
+            aln_strs = self.strip_gaps_from_slice(aln_slice, self.hit_aln_sequence)
+            seq = self.hit_sequence
+        else:
+            aln_strs = [str(i.seq) for i in aln_slice]
+            seq = self.hit_aln_sequence
+        ax = plotting_tools.plot_logo(ax, aln_strs, seq)
+        return ax
+
+    def plot_conservation_mosaic(
+        self,
+        z_score: bool = True,
+        strip_gaps: bool = True,
+        figsize: tuple[int, int] = (15, 5),
+    ) -> tuple[matplotlib.figure.Figure, dict[str, matplotlib.axes.Axes]]:
+        """makes a mosaic plot (with multiple subplots) of the conservation
+        scores, sequence logos, and background scores for the MSA conservation results.
+
+        Parameters
+        ----------
+        z_score : bool, optional
+            whether or not to plot z_scores, by default True (z_score). If False,
+            the raw scores will be plotted.
+        strip_gaps : bool, optional
+            whether or not to remove gap positions (in the query sequence) from
+            the hit sequence and alignment, by default True. note - Gaps can
+            still be present in the orthologs which will be reflected in the
+            sequence logo.
+        figsize : tuple[int, int], optional
+            the size of the figure, by default (15, 5)
+
+        Returns
+        -------
+        tuple[matplotlib.figure.Figure, dict[str, matplotlib.axes.Axes]]
+            the figure and axes dictionary for the mosaic plot.
+        """
+        fig, axd = plotting_tools.build_mosaic_z_score_plot(figsize=figsize)
+        axd["background"] = self.plot_background_distribution(axd["background"])
+        axd["scores"] = self.plot_score_barplot(
+            z_score=z_score, strip_gaps=strip_gaps, ax=axd["scores"]
+        )
+        axd["logo"] = self.plot_sequence_logo(strip_gaps=strip_gaps, ax=axd["logo"])
+        return fig, axd

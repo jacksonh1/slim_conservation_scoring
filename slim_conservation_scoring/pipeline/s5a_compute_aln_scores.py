@@ -11,18 +11,18 @@ import numpy as np
 SCORES = MSAScoreMethods()
 
 
-def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
-    hit_slice = slice(lvlo.hit_aln_start, lvlo.hit_aln_end + 1)
-    hit_scores = lvlo.scores[hit_slice]
-    hit_z_scores = lvlo.z_scores[hit_slice]
-    hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
-    nongap_inds = tools.get_non_gap_indexes(hit_aln_seq)
-    bg_std = np.std(lvlo.bg_scores)
-    return (
-        list(np.array(hit_scores)[nongap_inds]),
-        list(np.array(hit_z_scores)[nongap_inds]),
-        bg_std,
-    )
+# def get_hit_aln_scores(lvlo: group_tools.LevelAlnScore):
+#     hit_slice = slice(lvlo.hit_aln_start, lvlo.hit_aln_end + 1)
+#     hit_scores = lvlo.scores[hit_slice]
+#     hit_z_scores = lvlo.z_scores[hit_slice]
+#     hit_aln_seq = lvlo.query_aln_sequence[hit_slice]
+#     nongap_inds = tools.get_non_gap_indexes(hit_aln_seq)
+#     bg_std = np.std(lvlo.bg_scores)
+#     return (
+#         list(np.array(hit_scores)[nongap_inds]),
+#         list(np.array(hit_z_scores)[nongap_inds]),
+#         bg_std,
+#     )
 
 
 def alignment_scores(
@@ -60,10 +60,10 @@ def alignment_scores(
 
         lvl_aln_o = group_tools.LevelAlnScore.from_conser_level(lvlo, score_key)
         if lvl_aln_o.z_score_failure is None:
-            hit_scores, hit_z_scores, bg_std = get_hit_aln_scores(lvl_aln_o)
-            score_dict["hit_scores"] = hit_scores
-            score_dict["hit_z_scores"] = hit_z_scores
-            score_dict["bg_std"] = bg_std
+            # hit_scores, hit_z_scores, bg_std = get_hit_aln_scores(lvl_aln_o)
+            score_dict["hit_scores"] = lvl_aln_o.hit_scores
+            score_dict["hit_z_scores"] = lvl_aln_o.hit_z_scores
+            score_dict["bg_std"] = lvl_aln_o.bg_std
         og._overwrite_json()
     # gc.collect()
 
