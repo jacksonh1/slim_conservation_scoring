@@ -8,7 +8,7 @@ import numpy as np
 from Bio import AlignIO, SeqIO, Align
 
 from slim_conservation_scoring.seqtools import general_utils as tools
-import slim_conservation_scoring.conservation_scores.tools.plotting_tools as plotting_tools
+import slim_conservation_scoring.conservation_scores.tools.basic_plotting as basic_plotting
 import matplotlib.pyplot as plt
 import matplotlib.axes
 import matplotlib.figure
@@ -337,7 +337,7 @@ class LevelAlnScore(ConserLevel):
         elif not z_score and not strip_gaps:
             scores = copy.deepcopy(self.hit_aln_scores)
             seq = copy.deepcopy(self.hit_aln_sequence)
-        ax = plotting_tools.plot_score_bar_plot(
+        ax = basic_plotting.plot_score_bar_plot(
             ax,
             list(scores),
             seq,
@@ -386,7 +386,7 @@ class LevelAlnScore(ConserLevel):
         else:
             aln_strs = [str(i.seq) for i in aln_slice]
             seq = self.hit_aln_sequence
-        ax = plotting_tools.plot_logo(ax, aln_strs, seq)
+        ax = basic_plotting.plot_logo(ax, aln_strs, seq)
         return ax
 
     def plot_conservation_mosaic(
@@ -416,7 +416,7 @@ class LevelAlnScore(ConserLevel):
         tuple[matplotlib.figure.Figure, dict[str, matplotlib.axes.Axes]]
             the figure and axes dictionary for the mosaic plot.
         """
-        fig, axd = plotting_tools.build_mosaic_z_score_plot(figsize=figsize)
+        fig, axd = basic_plotting.build_mosaic_z_score_plot(figsize=figsize)
         axd["background"] = self.plot_background_distribution(axd["background"])
         axd["scores"] = self.plot_score_barplot(
             z_score=z_score, strip_gaps=strip_gaps, ax=axd["scores"]

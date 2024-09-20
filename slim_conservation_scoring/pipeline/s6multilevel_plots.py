@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from Bio import AlignIO, SeqIO
 
 import slim_conservation_scoring.pipeline.group_conservation_objects as group_tools
-import slim_conservation_scoring.conservation_scores.tools.plotting_tools as plotting_tools
+import slim_conservation_scoring.conservation_scores.tools.score_plots as score_plots
 from slim_conservation_scoring.config import conservation_pipeline_parameters as conf
 import pairk
 import slim_conservation_scoring.env_variables.env_variables as env
@@ -31,7 +31,7 @@ def make_msa_multi_level_plot(json_file, config: conf.PipelineParameters):
         num_bg_scores_cutoff=config.multilevel_plot_params.num_bg_scores_cutoff,
     )
     output_folder = Path(og.info_dict["analysis_folder"])
-    multi_plot_filename = plotting_tools.consergene_2_multilevel_plot(
+    multi_plot_filename = score_plots.consergene_2_multilevel_plot(
         og,
         big_plot_output_folder=output_folder,
         score_name=f"{config.multilevel_plot_params.score_key}",
@@ -60,7 +60,7 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
             key=lambda x: env.PHYLOGENY_LVL_ORDERING.index(x),
         )
     plt.rcParams["font.size"] = 10
-    fig, axd = plotting_tools.build_og_level_screen_mosaic_z_score(levels)
+    fig, axd = score_plots.build_og_level_screen_mosaic_z_score(levels)
     output_folder = Path(og.info_dict["analysis_folder"])
     for level in levels:
         if level not in og.levels_passing_filters:
