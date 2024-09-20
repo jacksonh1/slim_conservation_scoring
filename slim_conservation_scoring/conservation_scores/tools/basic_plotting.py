@@ -19,8 +19,8 @@ import slim_conservation_scoring.seqtools.pssms as pssms
 
 def build_mosaic_z_score_plot(figsize: tuple[int, int] = (15, 5)):
     mos_vector = []
-    mos_vector.append(["bg_dist"] + ["scores"] * 2)
-    mos_vector.append(["bg_dist"] + ["logo"] * 2)
+    mos_vector.append(["background"] + ["scores"] * 2)
+    mos_vector.append(["background"] + ["logo"] * 2)
     fig, axd = plt.subplot_mosaic(mos_vector, figsize=figsize, layout="constrained")
     return fig, axd
 
