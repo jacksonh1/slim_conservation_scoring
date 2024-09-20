@@ -8,7 +8,7 @@ import numpy as np
 from Bio import AlignIO, SeqIO, Align
 
 from slim_conservation_scoring.seqtools import general_utils as tools
-import conservation_scores.tools.plotting_tools as plotting_tools
+import slim_conservation_scoring.conservation_scores.tools.plotting_tools as plotting_tools
 import matplotlib.pyplot as plt
 import matplotlib.axes
 import matplotlib.figure
