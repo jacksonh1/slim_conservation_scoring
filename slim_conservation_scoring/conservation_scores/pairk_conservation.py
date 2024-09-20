@@ -20,10 +20,10 @@ class PairwiseScoreResults:
     hit_sequence: str
     hit_scores: list[float]
     hit_z_scores: list[float]
+    background_scores: list[float]
     flank_hit_sequence: str | None = None
     flank_hit_scores: list[float] | None = None
     flank_hit_z_scores: list[float] | None = None
-    background_scores: list[float] | None = None
 
 
 # def _kmer_distance_matrix(kmer_list, word_size=2):
@@ -107,7 +107,7 @@ def pairk_conservation_from_json(
     pkcons = pairk.calculate_conservation(pkaln, score_func=columnwise_score_func)
     if pkcons.n_bg_scores < bg_cutoff:
         raise ValueError(f"not enough background scores: {pkcons.n_bg_scores}")
-    pkcons.orthokmer_arr[hit_position, 0]
+    # pkcons.orthokmer_arr[hit_position, 0]
     assert (
         pkaln.orthokmer_matrix.loc[hit_position, "query_kmer"]
         == pkcons.orthokmer_arr[hit_position, 0]

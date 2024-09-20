@@ -1,4 +1,5 @@
 from pathlib import Path
+import numpy as np
 
 import slim_conservation_scoring.pipeline.group_conservation_objects as group_tools
 from slim_conservation_scoring.conservation_scores import PairKmerConservationMethods
@@ -12,7 +13,6 @@ from slim_conservation_scoring.conservation_scores.tools import (
 )
 from attrs import asdict, define, field, validators
 from slim_conservation_scoring.config import conservation_pipeline_parameters as conf
-import traceback
 
 
 PAIR_KMER_CONS_FUNCS = PairKmerConservationMethods()
@@ -25,10 +25,10 @@ class PairwiseScoreResults:
     hit_sequence: str
     hit_scores: list[float]
     hit_z_scores: list[float]
+    background_scores: list[float]
     flank_hit_sequence: str | None = None
     flank_hit_scores: list[float] | None = None
     flank_hit_z_scores: list[float] | None = None
-    background_scores: list[float] | None = None
 
 
 def lvlo_2_pairwise_scores(
@@ -60,7 +60,7 @@ def lvlo_2_pairwise_scores(
         flank_hit_sequence=flanked_hit_scores.hit_sequence,
         flank_hit_scores=flanked_hit_scores.hit_scores,
         flank_hit_z_scores=flanked_hit_scores.hit_z_scores,
-        # background_scores=flanked_hit_scores.background_scores,
+        background_scores=flanked_hit_scores.background_scores,
     )
     return scores
 
@@ -95,6 +95,7 @@ def pairwise_scores(
         score_dict["hit_sequence"] = scores.hit_sequence
         score_dict["hit_scores"] = scores.hit_scores
         score_dict["hit_z_scores"] = scores.hit_z_scores
+        score_dict["bg_std"] = np.std(scores.background_scores)
         score_dict["pairk_conservation_params"] = asdict(params)
         og._overwrite_json()
     # gc.collect()
