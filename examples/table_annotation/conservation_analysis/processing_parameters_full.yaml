@@ -37,7 +37,9 @@ msa_score_methods:
   score_key: aln_shannon_entropy
 multilevel_plot_params:
   num_bg_scores_cutoff: 20
-  score_key: pairk_aln_needleman_lf5_rf5_edssmat50
+  score_keys:
+  - aln_property_entropy
+  - pairk_aln_needleman_lf5_rf5_edssmat50
   score_type: z_score
   strip_gaps: false
 new_index: true
@@ -101,5 +103,7 @@ table_annotation_params:
   levels:
   - Vertebrata
   motif_regex: P.P.E
-  score_key_for_table: pairk_aln_needleman_lf5_rf5_edssmat50
+  score_keys_for_table:
+  - pairk_aln_needleman_lf5_rf5_edssmat50
+  - aln_property_entropy
 table_file: ./table.csv

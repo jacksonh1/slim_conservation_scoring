@@ -120,7 +120,7 @@ class PairKmerConservationParams:
 
 @define
 class MultiLevelPlotParams:
-    score_key: str = field(default="aln_property_entropy")
+    score_keys: list[str] = field(factory=list)
     num_bg_scores_cutoff: int = field(default=20, converter=int)
     score_type: Literal["score", "z_score"] = field(
         default="z_score",
@@ -133,7 +133,7 @@ class MultiLevelPlotParams:
 class TableAnnotationConf:
     """ """
 
-    score_key_for_table: str = field(default="aln_property_entropy")
+    score_keys_for_table: list[str] = field(factory=list)
     motif_regex: str | None = field(default=None)
     levels: list[str] = field(factory=list)
     annotations: list[str] = field(

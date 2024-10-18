@@ -179,12 +179,17 @@ def calculate_pairk_conservation(file, config: conf.PipelineParameters):
             )
 
 
-def generate_plots(file, config: conf.PipelineParameters):
+def generate_plots(
+    file,
+    config: conf.PipelineParameters,
+    annotations_output_folder: str | Path | None = None,
+):
     if "s6" in config.steps_to_run:
-        if config.multilevel_plot_params.score_key is not None:
+        if config.multilevel_plot_params.score_keys is not None:
             s6multilevel_plots.multi_level_plot_driver(
                 json_file=file,
                 config=config,
+                annotations_output_folder=annotations_output_folder,
             )
         else:
             print("no score key specified for multilevel plots")
@@ -193,6 +198,7 @@ def generate_plots(file, config: conf.PipelineParameters):
             json_file=file,
             n_flanking_aas=config.aln_slice_params.n_flanking_aas,
             whole_idr=config.aln_slice_params.whole_idr,
+            output_folder=annotations_output_folder,
         )
 
 
@@ -212,7 +218,11 @@ def multiprocess_function(
             pass
 
 
-def step1(config: conf.PipelineParameters, reindexed_table_file: Path):
+def step1(
+    config: conf.PipelineParameters,
+    reindexed_table_file: Path,
+    annotations_output_folder: Path,
+):
     if config.new_index and not config.clear_files:
         raise ValueError(
             "new_index is True, but clear_files is False. If you want to reindex the table, you must set clear_files to True. Otherwise, you could have multiple reference indexes and all sorts of problems."
@@ -220,6 +230,8 @@ def step1(config: conf.PipelineParameters, reindexed_table_file: Path):
     if config.clear_files:
         if Path(config.output_folder).exists():
             shutil.rmtree(config.output_folder)
+        if annotations_output_folder.exists():
+            shutil.rmtree(annotations_output_folder)
             # shutil.rmtree(score_output_folder)
     if config.new_index:
         print("setting up folders and reindexing table file")
@@ -274,8 +286,11 @@ def main(config_file, n_cores):
     score_output_folder = Path(config.output_folder) / "conservation_score_files"
     score_output_folder.mkdir(exist_ok=True)
     score_output_folder = score_output_folder.resolve()
+    annotations_output_folder = Path(config.output_folder) / "annotations"
+    annotations_output_folder.mkdir(exist_ok=True)
+    annotations_output_folder = annotations_output_folder.resolve()
     if "s1" in config.steps_to_run:
-        step1(config, reindexed_table_file)
+        step1(config, reindexed_table_file, annotations_output_folder)
     json_files = get_passing_jsons(
         Path(config.output_folder), exclude_dir=score_output_folder
     )
@@ -315,14 +330,19 @@ def main(config_file, n_cores):
         multiprocess_function(calculate_pairk_conservation, config, json_files, n_cores)
 
     json_files = remove_failed_jsons(json_files)
-    multiprocess_function(generate_plots, config, json_files, n_cores)
+    multiprocess_function(
+        generate_plots,
+        config,
+        json_files,
+        n_cores,
+        annotations_output_folder=annotations_output_folder,
+    )
 
     if "s8" in config.steps_to_run:
         print("calculating annotations")
         s8calculate_annotations.main(
             main_output_folder=config.output_folder,
-            image_score_key=config.multilevel_plot_params.score_key,
-            table_annotation_score_key=config.table_annotation_params.score_key_for_table,
+            table_annotation_score_keys=config.table_annotation_params.score_keys_for_table,
             regex=config.table_annotation_params.motif_regex,
         )
     if "s9" in config.steps_to_run:
@@ -332,10 +352,8 @@ def main(config_file, n_cores):
         else:
             input_annotation_table = reindexed_table_file
         s9add_annotations2table.main(
-            annotations_file=Path(config.output_folder) / "annotations.json",
+            config=config,
             table_file=input_annotation_table,
-            table_annotations=config.table_annotation_params.annotations,
-            table_annotation_levels=config.table_annotation_params.levels,
             output_table_file=annotated_table_file,
         )
     if config.clean_analysis_files:

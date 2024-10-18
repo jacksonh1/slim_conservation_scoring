@@ -1,5 +1,0 @@
-{
-    "gap_frac_cutoff": 0.2,
-    "overwrite": true,
-    "json_directory": "../../../data/example_orthogroup_database/human_odb_groups/info_jsons"
-}

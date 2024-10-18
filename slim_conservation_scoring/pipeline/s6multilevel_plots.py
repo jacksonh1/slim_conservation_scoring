@@ -24,30 +24,43 @@ COLSCOREMETHODS = ColumnwiseScoreMethods()
 # %%
 
 
-def make_msa_multi_level_plot(json_file, config: conf.PipelineParameters):
+def make_msa_multi_level_plot(
+    json_file,
+    score_key,
+    config: conf.PipelineParameters,
+    output_folder: Path | str | None = None,
+):
     og = group_tools.ConserGene(json_file)
     og.load_aln_scores(
-        config.multilevel_plot_params.score_key,
+        score_key,
         num_bg_scores_cutoff=config.multilevel_plot_params.num_bg_scores_cutoff,
     )
-    output_folder = Path(og.info_dict["analysis_folder"])
+    if output_folder is None:
+        output_folder = Path(og.info_dict["analysis_folder"])
+    output_folder = Path(output_folder)
+    output_folder.mkdir(exist_ok=True, parents=True)
     multi_plot_filename = score_plots.consergene_2_multilevel_plot(
         og,
         big_plot_output_folder=output_folder,
-        score_name=f"{config.multilevel_plot_params.score_key}",
+        score_name=f"{score_key}",
         score_type=config.multilevel_plot_params.score_type,
         bar_ylim=[-0.5, 2.5],
         strip_gaps=config.multilevel_plot_params.strip_gaps,
     )
     og.add_item_to_json(
-        f"multilevel_plot_file-{config.multilevel_plot_params.score_key}",
+        f"multilevel_plot_file-{score_key}",
         str(multi_plot_filename),
         save_json=True,
     )
     plt.close("all")
 
 
-def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
+def make_pairk_multilevel_plot(
+    json_file,
+    score_key,
+    config: conf.PipelineParameters,
+    output_folder: Path | str | None = None,
+):
     col_function = COLSCOREMETHODS.__getitem__(
         config.pairk_conservation_params.columnwise_score_function_name
     )
@@ -61,7 +74,10 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
         )
     plt.rcParams["font.size"] = 10
     fig, axd = score_plots.build_og_level_screen_mosaic_z_score(levels)
-    output_folder = Path(og.info_dict["analysis_folder"])
+    if output_folder is None:
+        output_folder = Path(og.info_dict["analysis_folder"])
+    output_folder = Path(output_folder)
+    output_folder.mkdir(exist_ok=True, parents=True)
     for level in levels:
         if level not in og.levels_passing_filters:
             message = f"{og.query_gene_id}: not enough sequences for {level}"
@@ -77,8 +93,8 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
             # axd[f'scores-{level}'].set_title(, fontsize=11)
             continue
         lvlo = og.level_objects[level]
-        if config.multilevel_plot_params.score_key not in lvlo.conservation_scores:
-            message = f"{og.query_gene_id}: no scores were calculated at the {level} level for {config.multilevel_plot_params.score_key}"
+        if score_key not in lvlo.conservation_scores:
+            message = f"{og.query_gene_id}: no scores were calculated at the {level} level for {score_key}"
             axd[f"scores-{level}"].text(
                 0.5,
                 0.5,
@@ -89,12 +105,10 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
                 fontsize=11,
             )
             continue
-        kmer_aln_json = lvlo.conservation_scores[
-            config.multilevel_plot_params.score_key
-        ]["kmer_aln_file"]
-        fl_hit_start = lvlo.conservation_scores[
-            config.multilevel_plot_params.score_key
-        ]["flanked_hit_start_position_in_idr"]
+        kmer_aln_json = lvlo.conservation_scores[score_key]["kmer_aln_file"]
+        fl_hit_start = lvlo.conservation_scores[score_key][
+            "flanked_hit_start_position_in_idr"
+        ]
         pkaln = pairk.PairkAln.from_file(kmer_aln_json)
         pkcons = pairk.calculate_conservation(pkaln, score_func=col_function)
         if level not in og.levels_passing_filters:
@@ -135,39 +149,48 @@ def make_pairk_multilevel_plot(json_file, config: conf.PipelineParameters):
         axd[f"bg_dist-{level}"].set_xlabel("")
     output_file = (
         output_folder
-        / f"{og.reference_index}-{og.query_gene_id.replace(':','')}-{config.multilevel_plot_params.score_key}_multilevel_plot.png"
+        / f"{og.reference_index}-{og.query_gene_id.replace(':','')}-{score_key}_multilevel_plot.png"
     )
     # plt.tight_layout(h_pad=0.5, w_pad=0.5)
     # plt.subplots_adjust(wspace=0.4, hspace=0.4)
     # fig.savefig(output_file, dpi=300)
     fig.savefig(output_file, bbox_inches="tight", dpi=300)
     og.add_item_to_json(
-        f"multilevel_plot_file-{config.multilevel_plot_params.score_key}",
+        f"multilevel_plot_file-{score_key}",
         str(output_file),
         save_json=True,
     )
     plt.close("all")
 
 
-def multi_level_plot_driver(json_file, config: conf.PipelineParameters):
+def multi_level_plot_driver(
+    json_file,
+    config: conf.PipelineParameters,
+    annotations_output_folder: Path | str | None = None,
+):
     scorekey_dict = config.get_score_key_dict()
-    if config.multilevel_plot_params.score_key is None:
-        return
-    if config.multilevel_plot_params.score_key not in scorekey_dict:
-        print(
-            f"multilevel plot score_key {config.multilevel_plot_params.score_key} was not found in the config file"
-        )
-        print(f"Available score keys are: {scorekey_dict.keys()}")
-        print("Skipping multilevel plot")
-        return
-    scoremethod = scorekey_dict[config.multilevel_plot_params.score_key]
-    if hasattr(PAIRKALNFUNCS, scoremethod.function_name):
-        make_pairk_multilevel_plot(json_file, config)
-    elif hasattr(MSASCORES, scoremethod.function_name):
-        make_msa_multi_level_plot(
-            json_file,
-            config,
-        )
+    for score_key in config.multilevel_plot_params.score_keys:
+        if score_key is None:
+            continue  # this is not necessary I am 95% sure
+        if score_key not in scorekey_dict:
+            print(
+                f"multilevel plot score_key {score_key} was not found in the config file"
+            )
+            print(f"Available score keys are: {scorekey_dict.keys()}")
+            print("Skipping multilevel plot")
+            continue
+        scoremethod = scorekey_dict[score_key]
+        if hasattr(PAIRKALNFUNCS, scoremethod.function_name):
+            make_pairk_multilevel_plot(
+                json_file, score_key, config, annotations_output_folder
+            )
+        elif hasattr(MSASCORES, scoremethod.function_name):
+            make_msa_multi_level_plot(
+                json_file,
+                score_key,
+                config,
+                annotations_output_folder,
+            )
 
 
 # lvlo.load_scores('property_entropy')

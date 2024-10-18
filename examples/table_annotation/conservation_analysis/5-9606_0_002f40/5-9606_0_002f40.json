@@ -1,59 +1,17 @@
 {
     "reference_index": 5,
     "query_gene_id": "9606_0:002f40",
-    "query_uniprot_id": "Q8TC90",
+    "query_uniprot_id": null,
     "orthogroups": {
-        "Tetrapoda": {
-            "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.fasta",
-            "conservation_scores": {
-                "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Tetrapoda_351562at32523_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": true
-                    }
-                }
-            }
-        },
         "Vertebrata": {
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.fasta",
-            "conservation_scores": {
-                "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Vertebrata_869863at7742_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": true
-                    }
-                }
-            }
-        },
-        "Mammalia": {
-            "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.fasta",
-            "conservation_scores": {
-                "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Mammalia_21856at40674_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": true
-                    }
-                }
-            }
+            "info_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/info_jsons/9606_0_002f40_Vertebrata_869863at7742_info.json",
+            "conservation_scores": {}
         },
         "Metazoa": {
             "alignment_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
-            "conservation_scores": {
-                "aln_property_entropy": {
-                    "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json",
-                    "score_function_name": "aln_property_entropy",
-                    "score_params": {
-                        "gap_frac_cutoff": 0.2,
-                        "overwrite": true
-                    }
-                }
-            }
+            "info_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/info_jsons/9606_0_002f40_Metazoa_1771281at33208_info.json",
+            "conservation_scores": {}
         }
     },
     "query_sequence": "MTQTLDTREDPLNLGGGGGGGCGCGWAHSASLSSWSSCHRRRPGAPAYNRPHRYSPKTEYGPPRKQPKQQHGPGFWFQPPVCSNWGCWGGPWRPPPPGFWKFPCPVQVFRVYGLHPLCFCCCSCWSGSWNPGWVKPPGRKKRWGRRGRGLRHHPRHSYPRSPPADVSTLPRPVKLYEWREPGMRAPPNTTQFIMNQIYEDMRQQEKVERQQEALRAQKATVSGEASPARSSGNDAPPGGSKETWGLQETLYGFVQNPSLAFSPNPEENQSLAPLLVEEEEEKKNDDEEEYDQEVCDAKEASEEEEEVEDEEEEVEDEEEEEVEEAEYVEEGEEELEEEELEEEEEVLEENEQRGEEFHLPLEMPLSIFVEAEEKRENFISCTFLNPEQIIPKVPQESLFMAQDFNC",

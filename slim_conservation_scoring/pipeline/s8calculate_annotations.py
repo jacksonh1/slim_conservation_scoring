@@ -24,9 +24,12 @@ def get_image_file(og: group_tools.ConserGene, image_score_key):
         # file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve()
         # file = Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve().relative_to(Path(og.analysis_folder).parent.parent)
         # return rf'=HYPERLINK("./{str(file)}")'
-        return str(
-            Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"]).resolve()
+        file = (
+            Path(og.info_dict[f"multilevel_plot_file-{image_score_key}"])
+            .resolve()
+            .relative_to(Path(og.analysis_folder).parent.parent)
         )
+        return str(file)
 
 
 def find_motif_regex(og: group_tools.ConserGene, regex):
@@ -54,13 +57,14 @@ def lvl_annotation_conservation_string(hit_sequence: str, z_scores: list):
 
 def lvl_annotation_aln_slice(lvlo: group_tools.ConserLevel, og: group_tools.ConserGene):
     if "aln_slice_file" in lvlo.info_dict:
-        # file = (
-        #     Path(lvlo.info_dict["aln_slice_file"])
-        #     .resolve()
-        #     .relative_to(Path(og.analysis_folder).parent.parent)
-        # )
+        file = (
+            Path(lvlo.info_dict["aln_slice_file"])
+            .resolve()
+            .relative_to(Path(og.analysis_folder).parent.parent)
+        )
         # return rf'=HYPERLINK("{str(file)}")'
-        return str(Path(lvlo.info_dict["aln_slice_file"]).resolve())
+        # return str(Path(lvlo.info_dict["aln_slice_file"]).resolve())
+        return str(file)
 
 
 def get_largest_avg_zscore_for_window(score_list, window_size=5):
@@ -74,7 +78,7 @@ def get_largest_avg_zscore_for_window(score_list, window_size=5):
 
 
 def add_gene_annotations_2_dict(
-    json_file, annotation_dict, image_score_key, table_annotation_score_key, regex=None
+    json_file, annotation_dict, table_annotation_score_key, regex=None
 ):
     og = group_tools.ConserGene(json_file)
     ref_ind = og.reference_index
@@ -90,7 +94,7 @@ def add_gene_annotations_2_dict(
         d["critical_error"] = None
     d["hit_start_position"] = og.hit_start_position
     # d['hit_end_position'] = og.hit_end_position
-    d["multi_level_plot"] = get_image_file(og, image_score_key)
+    d["multi_level_plot"] = get_image_file(og, table_annotation_score_key)
     match = find_motif_regex(og, regex)
     d["regex"] = regex
     d["regex_match"] = match[0]
@@ -150,24 +154,27 @@ def add_gene_annotations_2_dict(
     return annotation_dict
 
 
-def main(main_output_folder, image_score_key, table_annotation_score_key, regex=None):
+def main(
+    main_output_folder,
+    table_annotation_score_keys: list[str],
+    regex=None,
+):
     json_files = Path(main_output_folder).rglob("*.json")
     checked_jsons = [i for i in json_files if check_json(i)]
-    annotations = {}
-    for json_file in checked_jsons:
-        annotations = add_gene_annotations_2_dict(
-            json_file,
-            annotations,
-            image_score_key,
-            table_annotation_score_key,
-            regex=regex,
+    for table_annotation_key in table_annotation_score_keys:
+        annotations = {}
+        for json_file in checked_jsons:
+            annotations = add_gene_annotations_2_dict(
+                json_file,
+                annotations,
+                table_annotation_key,
+                regex=regex,
+            )
+        annotation_file = (
+            Path(main_output_folder) / f"{table_annotation_key}_annotations.json"
         )
-    # print(checked_jsons)
-    # print(annotations)
-    # return annotations
-    annotation_file = Path(main_output_folder) / "annotations.json"
-    if annotation_file.exists():
-        # remove old annotations file
-        annotation_file.unlink()
-    with open(annotation_file, "w") as f:
-        json.dump(annotations, f, indent=4)
+        if annotation_file.exists():
+            # remove old annotations file
+            annotation_file.unlink()
+        with open(annotation_file, "w") as f:
+            json.dump(annotations, f, indent=4)

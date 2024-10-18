@@ -27,6 +27,7 @@ dependencies:
   - tornado
   - yaml
   - pip:
+      - pairk
       - alfpy
       - fair-esm
       - logomaker

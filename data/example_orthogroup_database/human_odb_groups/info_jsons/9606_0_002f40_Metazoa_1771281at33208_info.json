@@ -749,10 +749,10 @@
         "9689_0:001fba",
         "38674_0:0044a8",
         "9986_0:000f1c",
-        "30522_0:001208",
-        "9913_0:000ee5",
         "9915_0:000dad",
         "72004_0:004a1f",
+        "9913_0:000ee5",
+        "30522_0:001208",
         "9925_0:000ddc",
         "89399_0:002131",
         "1706337_0:0023e6",
@@ -912,8 +912,8 @@
         "307959_0:0048de",
         "7957_0:0092cd",
         "106582_0:0012c4",
-        "8154_0:001583",
         "8153_0:000ec9",
+        "8154_0:001583",
         "41447_0:001408",
         "8030_0:00876c",
         "8177_0:00165a",
@@ -988,7 +988,7 @@
         "9643_0:00473b",
         "185453_0:0034b3",
         "9994_0:0002f8",
-        "30522_0:001208",
+        "9915_0:000dad",
         "230844_0:00422c",
         "30608_0:001ac6",
         "51338_0:0052b8",
@@ -1106,7 +1106,7 @@
         "77115_0:00302b",
         "52670_0:002782"
     ],
-    "cdhit_command": "cd-hit -i /tmp/tmpbw6bw77a -o /tmp/tmpbw6bw77a-cdhit.fa -M 0 -d 0 -g 1 ",
+    "cdhit_command": "cd-hit -i /tmp/tmp6y9nyxw3 -o /tmp/tmp6y9nyxw3-cdhit.fa -M 0 -d 0 -g 1 ",
     "species_map": {
         "38626_0:002d6b": "Phascolarctos cinereus",
         "9337_0:0036f4": "Trichosurus vulpecula",
@@ -1134,7 +1134,7 @@
         "9643_0:00473b": "Ursus americanus",
         "185453_0:0034b3": "Chrysochloris asiatica",
         "9994_0:0002f8": "Marmota marmota marmota",
-        "30522_0:001208": "Bos indicus x Bos taurus",
+        "9915_0:000dad": "Bos indicus",
         "230844_0:00422c": "Peromyscus maniculatus bairdii",
         "30608_0:001ac6": "Microcebus murinus",
         "51338_0:0052b8": "Castor canadensis",
@@ -1275,20 +1275,10 @@
         },
         "_cd_hit_exe": "cd-hit",
         "_cd_hit_additional_args": "",
-        "main_output_folder": "../../../data/example_orthogroup_database/human_odb_groups",
+        "main_output_folder": "../../data/example_orthogroup_database/human_odb_groups/",
         "write_files": true,
         "overwrite": false
     },
     "alignment_clustered_ldos_file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignments/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.fasta",
-    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/tmp/tmp4r41j5ul\" > \"/tmp/tmp4r41j5ul-mafft.fa\"",
-    "conservation_scores": {
-        "aln_property_entropy": {
-            "file": "/home/jch/Documents/05-conservation_pipeline/data/example_orthogroup_database/human_odb_groups/alignment_conservation_scores/aln_property_entropy/9606_0_002f40_Metazoa_1771281at33208_clustered_ldos_aln.json",
-            "score_function_name": "aln_property_entropy",
-            "score_params": {
-                "gap_frac_cutoff": 0.2,
-                "overwrite": true
-            }
-        }
-    }
+    "alignment_clustered_ldos_command": "mafft --thread 8 --quiet --anysymbol  \"/tmp/tmp2eqznekw\" > \"/tmp/tmp2eqznekw-mafft.fa\""
 }

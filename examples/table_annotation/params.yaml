@@ -73,15 +73,21 @@ esm_params:
   processes: 1
   # threads: 10
   device: "cuda"
+
 multilevel_plot_params:
-  # score_key: "aln_property_entropy"
-  score_key: "pairk_aln_needleman_lf5_rf5_edssmat50"
+  score_keys: 
+    - "aln_property_entropy"
+    - "pairk_aln_needleman_lf5_rf5_edssmat50"
   score_type: "z_score"
+
 aln_slice_params:
   n_flanking_aas: 20
   # whole_idr: true
+
 table_annotation_params:
-  score_key_for_table: "pairk_aln_needleman_lf5_rf5_edssmat50"
+  score_keys_for_table: 
+    - "pairk_aln_needleman_lf5_rf5_edssmat50"
+    - "aln_property_entropy"
   motif_regex: "P.P.E"
   levels:
     # - "Eukaryota"

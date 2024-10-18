@@ -23,6 +23,7 @@ dependencies = [
     "logomaker",
     "matplotlib",
     "seaborn",
+    "python-dotenv",
 ]
 
 # Update the urls once the hosting is set up.

@@ -1,1 +1,1 @@
-python "../../slim_conservation_scoring/scripts/conservation_analysis.py" -c "params.yaml"
+slim_conservation_scoring-pipeline -c "params.yaml"

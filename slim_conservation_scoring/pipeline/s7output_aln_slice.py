@@ -122,9 +122,15 @@ def index2alnindex_V2(
     return aln_slice_start, aln_slice_end
 
 
-def main(json_file, n_flanking_aas, whole_idr=False):
+def main(
+    json_file, n_flanking_aas, whole_idr=False, output_folder: str | Path | None = None
+):
     og = group_tools.ConserGene(json_file)
     og.load_levels()
+    if output_folder is None:
+        output_folder = Path(og.info_dict["analysis_folder"])
+    output_folder = Path(output_folder)
+    output_folder.mkdir(exist_ok=True, parents=True)
     og.query_gene_id
     hit_start = og.hit_start_position
     hit_end = og.hit_end_position
@@ -147,7 +153,7 @@ def main(json_file, n_flanking_aas, whole_idr=False):
                 lvl, hit_start, hit_end, n_flanking_aas
             )
         slice_file = (
-            Path(og.analysis_folder)
+            output_folder
             / f"{og.reference_index}-{og.query_gene_id.replace(':','')}-{level}_aln_slice.html"
         )
         og.add_item_to_lvl_orthogroup("aln_slice_file", str(slice_file), level)
