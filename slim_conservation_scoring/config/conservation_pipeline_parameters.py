@@ -175,6 +175,7 @@ class PipelineParameters:
 
     database_filekey: str | Path
     table_file: str | Path
+    output_folder: str | Path = field(default="conservation_analysis")
     clear_files: bool = field(default=True, converter=bool)
     new_index: bool = field(default=True, converter=bool)
     steps_to_run: list = field(
@@ -184,7 +185,6 @@ class PipelineParameters:
     pairk_aln_methods: list[PairKAlnMethod] = field(factory=list)
     pairk_embedding_aln_methods: list[PairKEmbeddingAlnMethod] = field(factory=list)
     # pairwise_score_methods: list[PairwiseScoreMethod] = field(factory=list)
-    output_folder: str | Path = field(default="conservation_analysis")
     hit_sequence_params: HitSequenceParams = field(default=HitSequenceParams())
     idr_params: IdrParams = field(default=IdrParams())
     filter_params: FilterParams = field(default=FilterParams())

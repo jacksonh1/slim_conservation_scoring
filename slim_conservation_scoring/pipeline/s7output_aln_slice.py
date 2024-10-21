@@ -98,7 +98,7 @@ def save_colored_protein_msa_html(
         for c, symbol in enumerate(record.seq):
             style = f'color: {colors.get(symbol, "black")};'
             if highlight_region is not None:
-                if highlight_region[0] <= c + 1 <= highlight_region[1]:
+                if highlight_region[0] < c + 1 <= highlight_region[1]:
                     style += "background-color: #f9f90262;"
             # if highlight_region and c in highlight_region:
             #     style += "font-weight: bold;"
