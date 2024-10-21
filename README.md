@@ -199,6 +199,9 @@ msa_score_methods:
     function_params:
       gap_frac_cutoff: 0.2
       overwrite: false
+    levels:
+      - "Vertebrata"
+      - "Metazoa"
 pairk_aln_methods:
   pairk_aln_lf5_rf5_edssmat50:
     function_name: "pairk_aln"
@@ -219,14 +222,17 @@ pairk_embedding_aln_methods:
       overwrite: false
     lflank: 5
     rflank: 5
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
 pairk_conservation_params:
   kmer_conservation_function_name: "pairk_conservation"
   columnwise_score_function_name: "shannon_entropy"
   bg_cutoff: 50
   bg_kmer_cutoff: 10
 multilevel_plot_params:
-  score_key: "aln_property_entropy"
+  score_keys: 
+    - "aln_property_entropy"
+    - "pairk_aln_lf5_rf5_edssmat50"
   num_bg_scores_cutoff: 20
   score_type: "z_score"
   strip_gaps: false
@@ -234,7 +240,9 @@ aln_slice_params:
   n_flanking_aas: 20
   whole_idr: false
 table_annotation_params:
-  score_key_for_table: "aln_property_entropy"
+  score_keys_for_table: 
+    - "aln_property_entropy"
+    - "pairk_aln_lf5_rf5_edssmat50"
   motif_regex: "P.P.E"
   levels:
     - "Metazoa"
@@ -274,7 +282,7 @@ clean_analysis_files: false
     - "given_positions" - uses given start and end positions of the hit sequence (in the full length protein) provided by the user as columns in the input table.
   - `longest_common_subsequence`: true or false (default true). If true, the longest common subsequence (lcs) of the hit sequence and the full length protein is used. If false, the hit sequence is used as is. Only used if `hit_sequence_search_method` is "search"
   - `lcs_min_length`: the minimum length of the longest common subsequence (default 20). If the lcs is shorter than this, the row is skipped. Only used if `longest_common_subsequence` is true and `hit_sequence_search_method` is "search"
-  - `target_hit_length`: If the hit sequence is shorter than this, the pipeline will attempt to pad the hit sequence with flanking residues from the full length protein to achieve the `target_hit_length`. Only used if `hit_sequence_search_method` is "search" 
+  - `target_hit_length`: If the hit sequence is shorter than this, the pipeline will attempt to pad the hit sequence with flanking residues from the full length protein to achieve the `target_hit_length`. Only used if `hit_sequence_search_method` is "search" and `target_hit_length`>0.
 - `msa_score_methods`:
   - Any new msa-based scores that are to be calculated are included here. For each scoring method to be calculated, the scoring method is provided in the following format:
       ```yaml
@@ -289,12 +297,14 @@ clean_analysis_files: false
           function_params:
             param1: value1
             param2: value2
-          level: "Vertebrata"
+          levels: 
+            - "Vertebrata"
+            - "Metazoa"
       ```
   - `score_key` (score_key1/score_key2): A unique identifier for each individual score (including pairk scores). can be any string but must be unique.
     - `function_name`: The name of the conservation scoring function to use (See [scores](#conservation-scores))
     - `function_params`: Keyword arguments specific to each score function (See [scores](#conservation-scores)). Each scoring method will have an input file, output file, and reference id which do **not** need to be provided here. 
-    - `level`: The level in the database to use for the score calculation. If not provided, the pipeline will calculate the score for every level in the database.
+    - `levels`: The levels in the database to use for the score calculation. If not provided, the pipeline will calculate the score for every level in the database.
   - See the [currently implemented scores](#currently-implemented-scores) for examples of how to format the yaml file.
 - `pairk_aln_methods`:
   - Here, the parameters for [pairk](https://github.com/jacksonh1/pairk)'s k-mer alignment step are specified. The parameters are entered in a similar format as the `msa_score_methods`:
@@ -314,13 +324,14 @@ clean_analysis_files: false
             param2: value2
           lflank: 0
           rflank: 0
-          level: "Vertebrata"
+          levels: 
+            - "Vertebrata"
       ```
   - `score_key` (score_key3/score_key4): A unique identifier for each individual score. can be any string but must be unique.
     - `function_name`: The name of the conservation scoring function to use (See [scores](#conservation-scores))
     - `function_params`: Keyword arguments specific to each score function (See [scores](#conservation-scores)). Each scoring method will have an input file, output file, and reference id which do **not** need to be provided here.
     - `lflank` and `rflank`: the number of additional residues (from the full length sequence) to include on the left (`lflank`) and right (`rflank`) of the hit sequence. This will change the value of k in the pairk k-mer analysis. 
-    - `level`: The level in the database to use for the score calculation. If not provided, the pipeline will calculate the score for every level in the database.
+    - `levels`: The levels in the database to use for the score calculation. If not provided, the pipeline will calculate the score for every level in the database.
 - `pairk_embedding_aln_methods`:
   - Any embedding-based `pairk` alignment methods are added here. The parameters are formated in the same way as the `pairk_aln_methods`
 - `esm_params`:
@@ -333,14 +344,14 @@ clean_analysis_files: false
   - `bg_cutoff`: the minimum number of background scores required to calculate the z-scores (default 50). If there are less than this number of background scores, the z-scores are not calculated.
   - `bg_kmer_cutoff`: the minimum number of background kmers required to calculate the z-scores (default 10). If there are less than this number of background kmers, the z-scores are not calculated.
 - `multilevel_plot_params`: parameters for the multilevel plots of the hit sequence conservation.
-  - `score_key`: the score key to use for the multilevel plot (default "aln_property_entropy"). Must be a score_key that is specified via `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods`.
+  - `score_keys`: the score keys to use for the multilevel plot. Must be score_keys that are specified via `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods`.
   - `num_bg_scores_cutoff`: The minimum number or background scores required to calculate the z-scores (default 20). If there are less than this number of background scores, the z-scores are not calculated.
   - `score_type`: "score" or "z_score" (default "z_score"). If "score", the raw score is used. If "z_score", the z_score is used.
 - `aln_slice_params`:
   - `n_flanking_aas`: the number of residues to include on either side of the hit sequence in the output alignment slice file (default 20). It is the number of query sequence residues flanking the hit in the query sequence. So if there are gaps in the query sequence in the msa, those columns are not counted as flanking positions.
   - `whole_idr`: whether or not to include the entire IDR in the alignment slice: Either true or false (default false).
 - `table_annotation_params`: parameters for adding conservation scores back to the input table.
-  - `score_key_for_table`: The score key corresponding to the score to add to the table (default "aln_property_entropy"). Must be a score_key that is specified via `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods`.
+  - `score_keys_for_table`: The score keys corresponding to the scores to add to the table. Must be score_keys that are specified via `msa_score_methods`, `pairk_aln_methods`, or `pairk_embedding_aln_methods`.
   - `motif_regex`: The regex to search for in the hit sequence (default None). If a regex is provided, additional columns can be added to the table via the regex options below. 
   - `levels`: The phylogenetic levels to add to the table (default ["Metazoa", "Vertebrata"]). For each level, the pipeline will add annotations to the table.
   - `annotations`: The new columns to add to the output table. Some annotations are calculated for each "level" specified above. Available annotations:
@@ -586,7 +597,8 @@ pairk_aln_methods:
       matrix_name: "BLOSUM62"
     lflank: 5
     rflank: 5
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
 ```
 
 ### pairk alignment with needleman-wunsch
@@ -604,7 +616,8 @@ pairk_embedding_aln_methods:
       overwrite: false
     lflank: 0
     rflank: 0
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
 ```
 
 ## multiple pairk alignment methods
@@ -618,7 +631,8 @@ pairk_aln_methods:
       matrix_name: "EDSSMat50"
     lflank: 5
     rflank: 5
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
   pairk_aln_lf0_rf0_edssmat50:
     function_name: "pairk_aln"
     function_params:
@@ -639,7 +653,8 @@ pairk_embedding_aln_methods:
       overwrite: false
     lflank: 0
     rflank: 0
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
 ```
 
 ## currently implemented pairk conservation methods:

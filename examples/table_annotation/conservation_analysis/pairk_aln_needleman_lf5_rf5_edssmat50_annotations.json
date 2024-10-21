@@ -1,0 +1,218 @@
+{
+    "6": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/6-9606_0_001c7b/6-9606_0_001c7b.json",
+        "critical_error": "hit sequence not in an idr"
+    },
+    "4": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/4-9606_0_002f40/4-9606_0_002f40.json",
+        "critical_error": "subsequence EEEE found in query sequence more than once"
+    },
+    "3": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/3-9606_0_002f40/3-9606_0_002f40.json",
+        "critical_error": null,
+        "hit_start_position": 302,
+        "multi_level_plot": "conservation_analysis/annotations/3-9606_0002f40-pairk_aln_needleman_lf5_rf5_edssmat50_multilevel_plot.png",
+        "regex": "P.P.E",
+        "regex_match": null,
+        "regex_match_stpos_in_hit": null,
+        "regex_match_endpos_in_hit": null,
+        "level_annotations": {
+            "Metazoa": {
+                "aln_slice_file": "conservation_analysis/annotations/3-9606_0002f40-Metazoa_aln_slice.html",
+                "hit_scores": [
+                    0.41609599317677215,
+                    0.5870146367553173,
+                    0.3683071348180076,
+                    0.47467672835091357,
+                    0.30455151696974725,
+                    0.5330885454822804,
+                    0.5999612171157056,
+                    0.43012406442424644,
+                    0.7492321028921892,
+                    0.43421962481044296,
+                    0.4882070262012581,
+                    0.3020431588487541
+                ],
+                "hit_mean_score": 0.4739601458204696,
+                "hit_z_scores": [
+                    -0.21538061112892432,
+                    0.728874887758641,
+                    -0.4793944796340615,
+                    0.10825395651635031,
+                    -0.8316181544640607,
+                    0.43095532116274915,
+                    0.8003994414359495,
+                    -0.1378812632703219,
+                    1.6250599452123515,
+                    -0.11525496964475286,
+                    0.18300331023973881,
+                    -0.8454758056794978
+                ],
+                "hit_mean_zscore": 0.10429513154201342,
+                "conservation_string": "_E____D_E___",
+                "best mean z-score over 5 residue window": 0.5206556949791952,
+                "best mean z-score over 10 residue window": 0.23123979953125834
+            },
+            "Vertebrata": {
+                "aln_slice_file": "conservation_analysis/annotations/3-9606_0002f40-Vertebrata_aln_slice.html",
+                "hit_scores": [
+                    0.41609599317677215,
+                    0.5870146367553173,
+                    0.3683071348180076,
+                    0.47467672835091357,
+                    0.30455151696974725,
+                    0.5330885454822804,
+                    0.5999612171157056,
+                    0.43012406442424644,
+                    0.7492321028921892,
+                    0.43421962481044296,
+                    0.4882070262012581,
+                    0.3020431588487541
+                ],
+                "hit_mean_score": 0.4739601458204696,
+                "hit_z_scores": [
+                    -0.21538061112892432,
+                    0.728874887758641,
+                    -0.4793944796340615,
+                    0.10825395651635031,
+                    -0.8316181544640607,
+                    0.43095532116274915,
+                    0.8003994414359495,
+                    -0.1378812632703219,
+                    1.6250599452123515,
+                    -0.11525496964475286,
+                    0.18300331023973881,
+                    -0.8454758056794978
+                ],
+                "hit_mean_zscore": 0.10429513154201342,
+                "conservation_string": "_E____D_E___",
+                "best mean z-score over 5 residue window": 0.5206556949791952,
+                "best mean z-score over 10 residue window": 0.23123979953125834
+            }
+        }
+    },
+    "5": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/5-9606_0_002f40/5-9606_0_002f40.json",
+        "critical_error": "hit sequence FPPPPPPP not found in query sequence"
+    },
+    "0": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/0-nan/0-nan.json",
+        "critical_error": "not found in database: 0 - nan: nan"
+    },
+    "1": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/1-nan/1-nan.json",
+        "critical_error": "not found in database: 1 - nan: nan"
+    },
+    "2": {
+        "json_file": "/home/jch/Documents/05-conservation_pipeline/examples/table_annotation/conservation_analysis/2-9606_0_002f40/2-9606_0_002f40.json",
+        "critical_error": null,
+        "hit_start_position": 259,
+        "multi_level_plot": "conservation_analysis/annotations/2-9606_0002f40-pairk_aln_needleman_lf5_rf5_edssmat50_multilevel_plot.png",
+        "regex": "P.P.E",
+        "regex_match": "PNPEE",
+        "regex_match_stpos_in_hit": 3,
+        "regex_match_endpos_in_hit": 7,
+        "level_annotations": {
+            "Metazoa": {
+                "aln_slice_file": "conservation_analysis/annotations/2-9606_0002f40-Metazoa_aln_slice.html",
+                "hit_scores": [
+                    0.2863776253697824,
+                    0.5003700949409892,
+                    0.3575946935600046,
+                    0.5565045597372236,
+                    0.2063719408457657,
+                    0.3615319940141972,
+                    0.37320626944543445,
+                    0.37490504394783875,
+                    0.2002690131044239,
+                    0.2229970536473267,
+                    0.2868442373940987
+                ],
+                "hit_mean_score": 0.3388156841824623,
+                "regex_match_scores": [
+                    0.5565045597372236,
+                    0.2063719408457657,
+                    0.3615319940141972,
+                    0.37320626944543445,
+                    0.37490504394783875
+                ],
+                "regex_match_mean_score": 0.37450396159809196,
+                "hit_z_scores": [
+                    -0.9456868404252269,
+                    0.23262100682666673,
+                    -0.5535439277565695,
+                    0.5417145020474349,
+                    -1.386222556884348,
+                    -0.5318639498047293,
+                    -0.46758182633014844,
+                    -0.4582278554595597,
+                    -1.4198271396215056,
+                    -1.2946796118695996,
+                    -0.9431175322108972
+                ],
+                "hit_mean_zscore": -0.6569468846807712,
+                "conservation_string": "___P_______",
+                "best mean z-score over 5 residue window": -0.33945898511430905,
+                "best mean z-score over 10 residue window": -0.6280728891063256,
+                "regex_match_zscores": [
+                    0.5417145020474349,
+                    -1.386222556884348,
+                    -0.5318639498047293,
+                    -0.46758182633014844,
+                    -0.4582278554595597
+                ],
+                "regex_match_mean_zscore": -0.4604363372862701
+            },
+            "Vertebrata": {
+                "aln_slice_file": "conservation_analysis/annotations/2-9606_0002f40-Vertebrata_aln_slice.html",
+                "hit_scores": [
+                    0.2863776253697824,
+                    0.5003700949409892,
+                    0.3575946935600046,
+                    0.5565045597372236,
+                    0.2063719408457657,
+                    0.3615319940141972,
+                    0.37320626944543445,
+                    0.37490504394783875,
+                    0.2002690131044239,
+                    0.2229970536473267,
+                    0.2868442373940987
+                ],
+                "hit_mean_score": 0.3388156841824623,
+                "regex_match_scores": [
+                    0.5565045597372236,
+                    0.2063719408457657,
+                    0.3615319940141972,
+                    0.37320626944543445,
+                    0.37490504394783875
+                ],
+                "regex_match_mean_score": 0.37450396159809196,
+                "hit_z_scores": [
+                    -0.9456868404252269,
+                    0.23262100682666673,
+                    -0.5535439277565695,
+                    0.5417145020474349,
+                    -1.386222556884348,
+                    -0.5318639498047293,
+                    -0.46758182633014844,
+                    -0.4582278554595597,
+                    -1.4198271396215056,
+                    -1.2946796118695996,
+                    -0.9431175322108972
+                ],
+                "hit_mean_zscore": -0.6569468846807712,
+                "conservation_string": "___P_______",
+                "best mean z-score over 5 residue window": -0.33945898511430905,
+                "best mean z-score over 10 residue window": -0.6280728891063256,
+                "regex_match_zscores": [
+                    0.5417145020474349,
+                    -1.386222556884348,
+                    -0.5318639498047293,
+                    -0.46758182633014844,
+                    -0.4582278554595597
+                ],
+                "regex_match_mean_zscore": -0.4604363372862701
+            }
+        }
+    }
+}
