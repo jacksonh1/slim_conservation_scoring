@@ -22,6 +22,7 @@ from slim_conservation_scoring.pipeline import (
     s7output_aln_slice,
     s8calculate_annotations,
     s9add_annotations2table,
+    convert_2_excel,
 )
 import time
 
@@ -111,7 +112,7 @@ def calculate_aln_cons_scores(file, config: conf.PipelineParameters, **kwargs):
                 score_key=scoremethod.score_key,
                 function_name=scoremethod.function_name,
                 function_params=scoremethod.function_params,
-                level=scoremethod.level,
+                levels=scoremethod.levels,
                 **kwargs,
             )
 
@@ -124,7 +125,7 @@ def run_pairk_aln(file, config: conf.PipelineParameters, **kwargs):
                 score_key=pairk_method.score_key,
                 function_name=pairk_method.function_name,
                 function_params=pairk_method.function_params,
-                level=pairk_method.level,
+                levels=pairk_method.levels,
                 lflank=pairk_method.lflank,
                 rflank=pairk_method.rflank,
                 **kwargs,
@@ -155,7 +156,7 @@ def run_pairk_embedding_aln(file, config: conf.PipelineParameters, **kwargs):
             score_key=scoremethod.score_key,
             function_name=scoremethod.function_name,
             function_params=score_kwargs,
-            level=scoremethod.level,
+            levels=scoremethod.levels,
             lflank=scoremethod.lflank,
             rflank=scoremethod.rflank,
             **kwargs,
@@ -356,8 +357,11 @@ def main(config_file, n_cores):
             table_file=input_annotation_table,
             output_table_file=annotated_table_file,
         )
+
+    convert_2_excel.convert_csv_to_excel(annotated_table_file)
     if config.clean_analysis_files:
         shutil.rmtree(config.output_folder)
+
     # delete the reindexed table file
     # if reindexed_table_file.exists():
     #     reindexed_table_file.unlink()

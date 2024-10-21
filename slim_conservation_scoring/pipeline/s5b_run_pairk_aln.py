@@ -74,7 +74,7 @@ def pairwise_kmer_alignment_driver(
     score_key: str,
     function_name: str,
     function_params: dict,
-    level: str | None = None,
+    levels: list[str] | None = None,
     lflank: int = 0,
     rflank: int = 0,
     score_output_folder: str | Path | None = None,
@@ -83,9 +83,7 @@ def pairwise_kmer_alignment_driver(
     if hasattr(og, "critical_error"):
         return
     og.load_levels()
-    if level is not None:
-        levels = [level]
-    else:
+    if levels is None:
         levels = list(og.level_objects.keys())
     if hasattr(PAIRKMERALNFUNCS, function_name):
         flanked_pair_kmer_aln(

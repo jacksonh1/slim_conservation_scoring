@@ -35,6 +35,8 @@ msa_score_methods:
     function_params:
       gap_frac_cutoff: 0.2
       overwrite: false
+    levels: 
+      - "Vertebrata"
   
 pairk_aln_methods:
   pairk_aln_lf5_rf5_edssmat50:
@@ -44,7 +46,8 @@ pairk_aln_methods:
       matrix_name: "EDSSMat50"
     lflank: 5
     rflank: 5
-    level: "Vertebrata"
+    levels: 
+      - "Vertebrata"
   pairk_aln_needleman_lf5_rf5_edssmat50:
     function_name: "pairk_aln_needleman"
     function_params:
@@ -52,16 +55,16 @@ pairk_aln_methods:
       matrix_name: "EDSSMat50"
     lflank: 5
     rflank: 5
-    # level: "Vertebrata"
 
-pairk_embedding_aln_methods:
-  pairk_aln_embedding_lf5_rf5:
-    function_name: "pairk_aln_embedding"
-    function_params:
-      overwrite: false
-    lflank: 5
-    rflank: 5
-    level: "Vertebrata"
+# pairk_embedding_aln_methods:
+#   pairk_aln_embedding_lf5_rf5:
+#     function_name: "pairk_aln_embedding"
+#     function_params:
+#       overwrite: false
+#     lflank: 5
+#     rflank: 5
+#     levels: 
+#       - "Vertebrata"
 
 pairk_conservation_params:
   kmer_conservation_function_name: "pairk_conservation"

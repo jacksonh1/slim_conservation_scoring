@@ -110,10 +110,10 @@ def compute_hit_conservation_scores(
     if hasattr(og, "critical_error"):
         return
     og.load_levels()
-    if pairk_method.level is not None:
-        levels = [pairk_method.level]
-    else:
+    if pairk_method.levels is None:
         levels = list(og.level_objects.keys())
+    else:
+        levels = pairk_method.levels
     if hasattr(PAIR_KMER_ALN_FUNCS, pairk_method.function_name):
         pairwise_scores(
             og=og,

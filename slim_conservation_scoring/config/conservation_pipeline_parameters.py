@@ -60,14 +60,10 @@ class FilterParams:
 
 @define
 class MSAScoreMethod:
-    """
-    lflank and rflank are only used for pairwise scores.
-    """
-
     score_key: str = field(default="aln_property_entropy")
     function_name: str = field(default="aln_property_entropy")
     function_params: dict[str, Any] = field(factory=dict)
-    level: str | None = field(default=None)
+    levels: list[str] | None = field(default=None)
 
 
 @define
@@ -75,9 +71,9 @@ class PairKAlnMethod:
     score_key: str = field(default="pairk_aln_needleman_lf0_rf0")
     function_name: str = field(default="pairk_aln_needleman")
     function_params: dict[str, Any] = field(factory=dict)
-    level: str | None = field(default=None)
-    lflank: int = field(default=4, converter=int)
-    rflank: int = field(default=4, converter=int)
+    levels: list[str] | None = field(default=None)
+    lflank: int = field(default=0, converter=int)
+    rflank: int = field(default=0, converter=int)
 
 
 @define
@@ -99,7 +95,7 @@ class PairKEmbeddingAlnMethod:
     score_key: str = field(default="pairk_aln_embedding_lf0_rf0")
     function_name: str = field(default="pairk_aln_embedding")
     function_params: dict[str, Any] = field(factory=dict)
-    level: str | None = field(default=None)
+    levels: list[str] | None = field(default=None)
     lflank: int = field(default=0, converter=int)
     rflank: int = field(default=0, converter=int)
 
