@@ -12,6 +12,7 @@ def add_annotations_to_table(
     table_annotation_score_key: str,
     table_annotations: list[str],
     table_annotation_levels: list[str],
+    score_independent_annotations: list[str],
 ):
     annotation_file = (
         Path(main_output_folder) / f"{table_annotation_score_key}_annotations.json"
@@ -41,14 +42,6 @@ def add_annotations_to_table(
         for annotation in table_annotations:
             if annotation not in d:
                 continue
-            score_independent_annotations = [
-                "json_file",
-                "conservation_hit_sequence",
-                "hit_start_position",
-                "regex",
-                "regex_match",
-                "regex_match_stpos_in_hit",
-            ]
             if annotation in score_independent_annotations:
                 df.loc[ref_ind, f"{annotation}"] = d[annotation]
             else:
@@ -72,14 +65,26 @@ def main(
     output_table_file: str | Path,
 ):
     table_df = pd.read_csv(table_file)
+    score_independent_annotations = [
+        "json_file",
+        "conservation_hit_sequence",
+        "hit_start_position",
+        "regex",
+        "regex_match",
+        "regex_match_stpos_in_hit",
+    ]
     for key in config.table_annotation_params.score_keys_for_table:
         df, error_map = add_annotations_to_table(
             config.output_folder,
             table_annotation_score_key=key,
             table_annotations=config.table_annotation_params.annotations,
             table_annotation_levels=config.table_annotation_params.levels,
+            score_independent_annotations=score_independent_annotations,
         )
         table_df["critical_error"] = table_df["reference_index"].map(error_map)
-        table_df = pd.merge(table_df, df, on=["reference_index"], how="left")
+        merge_cols = [
+            col for col in table_df.columns if col in score_independent_annotations
+        ] + ["reference_index"]
+        table_df = pd.merge(table_df, df, on=merge_cols, how="left")
 
     table_df.to_csv(output_table_file, index=False)
