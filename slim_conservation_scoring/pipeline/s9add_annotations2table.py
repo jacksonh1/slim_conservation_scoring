@@ -41,9 +41,20 @@ def add_annotations_to_table(
         for annotation in table_annotations:
             if annotation not in d:
                 continue
-            df.loc[ref_ind, f"{table_annotation_score_key}-{annotation}"] = d[
-                annotation
+            score_independent_annotations = [
+                "json_file",
+                "conservation_hit_sequence",
+                "hit_start_position",
+                "regex",
+                "regex_match",
+                "regex_match_stpos_in_hit",
             ]
+            if annotation in score_independent_annotations:
+                df.loc[ref_ind, f"{annotation}"] = d[annotation]
+            else:
+                df.loc[ref_ind, f"{table_annotation_score_key}-{annotation}"] = d[
+                    annotation
+                ]
     df = df.reset_index(names="reference_index")
     return df, error_map
     # table_df.to_excel(output_table_file.replace(".csv", ".xlsx"), index=False)

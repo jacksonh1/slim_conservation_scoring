@@ -135,6 +135,7 @@ class TableAnnotationConf:
     annotations: list[str] = field(
         default=[
             "json_file",
+            # "conservation_hit_sequence",
             # "multi_level_plot",
             # "hit_start_position",
             # "regex",

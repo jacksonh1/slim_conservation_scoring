@@ -93,6 +93,7 @@ def add_gene_annotations_2_dict(
     else:
         d["critical_error"] = None
     d["hit_start_position"] = og.hit_start_position
+    d["conservation_hit_sequence"] = og.hit_sequence
     # d['hit_end_position'] = og.hit_end_position
     d["multi_level_plot"] = get_image_file(og, table_annotation_score_key)
     match = find_motif_regex(og, regex)
